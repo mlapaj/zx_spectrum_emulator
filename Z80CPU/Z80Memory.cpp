@@ -93,10 +93,12 @@ UINT16 Z80Memory::get16(UINT16 address)
 
 UINT8 *Z80Memory::getAddrPtr8(UINT16 address)
 {
-    if (address >= size || address < 0)
+	LOG4CXX_DEBUG(logger, "getAddr8 adres:" << address);
+    if (address > size || address < 0)
     {
         throw new runtime_error("out of range");
     }
+	LOG4CXX_DEBUG(logger,"zwracam pamiec, adres" << address);
     return reinterpret_cast<UINT8*>(&memory[address]);
 }
 

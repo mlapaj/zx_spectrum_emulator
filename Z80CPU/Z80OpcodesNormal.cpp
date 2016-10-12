@@ -72,7 +72,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::LD_r16_nn(UINT16 *dst)
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::LD_r8_n(UINT8 *dst)
 {
-	LD(*dst,mem.get8(reg.PC+1));
+	//LD(*dst,mem.get8(reg.PC+1));
 	reg.PC+=2;
 }
 
@@ -218,11 +218,13 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RST(UINT16 val)
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DI()
 {
     /// todo !!!!!!!!!!!!
+	reg.PC+= 1;
 }
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::EI()
 {
     /// todo !!!!!!!!!!!!
+	reg.PC += 1;
 }
 
 

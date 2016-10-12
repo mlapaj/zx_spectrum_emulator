@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Z80Opcodes.cpp
  * Author: lapajmar
- * 
+ *
  * Created on 18 marzec 2014, 16:45
  */
 
@@ -63,6 +63,7 @@ template<typename tZ80Memory>
 inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
 {
 	UINT8 *dst;
+	LOG4CXX_DEBUG(logger,"parseGet8BRegisterPair: " << y);
 	switch (y)
 	{
 		case 0: {dst=&reg.B;break;}
@@ -84,18 +85,18 @@ inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
 
 template<typename tZ80Memory>
 inline condition Z80Opcodes<tZ80Memory>::parseCondition(int y)
-{               
+{
         condition cond;
 	switch (y)
 	{
             case 0: { cond = NZ;break;}
             case 1: { cond = Z;break;}
-            case 2: { cond = NC;break;}            
-            case 3: { cond = C;break;}            
-            case 4: { cond = PO;break;}            
-            case 5: { cond = PE;break;}            
-            case 6: { cond = P;break;}            
-            case 7: { cond = M;break;}            
+            case 2: { cond = NC;break;}
+            case 3: { cond = C;break;}
+            case 4: { cond = PO;break;}
+            case 5: { cond = PE;break;}
+            case 6: { cond = P;break;}
+            case 7: { cond = M;break;}
 	}
         return cond;
 }
@@ -103,18 +104,18 @@ inline condition Z80Opcodes<tZ80Memory>::parseCondition(int y)
 
 template<typename tZ80Memory>
 inline aluOperation Z80Opcodes<tZ80Memory>::parseALUOperation(int y)
-{        
+{
         aluOperation cond;
 	switch (y)
 	{
             case 0: { cond = ADD_A;break;}
             case 1: { cond = ADC_A;break;}
-            case 2: { cond = SUB;break;}            
-            case 3: { cond = SBC_A;break;}            
-            case 4: { cond = AND;break;}            
-            case 5: { cond = XOR;break;}            
-            case 6: { cond = OR;break;}            
-            case 7: { cond = CP;break;}            
+            case 2: { cond = SUB;break;}
+            case 3: { cond = SBC_A;break;}
+            case 4: { cond = AND;break;}
+            case 5: { cond = XOR;break;}
+            case 6: { cond = OR;break;}
+            case 7: { cond = CP;break;}
 	}
         return cond;
 }
@@ -122,18 +123,18 @@ inline aluOperation Z80Opcodes<tZ80Memory>::parseALUOperation(int y)
 
 template<typename tZ80Memory>
 inline rotOperation Z80Opcodes<tZ80Memory>::parseROTOperation(int y)
-{        
+{
         rotOperation rot;
 	switch (y)
 	{
             case 0: { rot = RLC;break;}
             case 1: { rot = RRC;break;}
-            case 2: { rot = RL;break;}            
-            case 3: { rot = RR;break;}            
-            case 4: { rot = SLA;break;}            
-            case 5: { rot = SRA;break;}            
-            case 6: { rot = SLL;break;}            
-            case 7: { rot = SRL;break;}            
+            case 2: { rot = RL;break;}
+            case 3: { rot = RR;break;}
+            case 4: { rot = SLA;break;}
+            case 5: { rot = SRA;break;}
+            case 6: { rot = SLL;break;}
+            case 7: { rot = SRL;break;}
 	}
         return rot;
 }
@@ -141,19 +142,19 @@ inline rotOperation Z80Opcodes<tZ80Memory>::parseROTOperation(int y)
 
 template<typename tZ80Memory>
 inline interruptMode Z80Opcodes<tZ80Memory>::parseInterruptModes(int y)
-{        
+{
         interruptMode mode;
 	switch (y)
 	{
-            case 0: 
-            case 4: { mode = MODE_0; break;}            
+            case 0:
+            case 4: { mode = MODE_0; break;}
             case 1:
-            case 5: { mode = MODE_0_1;break;}            
-            case 2: 
-            case 6: { mode = MODE_1;break;} 
-            
-            case 3:            
-            case 7: { mode = MODE_2; break;}            
+            case 5: { mode = MODE_0_1;break;}
+            case 2:
+            case 6: { mode = MODE_1;break;}
+
+            case 3:
+            case 7: { mode = MODE_2; break;}
 	}
         return mode;
 }
@@ -177,17 +178,17 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
                 {
                     out = CPI;
                     break;
-                }            
+                }
                 case 2:
                 {
                     out = INI;
                     break;
-                }                
+                }
                 case 3:
                 {
                     out = OUTI;
                     break;
-                }                                
+                }
             }
             break;
         }
@@ -204,21 +205,21 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
                 {
                     out = CPD;
                     break;
-                }            
+                }
                 case 2:
                 {
                     out = IND;
                     break;
-                }                
+                }
                 case 3:
                 {
                     out = OUTD;
                     break;
-                }                                
-            }            
-            
+                }
+            }
+
             break;
-        }        
+        }
         case 6:
         {
             switch (z)
@@ -232,20 +233,20 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
                 {
                     out = CPIR;
                     break;
-                }            
+                }
                 case 2:
                 {
                     out = INIR;
                     break;
-                }                
+                }
                 case 3:
                 {
                     out = OUTIR;
                     break;
-                }                                
-            }            
+                }
+            }
             break;
-        }        
+        }
         case 7:
         {
             switch (z)
@@ -259,20 +260,20 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
                 {
                     out = CPDR;
                     break;
-                }            
+                }
                 case 2:
                 {
                     out = INDR;
                     break;
-                }                
+                }
                 case 3:
                 {
                     out = OUTDR;
                     break;
-                }                                
-            }            
+                }
+            }
             break;
-        }        
+        }
     }
 }
 
@@ -286,379 +287,381 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
     x = (opcode >> 6) & 0b11;
     p = y >> 1 & 0b11;
     q = y & 0b1;
-    switch (x)
-    {
-    	case 0:
-    	{                           
-			switch (z)
+	LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z));
+	switch (x)
+	{
+		case 0:
 			{
-				// completed
-                                case 0:
+				switch (z)
 				{
-					switch (y)
-					{
-                                            case 0:{ NOP(); break;}
-                                            case 1:{ EX_AF_sAF(); break;}
-                                            case 2:{ DJNZ(); break;}
-                                            case 3:{ JR(); break;}
-                                            case 4:
-                                            case 5:
-                                            case 6:
-                                            case 7:
-                                            {
-                                                condition cond = parseCondition(y-4);
-                                                JR_cond_nn(cond);
-                                                break;
-                                            }
-					}
-					break;
-				}
-                                // completed
-				case 1:
-				{
-					UINT16 *dst;
-					dst = parseGet16BRegisterPair1(p);
-					switch (q)
-					{
-						case 0: { LD_r16_nn(dst); break;}
-                                                case 1: { ADD_HL_r16(dst); break;}
-					}
-					break;
-				}
-				// completed
-                                case 2:
-				{
-					UINT16* dst16;
-                                        UINT8* dst8;
-                                        switch (q)
-					{						
-						case 0:
+					// completed
+					case 0:
 						{
-							switch (p)
+							switch (y)
 							{
-								case 0:
-								{
-									dst16 = &reg.BC;
-									LD_addr_r16_A(dst16);
-									break;
-								}
-								case 1:
-								{
-									dst16 = &reg.DE;
-									LD_addr_r16_A(dst16);
-									break;
-								}
-								case 2:
-								{                                                                        
-									dst16 = &reg.HL;
-									LD_addr_nn_r16(dst16);
-									break;
-								}
-								case 3:
-								{
-									dst8 = &reg.A;
-									LD_addr_nn_r8(dst8);
-									break;
-								}                                                                                                                                
+								case 0:{ NOP(); break;}
+								case 1:{ EX_AF_sAF(); break;}
+								case 2:{ DJNZ(); break;}
+								case 3:{ JR(); break;}
+								case 4:
+								case 5:
+								case 6:
+								case 7:
+									   {
+										   condition cond = parseCondition(y-4);
+										   JR_cond_nn(cond);
+										   break;
+									   }
 							}
 							break;
 						}
-						case 1:
+						// completed
+					case 1:
 						{
-							switch (p)
+							UINT16 *dst;
+							dst = parseGet16BRegisterPair1(p);
+							switch (q)
+							{
+								case 0: { LD_r16_nn(dst); break;}
+								case 1: { ADD_HL_r16(dst); break;}
+							}
+							break;
+						}
+						// completed
+					case 2:
+						{
+							UINT16* dst16;
+							UINT8* dst8;
+							switch (q)
 							{
 								case 0:
-								{                                                                    
-									dst16 = &reg.BC;
-									LD_A_addr_r16(dst16);
-									break;
-								}
+									{
+										switch (p)
+										{
+											case 0:
+												{
+													dst16 = &reg.BC;
+													LD_addr_r16_A(dst16);
+													break;
+												}
+											case 1:
+												{
+													dst16 = &reg.DE;
+													LD_addr_r16_A(dst16);
+													break;
+												}
+											case 2:
+												{
+													dst16 = &reg.HL;
+													LD_addr_nn_r16(dst16);
+													break;
+												}
+											case 3:
+												{
+													dst8 = &reg.A;
+													LD_addr_nn_r8(dst8);
+													break;
+												}
+										}
+										break;
+									}
 								case 1:
-								{
-									dst16 = &reg.DE;
-									LD_A_addr_r16(dst16);
-									break;
-								}
-								case 2:
-								{
-									dst16 = &reg.HL;
-                                                                        LD_r16_addr_nn(dst16);
-									break;
-								}
-								case 3:
-								{
-									dst8 = &reg.A;
-                                                                        LD_r8_addr_nn(dst8);
-									break;
-								}                                                                                                                                                                                                
+									{
+										switch (p)
+										{
+											case 0:
+												{
+													dst16 = &reg.BC;
+													LD_A_addr_r16(dst16);
+													break;
+												}
+											case 1:
+												{
+													dst16 = &reg.DE;
+													LD_A_addr_r16(dst16);
+													break;
+												}
+											case 2:
+												{
+													dst16 = &reg.HL;
+													LD_r16_addr_nn(dst16);
+													break;
+												}
+											case 3:
+												{
+													dst8 = &reg.A;
+													LD_r8_addr_nn(dst8);
+													break;
+												}
+										}
+										break;
+									}
+
+							}
+
+							break;
+						}
+						// completed
+					case 3:
+						{
+							UINT16 *dst;
+							dst = parseGet16BRegisterPair1(p);
+							switch (q)
+							{
+								case 0: { INC_r16(dst); break;}
+								case 1: { DEC_r16(dst); break;}
 							}
 							break;
 						}
 
-					}
+						// completed
+					case 4:
+						{
+							UINT8 *dst;
+							dst = parseGet8BRegisterPair(y);
+							INC_r8(dst);
+							break;
+						}
+						// completed
+					case 5:
+						{
+							UINT8 *dst;
+							dst = parseGet8BRegisterPair(y);
+							DEC_r8(dst);
+							break;
+						}
+						// completed
+					case 6:
+						{
+							LOG4CXX_DEBUG(logger,"!!!!!!!");
+							UINT8 *dst;
+							dst = parseGet8BRegisterPair(y);
+							LD_r8_n(dst);
+							break;
+						}
+						// add DAA
+					case 7:
+						{
+							switch (y)
+							{
+								case 0: {RLCA(); break;}
+								case 1: {RRCA(); break;}
+								case 2: {RLA(); break;}
+								case 3: {RRA(); break;}
+								case 4: {DAA(); break;}
+								case 5: {CPL(); break;}
+								case 6: {SCF(); break;}
+								case 7: {CCF(); break;}
+										break;
+							}
 
-					break;
+						}
+					default:
+						break;
 				}
-                                // completed
-				case 3:
-				{
-					UINT16 *dst;
-					dst = parseGet16BRegisterPair1(p);
-					switch (q)
-					{
-						case 0: { INC_r16(dst); break;}
-						case 1: { DEC_r16(dst); break;}
-					}
-					break;
-				}
-
-                                // completed
-				case 4:
-				{
-					UINT8 *dst;
-					dst = parseGet8BRegisterPair(y);
-					INC_r8(dst);
-					break;
-				}
-                                // completed
-				case 5:
-				{
-					UINT8 *dst;
-					dst = parseGet8BRegisterPair(y);
-					DEC_r8(dst);
-					break;
-				}
-                                // completed
-				case 6:
-				{
-					UINT8 *dst;
-					dst = parseGet8BRegisterPair(y);
-					LD_r8_n(dst);
-					break;
-				}
-                                // add DAA
-				case 7:
-				{
-					switch (y)
-					{
-						case 0: {RLCA(); break;}
-						case 1: {RRCA(); break;}
-                                                case 2: {RLA(); break;}
-                                                case 3: {RRA(); break;}
-                                                case 4: {DAA(); break;}
-                                                case 5: {CPL(); break;}
-                                                case 6: {SCF(); break;}
-                                                case 7: {CCF(); break;}
-					break;
-					}
-
-				}
-				default:
-					break;
+				break;
 			}
-			break;
-        }
-        case 1:
-        {
-            if (6==y)
-            {
-                HALT();
-            }
-            else
-            {
-                UINT8 *src,*dst;
-                src = parseGet8BRegisterPair(y);
-                dst = parseGet8BRegisterPair(z);
-                LD_r8_r8(src,dst);
-            }
-            break;
-        }
-        case 2:
-        {
-            // complete
-            UINT8 *dst = parseGet8BRegisterPair(z);
-            aluOperation operation = parseALUOperation(y);
-            ALU(operation,dst);
-            break;
-        }
-        case 3:
-        {
-            switch (z)
-            {
-                case 0:
-                {
-                    
-                    condition cond = parseCondition(y);
-                    RET(cond);
-                    break;
-                }
-                case 1:
-                {
+		case 1:
+			{
+				if (6==y)
+				{
+					HALT();
+				}
+				else
+				{
+					UINT8 *src,*dst;
+					src = parseGet8BRegisterPair(y);
+					dst = parseGet8BRegisterPair(z);
+					LD_r8_r8(src,dst);
+				}
+				break;
+			}
+		case 2:
+			{
+				// complete
+				UINT8 *dst = parseGet8BRegisterPair(z);
+				aluOperation operation = parseALUOperation(y);
+				ALU(operation,dst);
+				break;
+			}
+		case 3:
+			{
+				switch (z)
+				{
+					case 0:
+						{
 
-                    switch (q)
-                    {
-                        case 0:
-                        {
-                            UINT16 *dst;
-                            dst = parseGet16BRegisterPair1(p);
-                            POP16(dst);
-                            break;
-                        }
-                        case 1:
-                        {
-                            switch (p)
-                            {
-                                case 0:
-                                {
-                                    RET();
-                                    break;
-                                }
-                                case 1:
-                                {
-                                    EXX();
-                                    break;
-                                }                                
-                                case 2:
-                                {
-                                	JP(&reg.HL);
-                                    break;
-                                }                                
-                                case 3:
-                                {
-                                    LD_r16_r16(&reg.SP,&reg.HL);
-                                    break;
-                                }                                
-                            }
-                            break;
-                        }
-                    }
-                break;    
-                }
-                case 2:
-                {                    
-                    condition cond = parseCondition(y);
-                    JP_cond_nn(cond);
-                    break;
-                }
-                case 3:
-                {
-                    switch (y)
-                    {
-                        case 0:
-                        {
-                            JP_nn();
-                            break;
-                        }
-                        case 1:
-                        {                            
-                            parseCBPrefixOpcode();
-                            break;
-                        }
-                        case 2:
-                        {
-                            OUT_addr_n_A();;
-                            break;                        
-                        }
-                        case 3:
-                        {
-                            IN_A_addr_n();
-                            break;
-                        }
-                        case 4:
-                        {
-                            EX_addr_SP_HL();
-                            break;
-                        }                        
-                        case 5:
-                        {
-                            EX_DE_HL();
-                            break;
-                        }                                                
-                        case 6:
-                        {
-                            DI();
-                            break;
-                        }                                                                        
-                        case 7:
-                        {
-                            EI();
-                            break;
-                        }                                                                        
-                    }
-                    break;                            
-                }
-                case 4:
-                {
-                    condition cond = parseCondition(y);
-                    CALL_cond_nn(cond);
-                    break;
-                }
-                case 5:
-                {
-                    switch (q)
-                    {
-                        case 0:
-                        {
-                            UINT16 *dst;
-                            dst = parseGet16BRegisterPair2(p);
-                            PUSH16(dst);
-                            break;
-                        }
-                        case 1:
-                        {
-                            switch (p)
-                            {
-                                case 0:
-                                {
-                                    CALL_nn();
-                                    break;
-                                }
-                                case 1:
-                                {
-                                    // DD prefix
-                                    break;
-                                }
-                                case 2:                                
-                                {
-                                	parseEDPrefixOpcode();
-                                    break;                                    
-                                }
-                                case 3:
-                                {
-                                    // FD prefix
-                                }
-                                
-                                }
-                            break;
-                        }
+							condition cond = parseCondition(y);
+							RET(cond);
+							break;
+						}
+					case 1:
+						{
 
-                    }
-                break;
-                }
-                case 6:
-                {
-                    aluOperation oper = parseALUOperation(y);
-                    ALU_n(oper);
-                    break;
-                }
-                case 7:
-                {                    
-                    RST(y*8);
-                    break;
-                }
-                
-            }
-            break;
-        }
-    }
-    
+							switch (q)
+							{
+								case 0:
+									{
+										UINT16 *dst;
+										dst = parseGet16BRegisterPair1(p);
+										POP16(dst);
+										break;
+									}
+								case 1:
+									{
+										switch (p)
+										{
+											case 0:
+												{
+													RET();
+													break;
+												}
+											case 1:
+												{
+													EXX();
+													break;
+												}
+											case 2:
+												{
+													JP(&reg.HL);
+													break;
+												}
+											case 3:
+												{
+													LD_r16_r16(&reg.SP,&reg.HL);
+													break;
+												}
+										}
+										break;
+									}
+							}
+							break;
+						}
+					case 2:
+						{
+							condition cond = parseCondition(y);
+							JP_cond_nn(cond);
+							break;
+						}
+					case 3:
+						{
+							switch (y)
+							{
+								case 0:
+									{
+										JP_nn();
+										break;
+									}
+								case 1:
+									{
+										parseCBPrefixOpcode();
+										break;
+									}
+								case 2:
+									{
+										OUT_addr_n_A();;
+										break;
+									}
+								case 3:
+									{
+										IN_A_addr_n();
+										break;
+									}
+								case 4:
+									{
+										EX_addr_SP_HL();
+										break;
+									}
+								case 5:
+									{
+										EX_DE_HL();
+										break;
+									}
+								case 6:
+									{
+										DI();
+										break;
+									}
+								case 7:
+									{
+										EI();
+										break;
+									}
+							}
+							break;
+						}
+					case 4:
+						{
+							condition cond = parseCondition(y);
+							CALL_cond_nn(cond);
+							break;
+						}
+					case 5:
+						{
+							switch (q)
+							{
+								case 0:
+									{
+										UINT16 *dst;
+										dst = parseGet16BRegisterPair2(p);
+										PUSH16(dst);
+										break;
+									}
+								case 1:
+									{
+										switch (p)
+										{
+											case 0:
+												{
+													CALL_nn();
+													break;
+												}
+											case 1:
+												{
+													// DD prefix
+													break;
+												}
+											case 2:
+												{
+													parseEDPrefixOpcode();
+													break;
+												}
+											case 3:
+												{
+													// FD prefix
+												}
+
+										}
+										break;
+									}
+
+							}
+							break;
+						}
+					case 6:
+						{
+							aluOperation oper = parseALUOperation(y);
+							ALU_n(oper);
+							break;
+						}
+					case 7:
+						{
+							RST(y*8);
+							break;
+						}
+
+				}
+				break;
+			}
+	}
+
 }
 
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
 {
- 
+
     UINT8 opcode =  mem.get8(reg.PC+1);
     std::cout << debugCBPrefixOpcode(opcode).mnemonic;
     UINT8 z,y,x,p,q = 0;
@@ -698,7 +701,7 @@ void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
             dst = parseGet8BRegisterPair(z);
             SET(y,dst);
             break;
-        }        
+        }
     }
 
 }
@@ -880,5 +883,5 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
 class MockZ80Memory;
 template class Z80Opcodes<MockZ80Memory>;
 #else
-template class Z80Opcodes<Z80Memory>;    
+template class Z80Opcodes<Z80Memory>;
 #endif

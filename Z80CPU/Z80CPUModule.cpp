@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Z80CPUModule.cpp
  * Author: lapajmar
- * 
+ *
  * Created on 18 marzec 2014, 16:29
  */
 
@@ -11,32 +11,33 @@
 
 template<typename tZ80Memory>
 Z80CPUModule<tZ80Memory>::Z80CPUModule(tZ80Memory *cZ80Memory):logger(Logger::getLogger("Z80Module")) {
-    
-    LOG4CXX_DEBUG(logger, "class created");    
+
+    LOG4CXX_DEBUG(logger, "class created");
     oZ80Memory = cZ80Memory;
-    oZ80Registers = new Z80Registers(); 
-    
+    oZ80Registers = new Z80Registers();
+
     oZ80Registers->dumpFull();
     oZ80Registers->reset();
-    oZ80Registers->dumpFull();    
-    
+    oZ80Registers->dumpFull();
+
     oZ80Opcodes = new Z80Opcodes<tZ80Memory>(*oZ80Memory,*oZ80Registers);
 }
 
 template<typename tZ80Memory>
 Z80CPUModule<tZ80Memory>::~Z80CPUModule() {
-    LOG4CXX_DEBUG(logger, "destructor called");    
+    LOG4CXX_DEBUG(logger, "destructor called");
     delete oZ80Opcodes;
     delete oZ80Registers;
 }
 template<typename tZ80Memory>
 void Z80CPUModule<tZ80Memory>::cpuThread() {
     // testing purposes
-    oZ80Memory->clearMemory();
+    // oZ80Memory->clearMemory();
     LOG4CXX_DEBUG(logger, "started main cpu thread");
     int i=0;
     while (i<255)
-    {        
+    {
+		oZ80Registers->dump();
         oZ80Opcodes->executeOpcode();
         i++;
     }
