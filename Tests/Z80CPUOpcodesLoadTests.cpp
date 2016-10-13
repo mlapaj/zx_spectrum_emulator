@@ -247,9 +247,9 @@ TEST(Z80CPUModule_Load, D9_EXX) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    regCompare.BC = 0;
-    regCompare.DE = 0;
-    regCompare.HL = 0;
+    regCompare.BC = 0xffff;
+    regCompare.DE = 0xffff;
+    regCompare.HL = 0xffff;
     regCompare.secBC = 0xFF00;
     regCompare.secDE = 0xFF00;
     regCompare.secHL = 0xFF00;

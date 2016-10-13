@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     DOMConfigurator::configure("Log4cxxConfig.xml");
     LOG4CXX_INFO (loggerMyMain, "Starting ZX Spectrum emulator ver." << ZXSpectrumEmulatorVersion);
     
-    const int ZXSpectrumMemorySize = 65535;
+    const int ZXSpectrumMemorySize = 65536;
     const char *ZXSpectrumRomName = "48.rom";   
     Z80Memory *oZ80Memory;
     oZ80Memory = new Z80Memory(ZXSpectrumMemorySize);

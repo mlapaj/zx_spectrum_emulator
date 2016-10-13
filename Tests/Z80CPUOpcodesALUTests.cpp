@@ -74,6 +74,9 @@ TEST(Z80CPUModule_Alu, 04_INC_B) {
     regCompare.reset();
     regCompare.BC = valueOfBRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
+    clear_flag_h(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
@@ -110,6 +113,9 @@ TEST(Z80CPUModule_Alu, 04_INC_B_R_REGISTER_7F) {
     regCompare.PC = valueOfPCRegisterAfter;
     set_flag_pv(regCompare);
     regCompare.R = 0x7F;
+    clear_flag_n(regCompare);
+    //clear_flag_pv(regCompare);
+    clear_flag_h(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
@@ -142,6 +148,9 @@ TEST(Z80CPUModule_Alu, 05_DEC_B) {
     regCompare.reset();
     regCompare.BC = valueOfBRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
+    clear_flag_h(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
@@ -173,6 +182,9 @@ TEST(Z80CPUModule_Alu, 05_DEC_B_VALUE_1) {
     regCompare.reset();
     regCompare.BC = valueOfBRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
+    clear_flag_h(regCompare);
     set_flag_z(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
@@ -208,6 +220,8 @@ TEST(Z80CPUModule_Alu, 05_DEC_B_VALUE_0) {
     regCompare.PC = valueOfPCRegisterAfter;
     set_flag_s(regCompare);
     set_flag_h(regCompare);
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
@@ -242,7 +256,9 @@ TEST(Z80CPUModule_Alu, 05_DEC_B_VALUE_R_REGISTER_0x80) {
     regCompare.reset();
     regCompare.BC = valueOfBRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
-    set_flag_s(regCompare);
+
+    clear_flag_n(regCompare);	
+	set_flag_s(regCompare);
     set_flag_h(regCompare);
     set_flag_pv(regCompare);
     regCompare.R = 0x80;
@@ -316,6 +332,11 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B) {
     regCompare.A = valueOfARegisterAfter;
     regCompare.B = valueOfBRegisterBefore;
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_z(regCompare);
+    clear_flag_n(regCompare);
+    clear_flag_h(regCompare);
+    clear_flag_pv(regCompare);
+    clear_flag_c(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
@@ -351,6 +372,10 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_OVERFLOW_1) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_z(regCompare);
+    clear_flag_n(regCompare);
+    clear_flag_h(regCompare);
+    clear_flag_c(regCompare);
     set_flag_pv(regCompare);
     set_flag_s(regCompare);
     regCompare.B = valueOfBRegisterBefore;
@@ -390,6 +415,8 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_OVERFLOW_2) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_h(regCompare);
     set_flag_pv(regCompare);
     set_flag_c(regCompare);
     set_flag_z(regCompare);
@@ -431,6 +458,8 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_CARRY_1) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
     set_flag_c(regCompare);
     set_flag_h(regCompare);
     set_flag_z(regCompare);
@@ -471,6 +500,8 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_CARRY_2) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
     set_flag_c(regCompare);
     set_flag_h(regCompare);
     set_flag_z(regCompare);
@@ -512,6 +543,8 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_CARRY_3) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
     set_flag_c(regCompare);
     set_flag_h(regCompare);
     set_flag_z(regCompare);
@@ -552,6 +585,8 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_CARRY_4) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_n(regCompare);
+    clear_flag_pv(regCompare);
     set_flag_c(regCompare);
     set_flag_h(regCompare);
     set_flag_z(regCompare);
@@ -592,6 +627,9 @@ TEST(Z80CPUModule_Alu, 80_ADD_A_B_CARRY_5) {
     Z80Registers regCompare;
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
+    clear_flag_h(regCompare);
+    clear_flag_n(regCompare);
+    clear_flag_s(regCompare);
     set_flag_c(regCompare);
     set_flag_pv(regCompare);
     set_flag_z(regCompare);
@@ -718,6 +756,12 @@ TEST(Z80CPUModule_Alu, 88_ADC_A_B) {
     regCompare.A = valueOfARegisterAfter;
     regCompare.B = valueOfBRegisterBefore;
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_n(regCompare); 
+    clear_flag_pv(regCompare);   
+    clear_flag_h(regCompare); 
+/*    clear_flag_s(regCompare); */
+    clear_flag_z(regCompare);
+    clear_flag_c(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
@@ -830,6 +874,11 @@ TEST(Z80CPUModule_Alu, A0_AND_B) {
     set_flag_h(regCompare);
     set_flag_pv(regCompare);
     set_flag_s(regCompare);
+
+    clear_flag_n(regCompare); 
+    clear_flag_z(regCompare);
+    clear_flag_c(regCompare);
+
     regCompare.A = valueOfARegisterAfter;
     regCompare.B = valueOfBRegisterBefore;
     regCompare.PC = valueOfPCRegisterAfter;
@@ -987,6 +1036,11 @@ TEST(Z80CPUModule_Alu, B8_CP_B_NOT_EQUAL) {
     regCompare.reset();
     set_flag_n(regCompare);
     set_flag_pv(regCompare); // todo check it
+
+    clear_flag_h(regCompare);
+	clear_flag_z(regCompare);
+    clear_flag_c(regCompare);
+
     regCompare.A = valueOfARegisterAfter;
     regCompare.B = valueOfBRegisterBefore;
     regCompare.PC = valueOfPCRegisterAfter;
@@ -1027,7 +1081,9 @@ TEST(Z80CPUModule_Alu, FE_CP_n) {
     set_flag_n(regCompare);
     set_flag_z(regCompare);
     set_flag_pv(regCompare); //todo check it
-    regCompare.A = valueOfARegisterAfter;
+
+    
+	regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
