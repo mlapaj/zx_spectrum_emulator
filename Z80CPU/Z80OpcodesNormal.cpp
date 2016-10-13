@@ -4,10 +4,10 @@
 
 #include "Z80Opcodes.hpp"
 
-    
+
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::NOP()
-{   
+{
    reg.PC++;
 }
 
@@ -37,7 +37,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::EXX()
     SWAP16(reg.BC,reg.secBC);
     SWAP16(reg.DE,reg.secDE);
     SWAP16(reg.HL,reg.secHL);
-    
+
     reg.PC+=1;
 }
 
@@ -117,7 +117,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::LD_addr_r16_A(UINT16 *
 
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::LD_r8_r8(UINT8 *src,UINT8 *dst)
-{    
+{
 	LD(*src,*dst);
 	reg.PC+=1;
 }
@@ -178,7 +178,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DAA()
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CPL()
 {
-    reg.A = ~reg.A;    
+    reg.A = ~reg.A;
     SET_FLAG_H();
     SET_FLAG_N();
     reg.PC+=1;
@@ -190,7 +190,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::SCF()
     CLR_FLAG_H();
     CLR_FLAG_N();
     reg.PC+=1;
-    
+
 }
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CCF()
@@ -198,7 +198,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CCF()
 	TEST_FLAG_C() ? SET_FLAG_H() : CLR_FLAG_H();
 	TEST_FLAG_C() ? CLR_FLAG_C() : SET_FLAG_C();
     CLR_FLAG_N();
-    reg.PC+=1;    
+    reg.PC+=1;
 }
 
 
@@ -236,7 +236,7 @@ void Z80Opcodes<tZ80Memory>::ADD_HL_r16(UINT16 *dst){
    HALF_CARRY16(reg.HL,*dst) ? SET_FLAG_H(): CLR_FLAG_H();
    reg.HL = c;
    CLR_FLAG_Z();
-   reg.PC+=1;    
+   reg.PC+=1;
 }
 
 
@@ -305,12 +305,12 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JP_cond_nn(condition c
         case P:{if (TEST_FLAG_S() == false){JP_nn();hasBeenJump=true;}break;}
         case M:{if (TEST_FLAG_S() == true){JP_nn();hasBeenJump=true;}break;}
     }
-            
+
     if (false == hasBeenJump)
     {
         reg.PC+=3;
     }
-    
+
 }
 
 
@@ -365,7 +365,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
         case P:{if (TEST_FLAG_S() == false){action=true;}break;}
         case M:{if (TEST_FLAG_S() == true){action=true;}break;}
     }
-    
+
     if (action)
     {
         reg.PC= mem.get16(reg.SP);
@@ -409,7 +409,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             reg.A =c;
             break;
         }
-        case ADC_A:{            
+        case ADC_A:{
             c = reg.A + *dst + (TEST_FLAG_C() ? 1 : 0);
             OVERFLOW8(reg.A,dst) ? SET_FLAG_PV() : CLR_FLAG_PV();
             (c<reg.A) ? SET_FLAG_C() : CLR_FLAG_C();
@@ -444,7 +444,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             (0 == bitCount(c) % 2) ? SET_FLAG_PV() : CLR_FLAG_PV();
             break;
         }
-        
+
         case XOR:{
             c = reg.A ^ *dst;
             reg.A = c;
@@ -473,11 +473,11 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             break;
         }
     }
-    
-    
+
+
     ((INT8)c<0)  ? SET_FLAG_S() : CLR_FLAG_Z();
     (c==0) ? SET_FLAG_Z() : CLR_FLAG_Z();
-    reg.PC+=1; 
+    reg.PC+=1;
 }
 
 

@@ -40,7 +40,7 @@ TEST(Z80CPUModule_Jump, C3_JP_nn) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
@@ -67,15 +67,17 @@ TEST(Z80CPUModule_Jump, CA_JP_Z_nn_NO) {
     Z80Registers regToSet;
     regToSet.reset();
 
+    clear_flag_z(regToSet);
     oZ80CPU->setRegisters(regToSet);
 
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_z(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -110,7 +112,7 @@ TEST(Z80CPUModule_Jump, CA_JP_Z_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_z(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -150,7 +152,7 @@ TEST(Z80CPUModule_Jump, D2_JP_NC_nn_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -187,7 +189,7 @@ TEST(Z80CPUModule_Jump, D2_JP_NC_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -214,14 +216,16 @@ TEST(Z80CPUModule_Jump, DA_JP_C_nn_NO) {
 
     Z80Registers regToSet;
     regToSet.reset();
+    set_flag_c(regToSet);
     oZ80CPU->setRegisters(regToSet);
 
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
+    set_flag_c(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -256,7 +260,7 @@ TEST(Z80CPUModule_Jump, DA_JP_C_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -292,7 +296,7 @@ TEST(Z80CPUModule_Jump, E2_JP_PO_nn_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_pv(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -320,6 +324,7 @@ TEST(Z80CPUModule_Jump, E2_JP_PO_nn_YES) {
     regIn.dumpFull();
 
     Z80Registers regToSet;
+    clear_flag_pv(regToSet);
     regToSet.reset();
 
 
@@ -329,9 +334,10 @@ TEST(Z80CPUModule_Jump, E2_JP_PO_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_pv(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -364,7 +370,7 @@ TEST(Z80CPUModule_Jump, EA_JP_PE_nn_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -401,7 +407,7 @@ TEST(Z80CPUModule_Jump, EA_JP_PE_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_pv(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -437,7 +443,7 @@ TEST(Z80CPUModule_Jump, F2_JP_P_nn_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_s(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -474,7 +480,7 @@ TEST(Z80CPUModule_Jump, F2_JP_P_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -509,7 +515,7 @@ TEST(Z80CPUModule_Jump, FA_JP_M_nn_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -546,7 +552,7 @@ TEST(Z80CPUModule_Jump, FA_JP_M_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_s(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -580,7 +586,7 @@ TEST(Z80CPUModule_Jump, C2_JP_NZ_nn_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
@@ -615,7 +621,7 @@ TEST(Z80CPUModule_Jump, C2_JP_NZ_nn_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_z(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -650,7 +656,7 @@ TEST(Z80CPUModule_Jump, E9_JP_addr_HL) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.HL = addressNumber;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -683,7 +689,7 @@ TEST(Z80CPUModule_Jump, 18_JR_n_127) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
@@ -713,7 +719,7 @@ TEST(Z80CPUModule_Jump, 18_JR_n_minus_128) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
@@ -734,17 +740,19 @@ TEST(Z80CPUModule_Jump, 20_JR_NZ_n_127_YES) {
     Z80CPUModule<MockZ80Memory> *oZ80CPU;
 
     oZ80CPU = new Z80CPUModule<MockZ80Memory>(&oMockZ80Memory);
+	Z80Registers regToSet;
 
-    Z80Registers regIn = oZ80CPU->getRegisters();
-    checkRegistersHaveDefaultValues(regIn);
-    regIn.dumpFull();
+	regToSet.reset();
+    clear_flag_z(regToSet);
+    oZ80CPU->setRegisters(regToSet);
 
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_z(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -778,7 +786,7 @@ TEST(Z80CPUModule_Jump, 20_JR_NZ_n_127_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_z(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -813,7 +821,7 @@ TEST(Z80CPUModule_Jump, 28_JR_Z_n_127_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_z(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -839,6 +847,10 @@ TEST(Z80CPUModule_Jump, 28_JR_Z_n_127_NO) {
     checkRegistersHaveDefaultValues(regIn);
 
 
+    Z80Registers regToSet;
+    regToSet.reset();
+    clear_flag_z(regToSet);
+    oZ80CPU->setRegisters(regToSet);
 
     regIn.dumpFull();
 
@@ -846,8 +858,9 @@ TEST(Z80CPUModule_Jump, 28_JR_Z_n_127_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_z(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -871,15 +884,20 @@ TEST(Z80CPUModule_Jump, 30_JR_NC_n_127_YES) {
     checkRegistersHaveDefaultValues(regIn);
     regIn.dumpFull();
 
+    Z80Registers regToSet;
+    regToSet.reset();
+    clear_flag_c(regToSet);
+    oZ80CPU->setRegisters(regToSet);
 
 
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_c(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -913,7 +931,7 @@ TEST(Z80CPUModule_Jump, 30_JR_NC_n_127_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -949,7 +967,7 @@ TEST(Z80CPUModule_Jump, 38_JR_C_n_127_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -977,14 +995,19 @@ TEST(Z80CPUModule_Jump, 38_JR_C_n_127_NO) {
     regIn.dumpFull();
 
 
+    Z80Registers regToSet;
+    regToSet.reset();
+    clear_flag_c(regToSet);
+    oZ80CPU->setRegisters(regToSet);
 
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
 
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_c(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -1023,7 +1046,7 @@ TEST(Z80CPUModule_Jump, 38_DJNZ_YES) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.B = valueOfBRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -1064,7 +1087,7 @@ TEST(Z80CPUModule_Jump, 38_DJNZ_NO) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.B = valueOfBRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);

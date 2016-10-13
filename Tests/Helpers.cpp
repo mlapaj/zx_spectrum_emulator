@@ -31,20 +31,20 @@ void checkRegisters(Z80Registers regs,Z80Registers regs2)
 
 void checkRegistersHaveDefaultValues(Z80Registers &regs)
 {
-     EXPECT_EQ(regs.AF,0);
-     EXPECT_EQ(regs.DE,0);
-     EXPECT_EQ(regs.BC,0);
-     EXPECT_EQ(regs.HL,0);
+     EXPECT_EQ(regs.AF,0xffff);
+     EXPECT_EQ(regs.DE,0xffff);
+     EXPECT_EQ(regs.BC,0xffff);
+     EXPECT_EQ(regs.HL,0xffff);
 
-     EXPECT_EQ(regs.secAF,0);
-     EXPECT_EQ(regs.secDE,0);
-     EXPECT_EQ(regs.secBC,0);
-     EXPECT_EQ(regs.secHL,0);
+     EXPECT_EQ(regs.secAF,0xffff);
+     EXPECT_EQ(regs.secDE,0xffff);
+     EXPECT_EQ(regs.secBC,0xffff);
+     EXPECT_EQ(regs.secHL,0xffff);
 
-     EXPECT_EQ(regs.SP,0);
+     EXPECT_EQ(regs.SP,0xffff);
      EXPECT_EQ(regs.PC,0);
-     EXPECT_EQ(regs.IX,0);
-     EXPECT_EQ(regs.IY,0);
+     EXPECT_EQ(regs.IX,0xffff);
+     EXPECT_EQ(regs.IY,0xffff);
 
      EXPECT_EQ(regs.R,0);
      EXPECT_EQ(regs.I,0);
@@ -89,3 +89,56 @@ void set_flag_s(Z80Registers &regs)
 {
     SET_BIT(regs.F,7);
 }
+
+
+
+
+
+
+//------------
+// clear flags
+//
+//
+
+
+void clear_flag_c(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,0);
+}
+
+void clear_flag_n(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,1);
+}
+
+void clear_flag_pv(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,2);
+}
+
+void clear_flag_p3(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,3);
+}
+
+void clear_flag_h(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,4);
+}
+
+void clear_flag_f5(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,5);
+}
+
+void clear_flag_z(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,6);
+}
+
+void clear_flag_s(Z80Registers &regs)
+{
+    CLR_BIT(regs.F,7);
+}
+
+

@@ -46,7 +46,7 @@ TEST(Z80CPUModule_ShiftRotate, 07_RLC_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -88,7 +88,7 @@ TEST(Z80CPUModule_ShiftRotate, 07_RLCA_CARRY_1) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     set_flag_c(regCompare);
@@ -133,7 +133,7 @@ TEST(Z80CPUModule_ShiftRotate, 0F_RRCA) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -174,7 +174,7 @@ TEST(Z80CPUModule_ShiftRotate, 0F_RRCA_CARRY_1) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     set_flag_c(regCompare);
@@ -223,7 +223,7 @@ TEST(Z80CPUModule_ShiftRotate, 17_RLA) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
@@ -273,7 +273,7 @@ TEST(Z80CPUModule_ShiftRotate, 1F_RRA) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -325,7 +325,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_07_RLC_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -379,7 +379,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RRC_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     set_flag_pv(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
@@ -434,7 +434,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_17_RL_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -492,7 +492,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RR_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -550,7 +550,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SLA_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -607,7 +607,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SRA_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -664,7 +664,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_37_SLL_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -721,7 +721,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_3F_SRL_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -776,7 +776,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_1) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -829,7 +829,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_0) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -878,7 +878,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_8F_RES_1_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     
@@ -927,7 +927,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_CF_SET_1_A) {
 
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.A = valueOfARegisterAfter;
     

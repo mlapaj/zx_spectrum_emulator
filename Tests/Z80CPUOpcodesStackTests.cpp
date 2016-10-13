@@ -44,7 +44,7 @@ TEST(Z80CPUModule_Stack, C5_PUSH_BC) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.BC = valueOfBCRegisterBefore;
     regCompare.PC = valueOfPCRegisterAfter;
     regCompare.SP = stackAddr - 2;
@@ -82,7 +82,7 @@ TEST(Z80CPUModule_Stack, C1_POP_BC) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.BC = valueOfBCRegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
     regCompare.SP = stackAddr + 2;

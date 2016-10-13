@@ -11,7 +11,7 @@ Z80Memory::Z80Memory(unsigned int size):logger(Logger::getLogger("Z80Memory"))
     memory = new UINT8[size];
     this->size = size;
     memset(memory,0 ,sizeof(UINT8)* size);
-    
+
 }
 
 Z80Memory::~Z80Memory()
@@ -28,8 +28,8 @@ long GetFileSize(std::string filename)
 
 int Z80Memory::LoadRom(string romName)
 {
-    
-    
+
+
     int retVal = 0;
     ifstream romFile;
     try
@@ -37,25 +37,25 @@ int Z80Memory::LoadRom(string romName)
         romFile.open(("roms/" + romName).c_str(), ios::in | ios::binary);
     }
     catch (...)
-    {   
+    {
         LOG4CXX_ERROR(logger,"could not open "<< romName <<" rom file");
         retVal = -1;
     }
-    
+
     if (romFile.good())
     {
-        int fileSize = GetFileSize("roms/" + romName);        
+        int fileSize = GetFileSize("roms/" + romName);
         if (fileSize>size)
         {
             return -2;
         }
     }
-    
+
     if (romFile.is_open())
-    {    
-        romFile.read(reinterpret_cast<char*>(memory) , size);    
+    {
+        romFile.read(reinterpret_cast<char*>(memory) , size);
         LOG4CXX_DEBUG(logger, "rom file read into memory");
-        romFile.close();    
+        romFile.close();
     }
     else
     {
@@ -75,12 +75,12 @@ UINT8 Z80Memory::get8(UINT16 address)
     }
     LOG4CXX_TRACE(logger,"read! memory address:"<<address<<" value:"<<static_cast<int>(memory[address]));
     return memory[address];
-    
+
 }
 
 UINT16 Z80Memory::get16(UINT16 address)
 {
-    if (address+1 >= size || address < 0)
+    if (address + 1 >= size || address < 0)
     {
         throw new runtime_error("out of range");
     }
@@ -94,7 +94,7 @@ UINT16 Z80Memory::get16(UINT16 address)
 UINT8 *Z80Memory::getAddrPtr8(UINT16 address)
 {
 	LOG4CXX_DEBUG(logger, "getAddr8 adres:" << address);
-    if (address > size || address < 0)
+    if (address >= size || address < 0)
     {
         throw new runtime_error("out of range");
     }
@@ -105,7 +105,7 @@ UINT8 *Z80Memory::getAddrPtr8(UINT16 address)
 
 UINT16 *Z80Memory::getAddrPtr16(UINT16 address)
 {
-    if (address >= size || address < 0)
+    if (address +1  >= size || address < 0)
     {
         throw new runtime_error("out of range");
     }

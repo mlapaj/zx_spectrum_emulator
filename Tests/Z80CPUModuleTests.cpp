@@ -28,7 +28,7 @@ TEST(Z80CPUModule, 00_NOP) {
     Z80Registers regOut = oZ80CPU->getRegisters();
     
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
@@ -60,7 +60,7 @@ TEST(Z80CPUModule, 2F_CPL) {
     Z80Registers regOut = oZ80CPU->getRegisters();
     
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     regCompare.PC = valueOfPCRegisterAfter;
     regCompare.A = valueOfARegisterAfter;
     set_flag_h(regCompare);
@@ -93,7 +93,7 @@ TEST(Z80CPUModule, 37_SCF) {
     Z80Registers regOut = oZ80CPU->getRegisters();
     
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     
@@ -124,7 +124,7 @@ TEST(Z80CPUModule, 3F_CCF_0_1) {
     Z80Registers regOut = oZ80CPU->getRegisters();
     
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.PC = valueOfPCRegisterAfter;
     set_flag_c(regCompare);    
@@ -155,7 +155,7 @@ TEST(Z80CPUModule, 3F_CCF_1_0) {
     Z80Registers regOut = oZ80CPU->getRegisters();
     
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     
     regCompare.PC = valueOfPCRegisterAfter;
     set_flag_h(regCompare);
@@ -193,7 +193,7 @@ TEST(Z80CPUModule, ED_44_NEG) {
     Z80Registers regOut = oZ80CPU->getRegisters();
 
     Z80Registers regCompare;
-    regCompare.zero();
+    regCompare.reset();
     set_flag_s(regCompare);
     set_flag_c(regCompare);
     set_flag_n(regCompare);

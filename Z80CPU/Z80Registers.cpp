@@ -18,17 +18,17 @@ Z80Registers::~Z80Registers() {
 void Z80Registers::reset() {
      LOG4CXX_DEBUG(logger, "registers reset");
      PC=0;
-     SP=0;
-     IX=0;
-     IY=0;
-     HL=0;
-     DE=0;
-     BC=0;
-     AF=0;
-     secHL=0;
-     secDE=0;
-     secBC=0;
-     secAF=0;
+     SP=0xffff;
+     IX=0xffff;
+     IY=0xffff;
+     HL=0xffff;
+     DE=0xffff;
+     BC=0xffff;
+     AF=0xffff;
+     secHL=0xffff;
+     secDE=0xffff;
+     secBC=0xffff;
+     secAF=0xffff;
      I=0;
      R=0;
      isHalt=false;
