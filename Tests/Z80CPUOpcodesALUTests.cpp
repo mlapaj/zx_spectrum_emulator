@@ -959,6 +959,12 @@ TEST(Z80CPUModule_Alu, A8_XOR_B) {
     regCompare.A = valueOfARegisterAfter;
     regCompare.B = valueOfBRegisterBefore;
     regCompare.PC = valueOfPCRegisterAfter;
+    clear_flag_n(regCompare); 
+    clear_flag_pv(regCompare); 
+    clear_flag_h(regCompare);  
+/*    clear_flag_s(regCompare); */
+    clear_flag_c(regCompare);
+    clear_flag_z(regCompare);
     checkRegisters(regOut,regCompare);
     delete oZ80CPU;
 
