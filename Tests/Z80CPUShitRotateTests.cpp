@@ -195,7 +195,7 @@ TEST(Z80CPUModule_ShiftRotate, 0F_RRCA_CARRY_1) {
 
 
 TEST(Z80CPUModule_ShiftRotate, 17_RLA) {
-    const UINT8 opcodeNumber = 0x17;    
+    const UINT8 opcodeNumber = 0x17;
     // 0x13 =
     const UINT8 valueOfARegisterBefore = 0b10010010;
     const UINT8 valueOfARegisterAfter  = 0b00100101;
@@ -207,7 +207,7 @@ TEST(Z80CPUModule_ShiftRotate, 17_RLA) {
     MockZ80Memory oMockZ80Memory;
 
     EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber));
-    
+
 
     Z80CPUModule<MockZ80Memory> *oZ80CPU;
 
@@ -220,13 +220,13 @@ TEST(Z80CPUModule_ShiftRotate, 17_RLA) {
     Z80Registers regToSet;
     regToSet.reset();
     regToSet.A = valueOfARegisterBefore;
-    
+
     // set registers
-    set_flag_h(regToSet);    
+    set_flag_h(regToSet);
     set_flag_n(regToSet);
     set_flag_c(regToSet);
-    
-    
+
+
     oZ80CPU->setRegisters(regToSet);
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
@@ -236,7 +236,7 @@ TEST(Z80CPUModule_ShiftRotate, 17_RLA) {
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     set_flag_c(regCompare);
-    clear_flag_h(regCompare);    
+    clear_flag_h(regCompare);
     clear_flag_n(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -247,7 +247,7 @@ TEST(Z80CPUModule_ShiftRotate, 17_RLA) {
 
 
 TEST(Z80CPUModule_ShiftRotate, 1F_RRA) {
-    const UINT8 opcodeNumber = 0x1F;    
+    const UINT8 opcodeNumber = 0x1F;
     // 0x13 =
     const UINT8 valueOfARegisterBefore = 0b01001000;
     const UINT8 valueOfARegisterAfter  = 0b10100100;
@@ -259,7 +259,7 @@ TEST(Z80CPUModule_ShiftRotate, 1F_RRA) {
     MockZ80Memory oMockZ80Memory;
 
     EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber));
-    
+
 
     Z80CPUModule<MockZ80Memory> *oZ80CPU;
 
@@ -272,13 +272,13 @@ TEST(Z80CPUModule_ShiftRotate, 1F_RRA) {
     Z80Registers regToSet;
     regToSet.reset();
     regToSet.A = valueOfARegisterBefore;
-    
+
     // set registers
-    set_flag_h(regToSet);    
+    set_flag_h(regToSet);
     set_flag_n(regToSet);
     set_flag_c(regToSet);
-    
-    
+
+
     oZ80CPU->setRegisters(regToSet);
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
@@ -288,7 +288,7 @@ TEST(Z80CPUModule_ShiftRotate, 1F_RRA) {
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
-    clear_flag_h(regCompare);    
+    clear_flag_h(regCompare);
     clear_flag_n(regCompare);
     clear_flag_c(regCompare);
     checkRegisters(regOut,regCompare);
@@ -324,7 +324,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_07_RLC_A) {
     Z80Registers regToSet;
     regToSet.reset();
     regToSet.A = valueOfARegisterBefore;
-    
+
     // set registers
     set_flag_h(regToSet);
     set_flag_c(regToSet);
@@ -333,7 +333,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_07_RLC_A) {
     set_flag_c(regToSet);
     set_flag_s(regToSet);
     set_flag_z(regToSet);
-    
+
     oZ80CPU->setRegisters(regToSet);
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
@@ -343,7 +343,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_07_RLC_A) {
     regCompare.reset();
     regCompare.A = valueOfARegisterAfter;
     regCompare.PC = valueOfPCRegisterAfter;
-    clear_flag_h(regCompare);    
+    clear_flag_h(regCompare);
     clear_flag_n(regCompare);
     clear_flag_c(regCompare);
     clear_flag_pv(regCompare);
@@ -358,7 +358,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_07_RLC_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_0F_RRC_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x0F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b00010010;
     const UINT16 valueOfARegisterAfter  = 0b00001001;
@@ -391,7 +391,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RRC_A) {
     set_flag_c(regToSet);
     set_flag_s(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -425,7 +425,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RRC_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_17_RL_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x17;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10001111;
     const UINT16 valueOfARegisterAfter  = 0b00011110;
@@ -450,33 +450,24 @@ TEST(Z80CPUModule_ShiftRotate, CB_17_RL_A) {
     Z80Registers regToSet;
     regToSet.reset();
     regToSet.A = valueOfARegisterBefore;
-    // set registers
-    set_flag_h(regToSet);
-    set_flag_pv(regToSet);
-    set_flag_n(regToSet);
-    set_flag_s(regToSet);
-    set_flag_z(regToSet);
-    
-
-    oZ80CPU->setRegisters(regToSet);
-
+	clear_flag_c(regToSet);
+	oZ80CPU->setRegisters(regToSet);
     oZ80CPU->executeStep();
     Z80Registers regOut = oZ80CPU->getRegisters();
 
 
     Z80Registers regCompare;
     regCompare.reset();
-    
-    regCompare.A = valueOfARegisterAfter;
-    //clear_flag_n(regCompare);
-    //clear_flag_h(regCompare);
-    //clear_flag_s(regCompare);
-    //clear_flag_z(regCompare);
-	//clear_flag_f5(regCompare);
-    //set_flag_c(regCompare);
-    //set_flag_pv(regCompare);
 
-    regCompare.PC = valueOfPCRegisterAfter;
+    regCompare.A = valueOfARegisterAfter;
+	clear_flag_s(regCompare);
+	clear_flag_z(regCompare);
+
+	clear_flag_n(regCompare);
+    clear_flag_h(regCompare);
+/*	clear_flag_pv(regCompare); */
+
+	regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
@@ -487,7 +478,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_17_RL_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_0F_RR_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x1F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b11011101;
     const UINT16 valueOfARegisterAfter  = 0b01101110;
@@ -511,15 +502,8 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RR_A) {
 
     Z80Registers regToSet;
     regToSet.reset();
+    clear_flag_c(regToSet);
     regToSet.A = valueOfARegisterBefore;
-    // set registers
-    set_flag_h(regToSet);
-    set_flag_pv(regToSet);
-    set_flag_n(regToSet);
-    set_flag_s(regToSet);
-    set_flag_z(regToSet);
-    
-
     oZ80CPU->setRegisters(regToSet);
 
     oZ80CPU->executeStep();
@@ -528,9 +512,14 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RR_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
-    regCompare.A = valueOfARegisterAfter;
 
+    regCompare.A = valueOfARegisterAfter;
+	clear_flag_s(regCompare);
+	clear_flag_z(regCompare);
+	clear_flag_n(regCompare);
+    clear_flag_h(regCompare);
+    clear_flag_h(regCompare);
+    clear_flag_pv(regCompare);
     set_flag_c(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
@@ -544,7 +533,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_0F_RR_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_27_SLA_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x27;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10110001;
     const UINT16 valueOfARegisterAfter  = 0b01100010;
@@ -575,7 +564,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SLA_A) {
     set_flag_n(regToSet);
     set_flag_s(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -585,9 +574,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SLA_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
+
     set_flag_c(regCompare);
 
 
@@ -610,7 +599,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SLA_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_27_SRA_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x2F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10111001;
     const UINT16 valueOfARegisterAfter  = 0b11011100;
@@ -641,7 +630,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SRA_A) {
     set_flag_n(regToSet);
     set_flag_s(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -651,9 +640,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SRA_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
+
     clear_flag_h(regCompare);
     clear_flag_n(regCompare);
 	clear_flag_z(regCompare);
@@ -671,7 +660,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_27_SRA_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_37_SLL_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x37;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10110001;
     const UINT16 valueOfARegisterAfter  = 0b01100011;
@@ -702,7 +691,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_37_SLL_A) {
     set_flag_n(regToSet);
     set_flag_s(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -712,9 +701,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_37_SLL_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
+
     clear_flag_h(regCompare);
     clear_flag_n(regCompare);
 	clear_flag_z(regCompare);
@@ -733,7 +722,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_37_SLL_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_3F_SRL_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x3F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10111001;
     const UINT16 valueOfARegisterAfter  = 0b01011100;
@@ -764,7 +753,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_3F_SRL_A) {
     set_flag_n(regToSet);
     set_flag_s(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -774,16 +763,16 @@ TEST(Z80CPUModule_ShiftRotate, CB_3F_SRL_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
+
     clear_flag_s(regCompare);
     clear_flag_n(regCompare);
     clear_flag_h(regCompare);
     clear_flag_z(regCompare);
 
     set_flag_c(regCompare);
-    set_flag_pv(regCompare);    
+    set_flag_pv(regCompare);
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
@@ -795,7 +784,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_3F_SRL_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_1) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x4F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10101010;
     const UINT16 valueOfARegisterAfter  = 0b10101010;
@@ -822,9 +811,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_1) {
     regToSet.A = valueOfARegisterBefore;
     // set registers
     set_flag_h(regToSet);
-    set_flag_n(regToSet);    
+    set_flag_n(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -834,9 +823,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_1) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
+
     clear_flag_n(regCompare);
     set_flag_z(regCompare);
     set_flag_h(regCompare);
@@ -849,7 +838,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_1) {
 TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_0) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x4F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10101000;
     const UINT16 valueOfARegisterAfter  = 0b10101000;
@@ -876,9 +865,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_0) {
     regToSet.A = valueOfARegisterBefore;
     // set registers
     set_flag_h(regToSet);
-    set_flag_n(regToSet);    
+    set_flag_n(regToSet);
     set_flag_z(regToSet);
-    
+
 
     oZ80CPU->setRegisters(regToSet);
 
@@ -888,9 +877,9 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_0) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
+
     clear_flag_z(regCompare);
     clear_flag_n(regCompare);
     set_flag_h(regCompare);
@@ -905,7 +894,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_4F_BIT_1_A_is_0) {
 TEST(Z80CPUModule_ShiftRotate, CB_8F_RES_1_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0x8F;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10101010;
     const UINT16 valueOfARegisterAfter  = 0b10101000;
@@ -939,10 +928,10 @@ TEST(Z80CPUModule_ShiftRotate, CB_8F_RES_1_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
-    
+
+
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 
@@ -954,7 +943,7 @@ TEST(Z80CPUModule_ShiftRotate, CB_8F_RES_1_A) {
 TEST(Z80CPUModule_ShiftRotate, CB_CF_SET_1_A) {
     const UINT8 opcodeNumber1 = 0xCB;
     const UINT8 opcodeNumber2 = 0xCF;
-    
+
     // 0x13 =
     const UINT16 valueOfARegisterBefore = 0b10101000;
     const UINT16 valueOfARegisterAfter  = 0b10101010;
@@ -988,10 +977,10 @@ TEST(Z80CPUModule_ShiftRotate, CB_CF_SET_1_A) {
 
     Z80Registers regCompare;
     regCompare.reset();
-    
+
     regCompare.A = valueOfARegisterAfter;
-    
-    
+
+
     regCompare.PC = valueOfPCRegisterAfter;
     checkRegisters(regOut,regCompare);
 

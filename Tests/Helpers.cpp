@@ -50,6 +50,7 @@ void checkRegistersHaveDefaultValues(Z80Registers &regs)
      EXPECT_EQ(regs.I,0);
 }
 
+
 void set_flag_c(Z80Registers &regs)
 {
     SET_BIT(regs.F,0);

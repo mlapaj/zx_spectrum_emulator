@@ -30,4 +30,5 @@ void clear_flag_h(Z80Registers &regs);
 void clear_flag_f5(Z80Registers &regs);
 void clear_flag_z(Z80Registers &regs);
 void clear_flag_s(Z80Registers &regs);
+void printFlags(UINT8 F);
 #endif /* HELPERS_HPP_ */

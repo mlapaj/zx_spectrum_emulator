@@ -554,6 +554,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 									}
 								case 1:
 									{
+										LOG4CXX_DEBUG(logger,"CB prefix");
 										parseCBPrefixOpcode();
 										break;
 									}

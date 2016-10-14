@@ -72,7 +72,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::LD_r16_nn(UINT16 *dst)
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::LD_r8_n(UINT8 *dst)
 {
-	//LD(*dst,mem.get8(reg.PC+1));
+	LD(*dst,mem.get8(reg.PC+1));
 	reg.PC+=2;
 }
 
@@ -423,7 +423,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             (c>reg.A) ? SET_FLAG_C() : CLR_FLAG_C();
             OVERFLOW8(reg.A,dst) ? SET_FLAG_PV() : CLR_FLAG_PV();
             HALF_BORROW8(reg.A,*dst)  ? SET_FLAG_H() : CLR_FLAG_H();
-            CLR_FLAG_N();
+            SET_FLAG_N();
             reg.A = c;
             break;}
         case SBC_A:{
@@ -431,7 +431,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             (c>reg.A) ? SET_FLAG_C() : CLR_FLAG_C();
             OVERFLOW8(reg.A,dst) ? SET_FLAG_PV() : CLR_FLAG_PV();
             HALF_BORROW8(reg.A,*dst) ? SET_FLAG_H() : CLR_FLAG_H();
-            CLR_FLAG_N();
+            SET_FLAG_N();
             reg.A = c;
             break;
         }
@@ -470,12 +470,13 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             //BORROW8(reg.A,*dst,c) ? SET_FLAG_C() : CLR_FLAG_C();
             HALF_BORROW8(reg.A,*dst) ? SET_FLAG_H() : CLR_FLAG_H();
             SET_FLAG_N();
+			LOG4CXX_DEBUG(logger,"!!!TEST!!!! c" << (int) c);
             break;
         }
     }
 
 
-    ((INT8)c<0)  ? SET_FLAG_S() : CLR_FLAG_Z();
+    ((INT8)c<0)  ? SET_FLAG_S() : CLR_FLAG_S();
     (c==0) ? SET_FLAG_Z() : CLR_FLAG_Z();
     reg.PC+=1;
 }
