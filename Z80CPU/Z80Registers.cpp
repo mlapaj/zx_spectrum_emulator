@@ -59,6 +59,7 @@ void Z80Registers::dump()
     LOG4CXX_DEBUG(logger,std::hex << std::uppercase << "dump PC:"<<PC<<" SP:"<<SP<<" IX:"<<IX<<" IY:"<<IY
                   <<" HL:"<<HL<<" DE:"<<DE<<" BC:"<<BC<<" AF:"<<AF
                   <<" secHL:"<<secHL<<" secDE:"<<secDE<<" secBC:"<<secBC<<" secAF:"<<secAF<<" I:"<<static_cast<int>(I)<<" R:"<<static_cast<int>(R));
+	LOG4CXX_DEBUG(logger,"Flags Z(" << TEST_BIT(F,6) << ")");
 }
 
 void Z80Registers::dumpFull()

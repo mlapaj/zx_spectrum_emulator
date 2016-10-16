@@ -257,7 +257,9 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DJNZ()
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JR()
 {
-    reg.PC+= (INT8) mem.get8(reg.PC+1);
+	INT8 dst = mem.get8(reg.PC+1);
+    reg.PC+= dst + 2;
+	LOG4CXX_DEBUG(logger,"jump dst" << (int) dst);
 }
 
 
@@ -285,6 +287,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JR_cond_nn(condition c
         case P:{if (TEST_FLAG_S() == false){JR();hasBeenJump=true;}break;}
         case M:{if (TEST_FLAG_S() == true){JR();hasBeenJump=true;}break;}
     }
+	LOG4CXX_DEBUG(logger,"cond jump has been" << hasBeenJump);
 	if (false == hasBeenJump)
 	{
 		reg.PC+= 2;
@@ -508,13 +511,13 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::PUSH16(UINT16 *dst)
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::OUT_addr_n_A()
 {
     // !!!!!!!!!!! TODO !!!!!!!
-    reg.PC+=1;
+    reg.PC+=2;
 }
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::IN_A_addr_n()
 {
     // !!!!!!!!!!! TODO !!!!!!!
-    reg.PC+=1;
+    reg.PC+=2;
 }
 
 

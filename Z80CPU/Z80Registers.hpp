@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Z80Registers.hpp
  * Author: lapajmar
  *
@@ -36,19 +36,19 @@ public:
         struct
         {
 #if BigEndian == 1
-            UINT8 H,L;            
+            UINT8 H,L;
 #else
             UINT8 L,H;
 #endif
-            
+
         };
     };
-        
+
     union
     {
         UINT16 DE;
         struct
-        {                
+        {
 #if BigEndian == 1
             UINT8 D,E;
 #else
@@ -68,7 +68,7 @@ public:
             UINT8 C,B;
 #endif
         };
-    };        
+    };
 
     union
     {
@@ -81,8 +81,8 @@ public:
             UINT8 F,A;
 #endif
         };
-    };                
-        
+    };
+
     union
     {
         UINT16 secHL;
@@ -120,7 +120,7 @@ public:
             UINT8 secC,secB;
 #endif
         };
-    };        
+    };
 
     union
     {
@@ -133,12 +133,12 @@ public:
             UINT8 secF,secA;
 #endif
         };
-    }; 
+    };
 
 #define SET_BIT(p,n) ((p) |= (1 << (n)))
 #define CLR_BIT(p,n) ((p) &= ~(1 << (n)))
 #define TEST_BIT(Var, Pos)  (((Var) & (1 << (Pos))) > 0)
-    
+
 #define SET_FLAG_S() SET_BIT(reg.F,7)
 #define CLR_FLAG_S() CLR_BIT(reg.F,7)
 #define TEST_FLAG_S() TEST_BIT(reg.F,7)
@@ -150,7 +150,7 @@ public:
 #define SET_FLAG_F5() SET_BIT(reg.F,5)
 #define CLR_FLAG_F5() CLR_BIT(reg.F,5)
 #define TEST_FLAG_F5() TEST_BIT(reg.F,5)
-    
+
 #define SET_FLAG_H() SET_BIT(reg.F,4)
 #define CLR_FLAG_H() CLR_BIT(reg.F,4)
 #define TEST_FLAG_H() TEST_BIT(reg.F,4)
@@ -162,16 +162,16 @@ public:
 #define SET_FLAG_PV() SET_BIT(reg.F,2)
 #define CLR_FLAG_PV() CLR_BIT(reg.F,2)
 #define TEST_FLAG_PV() TEST_BIT(reg.F,2)
-    
+
 #define SET_FLAG_N() SET_BIT(reg.F,1)
 #define CLR_FLAG_N() CLR_BIT(reg.F,1)
 #define TEST_FLAG_N() TEST_BIT(reg.F,1)
-    
+
 #define SET_FLAG_C() SET_BIT(reg.F,0)
 #define CLR_FLAG_C() CLR_BIT(reg.F,0)
 #define TEST_FLAG_C() TEST_BIT(reg.F,0)
 
-/*    
+/*
     struct sZ80Flags
     {
         bool S;
@@ -183,14 +183,14 @@ public:
         bool N;
         bool C;
     };
-*/    
+*/
     UINT8 I;
     UINT8 R;
-        
+
 //    struct sZ80Flags flags;
     bool isHalt;
-    
-    Z80Registers();    
+
+    Z80Registers();
     void reset();
     void zero();
     void dump();
