@@ -35,7 +35,7 @@ public:
         UINT16 HL;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 H,L;
 #else
             UINT8 L,H;
@@ -49,7 +49,7 @@ public:
         UINT16 DE;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 D,E;
 #else
             UINT8 E,D;
@@ -62,7 +62,7 @@ public:
         UINT16 BC;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 B,C;
 #else
             UINT8 C,B;
@@ -75,7 +75,7 @@ public:
         UINT16 AF;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 A,F;
 #else
             UINT8 F,A;
@@ -88,7 +88,7 @@ public:
         UINT16 secHL;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 secH,secL;
 #else
             UINT8 secL,secH;
@@ -101,7 +101,7 @@ public:
         UINT16 secDE;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 secD,secE;
 #else
             UINT8 secE,secD;
@@ -114,7 +114,7 @@ public:
         UINT16 secBC;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 secB,secC;
 #else
             UINT8 secC,secB;
@@ -127,7 +127,7 @@ public:
         UINT16 secAF;
         struct
         {
-#if BigEndian == 1
+#if ZXBigEndian == 1
             UINT8 secA,secF;
 #else
             UINT8 secF,secA;

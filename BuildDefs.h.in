@@ -1,4 +1,4 @@
 // the configured options and settings for Tutorial
 #define Emulator_VERSION_MAJOR @Emulator_VERSION_MAJOR@
 #define Emulator_VERSION_MINOR @Emulator_VERSION_MINOR@
-#define BigEndian @BigEndian@
+#define ZXBigEndian @BigEndian@
