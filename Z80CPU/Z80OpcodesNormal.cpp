@@ -259,7 +259,6 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JR()
 {
 	INT8 dst = mem.get8(reg.PC+1);
     reg.PC+= dst + 2;
-	LOG4CXX_DEBUG(logger,"jump dst" << (int) dst);
 }
 
 
@@ -287,7 +286,6 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JR_cond_nn(condition c
         case P:{if (TEST_FLAG_S() == false){JR();hasBeenJump=true;}break;}
         case M:{if (TEST_FLAG_S() == true){JR();hasBeenJump=true;}break;}
     }
-	LOG4CXX_DEBUG(logger,"cond jump has been" << hasBeenJump);
 	if (false == hasBeenJump)
 	{
 		reg.PC+= 2;
@@ -473,7 +471,6 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU(aluOperation operT
             //BORROW8(reg.A,*dst,c) ? SET_FLAG_C() : CLR_FLAG_C();
             HALF_BORROW8(reg.A,*dst) ? SET_FLAG_H() : CLR_FLAG_H();
             SET_FLAG_N();
-			LOG4CXX_DEBUG(logger,"!!!TEST!!!! c" << (int) c);
             break;
         }
     }

@@ -63,7 +63,6 @@ template<typename tZ80Memory>
 inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
 {
 	UINT8 *dst;
-	LOG4CXX_DEBUG(logger,"parseGet8BRegisterPair: " << y);
 	switch (y)
 	{
 		case 0: {dst=&reg.B;break;}
@@ -287,7 +286,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
     x = (opcode >> 6) & 0b11;
     p = y >> 1 & 0b11;
     q = y & 0b1;
-	LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z));
+//	LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z));
 	switch (x)
 	{
 		case 0:
@@ -433,7 +432,6 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 6:
 						{
-							LOG4CXX_DEBUG(logger,"!!!!!!!");
 							UINT8 *dst;
 							dst = parseGet8BRegisterPair(y);
 							LD_r8_n(dst);

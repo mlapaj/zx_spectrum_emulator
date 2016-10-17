@@ -101,10 +101,10 @@ public:
     inline void executeOpcode()
     {
         UINT8 opcode = mem.get8(reg.PC);
-        LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
+//        LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
         parseNormalOpcode(opcode);
-        opcodeInfo opInfo = debugNormalOpcode(opcode);
-        cout << "\n" + opInfo.mnemonic + "\n";
+//        opcodeInfo opInfo = debugNormalOpcode(opcode);
+//        cout << "\n" + opInfo.mnemonic + "\n";
     }
 private:    
     Z80Registers &reg;

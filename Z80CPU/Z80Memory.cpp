@@ -73,7 +73,7 @@ UINT8 Z80Memory::get8(UINT16 address)
     {
         throw new runtime_error("out of range");
     }
-    LOG4CXX_TRACE(logger,"read! memory address:"<<address<<" value:"<<static_cast<int>(memory[address]));
+//    LOG4CXX_TRACE(logger,"read! memory address:"<<address<<" value:"<<static_cast<int>(memory[address]));
     return memory[address];
 
 }
@@ -85,7 +85,7 @@ UINT16 Z80Memory::get16(UINT16 address)
         throw new runtime_error("out of range");
     }
 
-    LOG4CXX_TRACE(logger,"read! memory address:"<<address<<" value:"<<static_cast<int>(memory[address]));
+//    LOG4CXX_TRACE(logger,"read! memory address:"<<address<<" value:"<<static_cast<int>(memory[address]));
     bytes[0] = memory[address];
     bytes[1] = memory[address+1];
     return fullWord;
@@ -93,12 +93,12 @@ UINT16 Z80Memory::get16(UINT16 address)
 
 UINT8 *Z80Memory::getAddrPtr8(UINT16 address)
 {
-	LOG4CXX_DEBUG(logger, "getAddr8 adres:" << address);
+//	LOG4CXX_DEBUG(logger, "getAddr8 adres:" << address);
     if (address >= size || address < 0)
     {
         throw new runtime_error("out of range");
     }
-	LOG4CXX_DEBUG(logger,"zwracam pamiec, adres" << address);
+//	LOG4CXX_DEBUG(logger,"zwracam pamiec, adres" << address);
     return reinterpret_cast<UINT8*>(&memory[address]);
 }
 
@@ -115,4 +115,14 @@ UINT16 *Z80Memory::getAddrPtr16(UINT16 address)
 void Z80Memory::clearMemory()
 {
     memset(memory,0 ,sizeof(UINT8)* size);
+}
+
+void Z80Memory::dump(string fileName)
+{
+    ofstream dumpFile;
+	LOG4CXX_DEBUG(logger, "dump memory to file " << fileName);
+	dumpFile.open(fileName.c_str(), ios::out | ios::binary);
+	dumpFile.write(reinterpret_cast<char*>(memory) , size);
+	dumpFile.close();
+
 }

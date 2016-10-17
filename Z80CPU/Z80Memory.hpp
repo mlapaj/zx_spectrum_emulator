@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Z80_Memory.h
  * Author: lapajmar
  *
@@ -30,14 +30,15 @@ private:
     UINT16 fullWord;
     UINT8 bytes[ sizeof( UINT16 ) ];
     };
-public:    
+public:
     UINT8 get8(UINT16 address);
     UINT16 get16(UINT16 address);
     UINT8 *getAddrPtr8(UINT16 address);
     UINT16 *getAddrPtr16(UINT16 address);
-    Z80Memory(unsigned int size);        
+    Z80Memory(unsigned int size);
     ~Z80Memory();
     int LoadRom(string romName);
+	void dump(string fileName);
     void clearMemory();
 };
 
