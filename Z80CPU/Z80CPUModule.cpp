@@ -31,14 +31,24 @@ Z80CPUModule<tZ80Memory>::~Z80CPUModule() {
 }
 template<typename tZ80Memory>
 void Z80CPUModule<tZ80Memory>::cpuThread() {
-    // testing purposes
-    // oZ80Memory->clearMemory();
     LOG4CXX_DEBUG(logger, "started main cpu thread");
-    long i=0;
-    while (i<95535)
+    long long i=0;
+	int debug = 0;
+    while (i<955350)
     {
-//		oZ80Registers->dump();
+		if ((oZ80Registers->PC == 0x11DC) && (oZ80Registers->HL == 0x4001)){
+			LOG4CXX_DEBUG(logger,"RAM_FILL OK.");
+			oZ80Opcodes->debug = 1;
+			debug = 1;
+		}
+		if (oZ80Registers->PC == 0x1230)
+		{
+			break;
+		}
         oZ80Opcodes->executeOpcode();
+		if (debug){
+			oZ80Registers->dump();
+		}
         i++;
     }
 }

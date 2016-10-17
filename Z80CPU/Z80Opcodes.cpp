@@ -13,6 +13,7 @@ template<typename tZ80Memory>
 Z80Opcodes<tZ80Memory>::Z80Opcodes(tZ80Memory &cZ80Memory,Z80Registers &cZ80Registers):
 reg(cZ80Registers),mem(cZ80Memory),logger(Logger::getLogger("Z80Opcodes")){
     LOG4CXX_DEBUG(logger, "class created");
+	debug = 0;
 }
 template<typename tZ80Memory>
 Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
@@ -859,19 +860,18 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
 
 			break;
 		}
+		case 2:
+		{
+			if (z<3 && y > 4)
+			{
+				blockOperationType oper;
+				oper = parseBlockOperation(y,z);
+				BLI(oper);
+			}
+		}
+
+
     }
-
-
-/*
-		case 1:
-        {
-            if (z<3 && y > 4)
-            {
-                blockOperationType oper;
-                oper = parseBlockOperation(y,z);
-                BLI(oper);
-            }
-*/
 }
 
 

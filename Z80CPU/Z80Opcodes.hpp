@@ -93,6 +93,7 @@ enum blockOperationType
 template<typename tZ80Memory>
 class Z80Opcodes {
 public:
+	int debug;
     // typedef void (Z80Opcodes::*Z80Instruction)();
     Z80Opcodes(tZ80Memory &cZ80Memory,Z80Registers &cZ80Registers);
     virtual ~Z80Opcodes();
@@ -101,10 +102,14 @@ public:
     inline void executeOpcode()
     {
         UINT8 opcode = mem.get8(reg.PC);
-//        LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
-        parseNormalOpcode(opcode);
-//        opcodeInfo opInfo = debugNormalOpcode(opcode);
-//        cout << "\n" + opInfo.mnemonic + "\n";
+		if (debug){
+			LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
+		}
+		parseNormalOpcode(opcode);
+		if (debug){
+			opcodeInfo opInfo = debugNormalOpcode(opcode);
+			cout << "\n" + opInfo.mnemonic + "\n";
+		}
     }
 private:    
     Z80Registers &reg;

@@ -38,8 +38,8 @@ int main(int argc, char** argv) {
     oZ80Memory->LoadRom(ZXSpectrumRomName);
     Z80CPUModule<Z80Memory> oZ80CPU(oZ80Memory);
 
-	//oZ80CPU.cpuThread();
-	oZ80Memory->load("test.scr",0x4000,0x1B00);
+	oZ80CPU.cpuThread();
+/*	oZ80Memory->load("test.scr",0x4000,0x1B00); */
 /*	oZ80Memory->dump("dump.dat"); */
 	QApplication app(argc, argv);
 	MainWindow oMainWindow(oZ80Memory);
