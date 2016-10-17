@@ -17,23 +17,20 @@ class MainWindow;
 
 const int zx_width = 256;
 const int zx_height = 192;
+const QRgb zx_col_0[8] =
+{
+	0x000000,
+	0x0000D7,
+	0xD70000,
+	0xD700D7,
+	0x00D700,
+	0x00D7D7,
+	0xD7D700,
+	0xD7D7D7
+};
 
-const long black_0 =    0x000000;
-const long black_1 =    0x000000;
-const long blue_0 =     0x0000D7;
-const long blue_1 =     0x0000FF;
-const long red_0 =      0xD70000;
-const long red_1 =      0xFF0000;
-const long magneta_0 =  0xD700D7;
-const long  magneta_1 =  0xFF00FF;
-const long green_0 =    0x00D700;
-const long green_1 =    0x00FF00;
-const long cyan_0 =     0x00D7D7;
-const long cyan_1 =     0x00FFFF;
-const long yellow_0 =   0xD7D700;
-const long yellow_1 =   0xFFFF00;
-const long white_0 =    0xD7D7D7;
-const long white_1 =    0xFFFFFF;
+const long colorData =  0x4000;
+const long attribData = 0x5800;
 
 class MainWindow : public QMainWindow
 {

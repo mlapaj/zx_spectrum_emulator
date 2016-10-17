@@ -67,6 +67,47 @@ int Z80Memory::LoadRom(string romName)
 }
 
 
+
+int Z80Memory::load(string romName,int offset,int size)
+{
+
+    int retVal = 0;
+    ifstream romFile;
+    try
+    {
+        romFile.open((romName).c_str(), ios::in | ios::binary);
+    }
+    catch (...)
+    {
+        LOG4CXX_ERROR(logger,"could not open "<< romName <<" rom file");
+        retVal = -1;
+    }
+
+    if (romFile.good())
+    {
+        int fileSize = GetFileSize("roms/" + romName);
+        if (fileSize>size)
+        {
+            return -2;
+        }
+    }
+
+    if (romFile.is_open())
+    {
+        romFile.read(reinterpret_cast<char*>(memory+offset) , size);
+        LOG4CXX_DEBUG(logger, "rom file read into memory");
+        romFile.close();
+    }
+    else
+    {
+        LOG4CXX_ERROR(logger,"could not open "<< romName <<" rom file");
+        retVal = -1;
+    }
+
+    return retVal;
+}
+
+
 UINT8 Z80Memory::get8(UINT16 address)
 {
     if (address >= size || address < 0)

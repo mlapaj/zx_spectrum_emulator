@@ -35,7 +35,7 @@ void Z80CPUModule<tZ80Memory>::cpuThread() {
     // oZ80Memory->clearMemory();
     LOG4CXX_DEBUG(logger, "started main cpu thread");
     long i=0;
-    while (i<9553500)
+    while (i<95535)
     {
 //		oZ80Registers->dump();
         oZ80Opcodes->executeOpcode();

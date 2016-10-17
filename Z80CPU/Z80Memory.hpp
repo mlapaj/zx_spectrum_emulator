@@ -38,6 +38,7 @@ public:
     Z80Memory(unsigned int size);
     ~Z80Memory();
     int LoadRom(string romName);
+    int load(string romName,int offset,int size);
 	void dump(string fileName);
     void clearMemory();
 };
