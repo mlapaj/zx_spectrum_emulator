@@ -185,6 +185,7 @@ public:
     };
 */
     UINT8 I;
+	UINT8 IM; /*interrupt mode*/
     UINT8 R;
 
 //    struct sZ80Flags flags;

@@ -25,7 +25,7 @@ Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
 template<typename tZ80Memory>
 inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 {
-	UINT16 *dst;
+	UINT16 *dst = 0;
 	switch (p)
 	{
 		case 0: {dst=&reg.BC; break;}
@@ -43,7 +43,7 @@ inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 template<typename tZ80Memory>
 inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair2(int p)
 {
-	UINT16 *dst;
+	UINT16 *dst = 0;
 	switch (p)
 	{
 		case 0: {dst=&reg.BC; break;}
@@ -63,7 +63,7 @@ inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair2(int p)
 template<typename tZ80Memory>
 inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
 {
-	UINT8 *dst;
+	UINT8 *dst = 0;
 	switch (y)
 	{
 		case 0: {dst=&reg.B;break;}
@@ -318,7 +318,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 1:
 						{
-							UINT16 *dst;
+							UINT16 *dst = 0;
 							dst = parseGet16BRegisterPair1(p);
 							switch (q)
 							{
@@ -330,8 +330,8 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 2:
 						{
-							UINT16* dst16;
-							UINT8* dst8;
+							UINT16* dst16 = 0;
+							UINT8* dst8 = 0;
 							switch (q)
 							{
 								case 0:
@@ -404,7 +404,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 3:
 						{
-							UINT16 *dst;
+							UINT16 *dst = 0;
 							dst = parseGet16BRegisterPair1(p);
 							switch (q)
 							{
@@ -417,7 +417,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 4:
 						{
-							UINT8 *dst;
+							UINT8 *dst = 0;
 							dst = parseGet8BRegisterPair(y);
 							INC_r8(dst);
 							break;
@@ -425,7 +425,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 5:
 						{
-							UINT8 *dst;
+							UINT8 *dst = 0;
 							dst = parseGet8BRegisterPair(y);
 							DEC_r8(dst);
 							break;
@@ -433,7 +433,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						// completed
 					case 6:
 						{
-							UINT8 *dst;
+							UINT8 *dst = 0;
 							dst = parseGet8BRegisterPair(y);
 							LD_r8_n(dst);
 							break;
@@ -468,7 +468,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 				}
 				else
 				{
-					UINT8 *src,*dst;
+					UINT8 *src,*dst = 0;
 					src = parseGet8BRegisterPair(y);
 					dst = parseGet8BRegisterPair(z);
 					LD_r8_r8(src,dst);
@@ -501,7 +501,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 							{
 								case 0:
 									{
-										UINT16 *dst;
+										UINT16 *dst = 0;
 										dst = parseGet16BRegisterPair1(p);
 										POP16(dst);
 										break;
@@ -602,7 +602,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 							{
 								case 0:
 									{
-										UINT16 *dst;
+										UINT16 *dst = 0;
 										dst = parseGet16BRegisterPair2(p);
 										PUSH16(dst);
 										break;
@@ -623,7 +623,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 												}
 											case 2:
 												{
-													parseEDPrefixOpcode();
+													 parseEDPrefixOpcode();
 													break;
 												}
 											case 3:
@@ -676,28 +676,28 @@ void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
         case 0:
         {
             rotOperation oper = parseROTOperation(y);
-            UINT8 *dst;
+            UINT8 *dst = 0;
             dst = parseGet8BRegisterPair(z);
             ROT_r8(oper,dst);
             break;
         }
         case 1:
         {
-            UINT8 *dst;
+            UINT8 *dst = 0;
             dst = parseGet8BRegisterPair(z);
             BIT(y,dst);
             break;
         }
         case 2:
         {
-            UINT8 *dst;
+            UINT8 *dst = 0;
             dst = parseGet8BRegisterPair(z);
             RES(y,dst);
             break;
         }
         case 3:
         {
-            UINT8 *dst;
+            UINT8 *dst = 0;
             dst = parseGet8BRegisterPair(z);
             SET(y,dst);
             break;
@@ -718,6 +718,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
     q = y & 0b1;
     reg.PC+=1; // additional ED prefix
 
+	LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
 	switch (x)
 	{
 		case 1:

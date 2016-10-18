@@ -30,6 +30,7 @@ void Z80Registers::reset() {
      secBC=0xffff;
      secAF=0xffff;
      I=0;
+	 IM=0; /* interrupt mode */
      R=0;
      isHalt=false;
 }
@@ -49,6 +50,7 @@ void Z80Registers::zero() {
      secBC=0;
      secAF=0;
      I=0;
+	 IM=0; /* interrupt mode */
      R=0;
      isHalt=false;     
 }

@@ -7,14 +7,14 @@
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IN_r8_addr_C(UINT8 *dst)
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "in stub");
 }
 
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IN_addr_C()
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "in c stub");
 }
 
 
@@ -22,26 +22,26 @@ void Z80Opcodes<tZ80Memory>::IN_addr_C()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::OUT_addr_C_r8(UINT8 *dst)
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "out c stub");
 }
 
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::OUT_addr_C()
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "out addr c stub");
 }
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::SBC_HL_r16(UINT16 *dst)
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "sbc hd r 16 stub");
 }
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::ADC_HL_r16(UINT16 *dst)
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "adc hl r16 stub");
 }
 
 template<typename tZ80Memory>
@@ -61,25 +61,26 @@ void Z80Opcodes<tZ80Memory>::NEG()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::RETN()
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "retn stub");
 }
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::RETI()
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "reti stub");
 }
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IM(interruptMode mode)
 {
-    LOG4CXX_WARN(logger, "stub");
+/*	reg.IM = mode; */
+/*	reg.PC=reg.PC+1; */
 }
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::RRD()
 {
-    LOG4CXX_WARN(logger, "stub");
+    LOG4CXX_WARN(logger, "rrd stub");
 }
 
 
@@ -92,7 +93,14 @@ void Z80Opcodes<tZ80Memory>::RLD()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 {
-    LOG4CXX_WARN(logger, "stub");
+	switch (operType){
+		case LDDR:
+			LOG4CXX_DEBUG(logger,"LDDR");
+			break;
+		default:
+			LOG4CXX_WARN(logger, "blk stub");
+			break;
+	}
 }
 
 
