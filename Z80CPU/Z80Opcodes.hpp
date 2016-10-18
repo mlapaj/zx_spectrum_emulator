@@ -149,6 +149,7 @@ private:
 
     inline interruptMode parseInterruptModes(int y);
     inline blockOperationType parseBlockOperation(int y,int z);
+    inline string debugBlockOperation(int y,int z);
     void loadNormalInstructions();
 
     void NOP();

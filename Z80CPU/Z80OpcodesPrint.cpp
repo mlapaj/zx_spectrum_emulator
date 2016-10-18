@@ -182,6 +182,151 @@ defaut: {
 	return dst;
 }
 
+
+
+
+template<typename tZ80Memory>
+inline string Z80Opcodes<tZ80Memory>::debugROTOperation(int y)
+{
+    string rot;
+	switch (y)
+	{
+            case 0: { rot = "RLC";break;}
+            case 1: { rot = "RRC";break;}
+            case 2: { rot = "RL";break;}
+            case 3: { rot = "RR";break;}
+            case 4: { rot = "SLA";break;}
+            case 5: { rot = "SRA";break;}
+            case 6: { rot = "SLL";break;}
+            case 7: { rot = "SRL";break;}
+	}
+    return rot;
+}
+
+
+
+template<typename tZ80Memory>
+inline string Z80Opcodes<tZ80Memory>::debugBlockOperation(int y,int z)
+{
+	string retVal;
+    blockOperationType out;
+    switch (y)
+    {
+        case 4:
+        {
+            switch (z)
+            {
+                case 0:
+                {
+                    retVal = "LDI";
+                    break;
+                }
+                case 1:
+                {
+                    retVal = "CPI";
+                    break;
+                }
+                case 2:
+                {
+                    retVal = "INI";
+                    break;
+                }
+                case 3:
+                {
+                    retVal = "OUTI";
+                    break;
+                }
+            }
+            break;
+        }
+        case 5:
+        {
+            switch (z)
+            {
+                case 0:
+                {
+                    retVal = "LDD";
+                    break;
+                }
+                case 1:
+                {
+                    retVal = "CPD";
+                    break;
+                }
+                case 2:
+                {
+                    retVal = "IND";
+                    break;
+                }
+                case 3:
+                {
+                    retVal = "OUTD";
+                    break;
+                }
+            }
+
+            break;
+        }
+        case 6:
+        {
+            switch (z)
+            {
+                case 0:
+                {
+                    retVal = "LDIR";
+                    break;
+                }
+                case 1:
+                {
+                    retVal = "CPIR";
+                    break;
+                }
+                case 2:
+                {
+                    retVal = "INIR";
+                    break;
+                }
+                case 3:
+                {
+                    retVal = "OUTIR";
+                    break;
+                }
+            }
+            break;
+        }
+        case 7:
+        {
+            switch (z)
+            {
+                case 0:
+                {
+                    retVal = "LDDR";
+                    break;
+                }
+                case 1:
+                {
+                    retVal = "CPDR";
+                    break;
+                }
+                case 2:
+                {
+                    retVal = "INDR";
+                    break;
+                }
+                case 3:
+                {
+                    retVal = "OUTDR";
+                    break;
+                }
+            }
+            break;
+        }
+    }
+	return retVal;
+}
+
+
+
 template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 	opcodeInfo retVal;
@@ -583,23 +728,6 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 
 
 
-template<typename tZ80Memory>
-inline string Z80Opcodes<tZ80Memory>::debugROTOperation(int y)
-{
-    string rot;
-	switch (y)
-	{
-            case 0: { rot = "RLC";break;}
-            case 1: { rot = "RRC";break;}
-            case 2: { rot = "RL";break;}
-            case 3: { rot = "RR";break;}
-            case 4: { rot = "SLA";break;}
-            case 5: { rot = "SRA";break;}
-            case 6: { rot = "SLL";break;}
-            case 7: { rot = "SRL";break;}
-	}
-    return rot;
-}
 
 
 
@@ -665,8 +793,7 @@ template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
 {
 	opcodeInfo retVal;
-	UINT8 opcode = 82;
-//    UINT8 opcode =  mem.get8(reg.PC+1);
+    UINT8 opcode =  mem.get8(reg.PC+1);
 	retVal.mnemonic = "";
     UINT8 z,y,x,p,q = 0;
     z = opcode & 0b111;
@@ -720,7 +847,6 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
 				{
 					if (0==q)
 					{
-						LOG4CXX_TRACE(logger, "DUPA: " << static_cast<int>(opcode));
 						string dst;
 						dst = debugGet16BRegisterPair1(p);
 						retVal.mnemonic = "SBC HL," + dst;
@@ -736,7 +862,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
 					}
 					break;
 				}
-                case 3:
+				case 3:
                 {
 
                     if (0==q)
@@ -755,6 +881,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
                     }
                     break;
                 }
+
 				case 4:
 				{
 					retVal.mnemonic = "NEG";
@@ -847,13 +974,11 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
 		}
 		case 2:
 		{
-			if (z<3 && y > 4)
+			if (z<=3 && y >=4)
 			{
-				/*
-				   blockOperationType oper;
-				   oper = parseBlockOperation(y,z);
-				   */
-				retVal.mnemonic = "BLI";
+				string oper;
+				oper = debugBlockOperation(y,z);
+				retVal.mnemonic = oper;
 				retVal.size = 2;
 			}
 			break;
