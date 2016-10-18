@@ -93,14 +93,23 @@ void Z80Opcodes<tZ80Memory>::RLD()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 {
+	int countm = 0;
 	switch (operType){
 		case LDDR:
-			LOG4CXX_DEBUG(logger,"LDDR");
+			while (reg.BC != 0)
+			{
+				LOG4CXX_DEBUG(logger,"de" << reg.DE << "<=HL" << reg.HL << "\n");
+				LD(*mem.getAddrPtr8(reg.DE),mem.get8(reg.HL));
+				reg.DE = reg.DE - 1;
+				reg.HL = reg.HL - 1;
+				reg.BC = reg.BC - 1;
+			}
 			break;
 		default:
-			LOG4CXX_WARN(logger, "blk stub");
 			break;
 	}
+	reg.PC = reg.PC + 1;
+	CLR_FLAG_PV();
 }
 
 

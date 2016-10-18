@@ -275,6 +275,7 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
             break;
         }
     }
+	return out;
 }
 
 

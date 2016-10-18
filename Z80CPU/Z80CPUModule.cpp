@@ -41,7 +41,7 @@ void Z80CPUModule<tZ80Memory>::cpuThread() {
 			oZ80Opcodes->debug = 1;
 			debug = 1;
 		}
-		if (oZ80Registers->PC == 0x1230)
+		if (oZ80Registers->PC == 0x120D)
 		{
 			break;
 		}
