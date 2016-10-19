@@ -230,8 +230,8 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::EI()
 
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::ADD_HL_r16(UINT16 *dst){
-   LOG4CXX_DEBUG(logger, "todo");
-   UINT16 c = reg.HL + *dst;
+// todo
+	UINT16 c = reg.HL + *dst;
    (c<reg.HL) ? SET_FLAG_C() : CLR_FLAG_C();
    HALF_CARRY16(reg.HL,*dst) ? SET_FLAG_H(): CLR_FLAG_H();
    reg.HL = c;

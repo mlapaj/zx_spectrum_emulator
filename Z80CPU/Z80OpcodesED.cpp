@@ -35,7 +35,19 @@ void Z80Opcodes<tZ80Memory>::OUT_addr_C()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::SBC_HL_r16(UINT16 *dst)
 {
-    LOG4CXX_WARN(logger, "sbc hd r 16 stub");
+    UINT16 c = 0;
+	c = reg.HL - *dst - (TEST_FLAG_C() ? 1 : 0);
+	(c>reg.HL) ? SET_FLAG_C() : CLR_FLAG_C();
+	OVERFLOW16(reg.HL,dst) ? SET_FLAG_PV() : CLR_FLAG_PV();
+	HALF_BORROW16(reg.HL,*dst) ? SET_FLAG_H() : CLR_FLAG_H();
+	SET_FLAG_N();
+	reg.A = c;
+	// set flags
+	((INT16)c<0)  ? SET_FLAG_S() : CLR_FLAG_S();
+    (c==0) ? SET_FLAG_Z() : CLR_FLAG_Z();
+	reg.HL=c;
+    reg.PC+=1;
+
 }
 
 template<typename tZ80Memory>
@@ -73,8 +85,9 @@ void Z80Opcodes<tZ80Memory>::RETI()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IM(interruptMode mode)
 {
-/*	reg.IM = mode; */
-/*	reg.PC=reg.PC+1; */
+	reg.IM = mode;
+	LOG4CXX_DEBUG(logger,"PC val is: " << reg.PC);
+	reg.PC=reg.PC+1; 
 }
 
 template<typename tZ80Memory>
@@ -98,7 +111,7 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 		case LDDR:
 			while (reg.BC != 0)
 			{
-				LOG4CXX_DEBUG(logger,"de" << reg.DE << "<=HL" << reg.HL << "\n");
+			//	LOG4CXX_DEBUG(logger,"de" << reg.DE << "<=HL" << reg.HL << "\n");
 				LD(*mem.getAddrPtr8(reg.DE),mem.get8(reg.HL));
 				reg.DE = reg.DE - 1;
 				reg.HL = reg.HL - 1;

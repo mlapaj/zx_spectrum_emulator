@@ -719,7 +719,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
     q = y & 0b1;
     reg.PC+=1; // additional ED prefix
 
-	LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
+//	LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
 	switch (x)
 	{
 		case 1:
@@ -809,6 +809,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
                     interruptMode mode;
                     mode = parseInterruptModes(y);
                     IM(mode);
+					break;
                 }
 
                 case 7:
@@ -869,6 +870,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
 				blockOperationType oper;
 				oper = parseBlockOperation(y,z);
 				BLI(oper);
+				break;
 			}
 		}
 

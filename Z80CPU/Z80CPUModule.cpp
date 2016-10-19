@@ -36,12 +36,13 @@ void Z80CPUModule<tZ80Memory>::cpuThread() {
 	int debug = 0;
     while (i<955350)
     {
-		if ((oZ80Registers->PC == 0x11DC) && (oZ80Registers->HL == 0x4001)){
+		if ((oZ80Registers->PC == 0x1219) //  && (oZ80Registers->HL == 0xFFFE)
+				){
 			LOG4CXX_DEBUG(logger,"RAM_FILL OK.");
 			oZ80Opcodes->debug = 1;
 			debug = 1;
 		}
-		if (oZ80Registers->PC == 0x120D)
+		if (oZ80Registers->PC >= 0x1260)
 		{
 			break;
 		}

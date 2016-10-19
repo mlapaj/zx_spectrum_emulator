@@ -23,17 +23,20 @@
 #define OVERFLOW8(A,B) (((INT8)(A)> 0 && *(INT8*)(B) > 0 && (INT8)(A) > 127 - *(INT8*)(B)) ||\
                        ((INT8)(A) < 0 && *(INT8*)(B) < 0 && (INT8)(A) < -128 - *(INT8*)(B)))
 
+#define OVERFLOW16(A,B) (((INT16)(A) > 0 && *(INT16*)(B) > 0 && (INT16)(A) > 32767  - *(INT16*)(B)) ||\
+                        ((INT16) (A) < 0 && *(INT16*)(B) < 0 && (INT16)(A) < -32768 - *(INT16*)(B)))
+
 //#define CARRY16(A,B,C) 1 & ((((A) & (B) & ~(C)) | (~(A) & ~(B) & (C))) >> 15)
 
 //  (~x7 & y7) | (y7 & r7) | (~y7 & x7); 
 #define BORROW8(A,B,C)   (1 & ((((~A) ^ (B))| ((B) & (C))|(~B & A)) >> 7))
 #define BORROW16(A,B,C)  (1 & ((((~A) ^ (B))| ((B) & (C))|(~B & A)) >> 15))
 
-#define HALF_CARRY8(REG,VAL) ((((REG) & 0xF) + ((VAL) & 0xF)) > 0xF)
-#define HALF_BORROW8(REG,VAL) (((((INT8)REG) & 0xF) - ((VAL) & 0xF)) < 0x0)
-
+#define HALF_CARRY8(REG,VAL)  ((((REG) & 0xF  ) + ((VAL) & 0xF  )) > 0xF  )
 #define HALF_CARRY16(REG,VAL) ((((REG) & 0xFFF) + ((VAL) & 0xFFF)) > 0xFFF)
-#define HALF_BORROW16(EG,VAL) (((((INT16)REG) & 0xFFF) - ((VAL) & 0xFFF)) < 0x0)
+
+#define HALF_BORROW8(REG,VAL) (((((INT8)REG)   & 0xF  ) - ((VAL) & 0xF  )) < 0x0)
+#define HALF_BORROW16(REG,VAL) (((((INT16)REG) & 0xFFF) - ((VAL) & 0xFFF)) < 0x0)
 
 
 #define SWAP8(X,Y) {UINT8 T;T=X;X=X;Y=T;}
