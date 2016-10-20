@@ -27,9 +27,39 @@ public:
     // 16 bit registers
     UINT16 PC;
     UINT16 SP;
-    UINT16 IX;
-    UINT16 IY;
     // 8 bit registers
+	//
+
+	union
+    {
+        UINT16 IX;
+        struct
+        {
+#if ZXBigEndian == 1
+            UINT8 IXH,IXL;
+#else
+            UINT8 IXL,IXH;
+#endif
+
+        };
+    };
+
+
+	union
+    {
+        UINT16 IY;
+        struct
+        {
+#if ZXBigEndian == 1
+            UINT8 IYH,IYL;
+#else
+            UINT8 IYL,IYH;
+#endif
+
+        };
+    };
+
+
     union
     {
         UINT16 HL;

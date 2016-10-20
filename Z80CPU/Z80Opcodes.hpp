@@ -118,6 +118,8 @@ public:
 		parseNormalOpcode(opcode);
     }
 private:
+	bool fdPrefixUsed;
+	bool ddPrefixUsed;
     Z80Registers &reg;
     tZ80Memory &mem;
     LoggerPtr logger;
