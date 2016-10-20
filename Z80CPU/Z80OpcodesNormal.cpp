@@ -231,10 +231,36 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::EI()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::ADD_HL_r16(UINT16 *dst){
 // todo
+   UINT16 *reg = *reg.HL;
 	UINT16 c = reg.HL + *dst;
    (c<reg.HL) ? SET_FLAG_C() : CLR_FLAG_C();
    HALF_CARRY16(reg.HL,*dst) ? SET_FLAG_H(): CLR_FLAG_H();
    reg.HL = c;
+   CLR_FLAG_Z();
+   reg.PC+=1;
+}
+
+template<typename tZ80Memory>
+void Z80Opcodes<tZ80Memory>::ADD_IX_r16(UINT16 *dst){
+// todo
+   UINT16 *reg = *reg.IX;
+	UINT16 c = reg.IX + *dst;
+   (c<reg.IX) ? SET_FLAG_C() : CLR_FLAG_C();
+   HALF_CARRY16(reg.IX,*dst) ? SET_FLAG_H(): CLR_FLAG_H();
+   reg.IX = c;
+   CLR_FLAG_Z();
+   reg.PC+=1;
+}
+
+
+template<typename tZ80Memory>
+void Z80Opcodes<tZ80Memory>::ADD_IY_r16(UINT16 *dst){
+// todo
+   UINT16 *reg = *reg.IY;
+	UINT16 c = reg.IY + *dst;
+   (c<reg.IY) ? SET_FLAG_C() : CLR_FLAG_C();
+   HALF_CARRY16(reg.IY,*dst) ? SET_FLAG_H(): CLR_FLAG_H();
+   reg.IX = c;
    CLR_FLAG_Z();
    reg.PC+=1;
 }

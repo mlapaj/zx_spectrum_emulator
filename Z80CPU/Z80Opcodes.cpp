@@ -380,7 +380,19 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 								switch (q)
 								{
 									case 0: { LD_r16_nn(dst); break;}
-									case 1: { ADD_HL_r16(dst); break;}
+									case 1: { 
+												if (ddPrefixUsed){
+													ADD_IX_r16(dst);
+												} else if (fdPrefixUsed)
+												{
+													ADD_IY_r16(dst);
+												}
+												else
+												{
+
+													ADD_HL_r16(dst); break;
+												}
+											}
 								}
 								break;
 							}
@@ -409,7 +421,16 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 													}
 												case 2:
 													{
-														dst16 = &reg.HL;
+														if (ddPrefixUsed){
+															dst16 = &reg.IX;
+														}
+														else if (fdPrefixUsed){
+															dst16 = &reg.IY;
+														}
+														else{
+															dst16 = &reg.HL;
+														}
+
 														LD_addr_nn_r16(dst16);
 														break;
 													}
@@ -440,7 +461,15 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 													}
 												case 2:
 													{
-														dst16 = &reg.HL;
+														if (ddPrefixUsed){
+															dst16 = &reg.IX;
+														}
+														else if (fdPrefixUsed){
+															dst16 = &reg.IY;
+														}
+														else{
+															dst16 = &reg.HL;
+														}
 														LD_r16_addr_nn(dst16);
 														break;
 													}

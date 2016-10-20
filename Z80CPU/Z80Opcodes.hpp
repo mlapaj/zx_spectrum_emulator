@@ -194,6 +194,8 @@ private:
     void EI();
 
     void ADD_HL_r16(UINT16 *dst);
+    void ADD_IX_r16(UINT16 *dst);
+    void ADD_IY_r16(UINT16 *dst);
     void SBC_HL_r16(UINT16 *dst);
     void ADC_HL_r16(UINT16 *dst);
 
