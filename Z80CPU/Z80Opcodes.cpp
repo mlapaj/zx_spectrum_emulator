@@ -608,7 +608,14 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 													}
 												case 2:
 													{
-														JP(&reg.HL);
+														if (ddPrefixUsed){
+															JP(&reg.IX);
+														} else if (fdPrefixUsed) {
+															JP(&reg.IY);
+														} else
+														{
+															JP(&reg.HL);
+														}
 														break;
 													}
 												case 3:
