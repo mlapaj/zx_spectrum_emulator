@@ -182,6 +182,8 @@ private:
 
 
     void EX_AF_sAF();
+    void EX_addr_SP_IX();
+    void EX_addr_SP_IY();
     void EX_addr_SP_HL();
     void EX_DE_HL();
     void EXX();

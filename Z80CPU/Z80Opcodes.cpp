@@ -613,6 +613,12 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 													}
 												case 3:
 													{
+														if (ddPrefixUsed){
+															LD_r16_r16(&reg.SP,&reg.IX);
+														}
+														else if (fdPrefixUsed) {
+															LD_r16_r16(&reg.SP,&reg.IY);
+														}
 														LD_r16_r16(&reg.SP,&reg.HL);
 														break;
 													}
@@ -655,7 +661,16 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 										}
 									case 4:
 										{
+											if (ddPrefixUsed){
+											EX_addr_SP_IX();
+											}
+											else if (fdPrefixUsed){
+											EX_addr_SP_IY();
+											}
+											else
+											{
 											EX_addr_SP_HL();
+											}
 											break;
 										}
 									case 5:
@@ -704,7 +719,8 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 													}
 												case 1:
 													{
-														// DD prefix
+														fdPrefixUsed = true;
+														goto end;
 														break;
 													}
 												case 2:
@@ -714,7 +730,9 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 													}
 												case 3:
 													{
-														// FD prefix
+														fdPrefixUsed = true;
+														goto end;
+														break;
 													}
 
 											}
@@ -743,7 +761,8 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		ddPrefixUsed = false;
 		fdPrefixUsed = false;
 	}
-
+end:
+	return;
 }
 
 
