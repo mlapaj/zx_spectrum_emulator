@@ -331,6 +331,9 @@ template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 	opcodeInfo retVal;
 
+	fdPrefixUsed = false;
+	ddPrefixUsed = false;
+
 	UINT8 z, y, x, p, q = 0;
 	z = opcode & 0b111;
 	y = (opcode >> 3) & 0b111;

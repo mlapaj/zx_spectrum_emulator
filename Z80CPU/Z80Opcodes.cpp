@@ -25,6 +25,7 @@ Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
 template<typename tZ80Memory>
 inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 {
+    LOG4CXX_DEBUG(logger, "get16bit pair " << p);
 	UINT16 *dst = 0;
 	switch (p)
 	{
@@ -35,10 +36,11 @@ inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 						dst=&reg.IX; break;
 					}
 					else if (fdPrefixUsed){
+						dst=&reg.IY; break;
 					}
 					else
 					{
-						dst=&reg.IY; break;
+						dst=&reg.HL; break;
 					}
 				}
 		case 3: {dst=&reg.SP; break;}
@@ -327,14 +329,18 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 	if (opcode == 0xFD)
 	{
 		fdPrefixUsed = true;
-		reg.PC+1;
-		parseNormalOpcode(reg.PC);
+		ddPrefixUsed = false;
+		reg.PC+=1;
+		LOG4CXX_WARN(logger,"FD prefix");
+		parseNormalOpcode(mem.get8(reg.PC));
 
 	}
 	else if (opcode == 0xDD){
+		fdPrefixUsed = false;
 		ddPrefixUsed = true;
-		reg.PC+1;
-		parseNormalOpcode(reg.PC);
+		reg.PC+=1;
+		LOG4CXX_WARN(logger,"DD prefix");
+		parseNormalOpcode(mem.get8(reg.PC));
 	}
 	else
 	{
@@ -344,7 +350,8 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		x = (opcode >> 6) & 0b11;
 		p = y >> 1 & 0b11;
 		q = y & 0b1;
-		//	LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z));
+		LOG4CXX_WARN(logger,"opcode val: " << int(opcode));
+		LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z) << "q: " << int(q) << "y: " << int(y) << "p: " << int(p));
 		switch (x)
 		{
 			case 0:
@@ -833,7 +840,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
     q = y & 0b1;
     reg.PC+=1; // additional ED prefix
 
-//	LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
+	LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
 	switch (x)
 	{
 		case 1:
@@ -979,7 +986,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
 		}
 		case 2:
 		{
-			if (z<3 && y > 4)
+			if (z <= 3 && y >= 4)
 			{
 				blockOperationType oper;
 				oper = parseBlockOperation(y,z);

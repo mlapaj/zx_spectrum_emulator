@@ -106,6 +106,7 @@ void Z80Opcodes<tZ80Memory>::RLD()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 {
+    LOG4CXX_DEBUG(logger,"bli");
 	int countm = 0;
 	switch (operType){
 		case LDDR:
@@ -116,13 +117,27 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				reg.DE = reg.DE - 1;
 				reg.HL = reg.HL - 1;
 				reg.BC = reg.BC - 1;
+				CLR_FLAG_H();
+				CLR_FLAG_PV();
+				CLR_FLAG_N();
 			}
 			break;
+		case LDI:
+				LOG4CXX_DEBUG(logger,"ldi de" << reg.DE << "<=HL" << reg.HL << "\n");
+				LD(*mem.getAddrPtr8(reg.DE),mem.get8(reg.HL));
+				reg.DE = reg.DE + 1;
+				reg.HL = reg.HL + 1;
+				reg.BC = reg.BC - 1;
+				CLR_FLAG_H();
+				(reg.BC != 0) ? SET_FLAG_PV() : CLR_FLAG_PV();
+				CLR_FLAG_N();
+			break;
 		default:
+			LOG4CXX_DEBUG(logger,"unknown bli oper type!");
 			break;
 	}
 	reg.PC = reg.PC + 1;
-	CLR_FLAG_PV();
+
 }
 
 
