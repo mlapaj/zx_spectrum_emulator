@@ -131,6 +131,16 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				CLR_FLAG_H();
 				(reg.BC != 0) ? SET_FLAG_PV() : CLR_FLAG_PV();
 				CLR_FLAG_N();
+				break;
+		case LDD:
+				LOG4CXX_DEBUG(logger,"ldi de" << reg.DE << "<=HL" << reg.HL << "\n");
+				LD(*mem.getAddrPtr8(reg.DE),mem.get8(reg.HL));
+				reg.DE = reg.DE - 1;
+				reg.HL = reg.HL - 1;
+				reg.BC = reg.BC - 1;
+				CLR_FLAG_H();
+				(reg.BC != 0) ? SET_FLAG_PV() : CLR_FLAG_PV();
+				CLR_FLAG_N();
 			break;
 		default:
 			LOG4CXX_DEBUG(logger,"unknown bli oper type!");
