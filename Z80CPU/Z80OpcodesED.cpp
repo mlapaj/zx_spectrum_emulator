@@ -155,6 +155,21 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				(reg.BC != 0) ? SET_FLAG_PV() : CLR_FLAG_PV();
 				CLR_FLAG_N();
 			break;
+		case CPI:
+				LOG4CXX_DEBUG(logger,"cpi =HL" << reg.HL << "\n");
+				reg.HL = reg.HL + 1;
+				reg.BC = reg.BC - 1;
+				UINT8 data;
+				data = mem.get8(reg.HL);
+				int wynik;
+				wynik = reg.A - data;
+				CLR_FLAG_H();
+				(wynik < 0) ? SET_FLAG_S() : CLR_FLAG_S();
+				(wynik == 0) ? SET_FLAG_Z() : CLR_FLAG_Z();
+				(reg.BC != 0) ? SET_FLAG_PV() : CLR_FLAG_PV();
+				HALF_BORROW8(reg.A,data)  ? SET_FLAG_H() : CLR_FLAG_H();
+				SET_FLAG_N();
+			break;
 		default:
 			LOG4CXX_DEBUG(logger,"unknown bli oper type!");
 			break;
