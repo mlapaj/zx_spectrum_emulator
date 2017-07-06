@@ -1,7 +1,9 @@
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 
+include_directories("${PROJECT_BINARY_DIR}")
 # the compile lines.
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
 # Use the compile definitions defined in the Qt 5 Widgets module

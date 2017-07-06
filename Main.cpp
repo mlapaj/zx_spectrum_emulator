@@ -11,6 +11,7 @@
 #include <log4cxx/logger.h>
 #include <log4cxx/xml/domconfigurator.h>
 #include "Z80CPU/Z80CPUModule.hpp"
+#include "Z80CPU/Z80CPUModuleThread.hpp"
 #include "console/console.hpp"
 #include "video/mainwindow.h"
 
@@ -38,16 +39,22 @@ int main(int argc, char** argv) {
     oZ80Memory = new Z80Memory(ZXSpectrumMemorySize);
     oZ80Memory->LoadRom(ZXSpectrumRomName);
     Z80CPUModule<Z80Memory> oZ80CPU(oZ80Memory);
+	Z80CPUModuleThread oZ80CPUThread;
+	oZ80CPUThread.pZ80CPU = &oZ80CPU;
 
-    console oConsole;
 
 
-	oConsole.start();
-//	oZ80CPU.cpuThread();
 /*	oZ80Memory->load("test.scr",0x4000,0x1B00); */
 	oZ80Memory->dump("dump.dat"); 
 	QApplication app(argc, argv);
 	MainWindow oMainWindow(oZ80Memory);
+
+    console oConsole;
+	oConsole.pMainWindow = &oMainWindow;
+	oConsole.pZ80CPU = &oZ80CPU;
+	oConsole.pZ80CPUThread = &oZ80CPUThread;
+	oZ80CPUThread.start();
+	oConsole.start();
 	oMainWindow.show();
 	return app.exec();
 

@@ -11,17 +11,16 @@
 #include "Z80Registers.hpp"
 #include "Z80Opcodes.hpp"
 
-
-
 template<typename tZ80Memory>
-class Z80CPUModule {
+class Z80CPUModule{
 public:
     Z80CPUModule(tZ80Memory *cZ80Memory);      
     virtual ~Z80CPUModule();
     void executeStep();
-    void cpuThread();
+    void run();
     Z80Registers getRegisters();
     void setRegisters(Z80Registers toSet);
+	bool quit;
 private:
     LoggerPtr logger;
     tZ80Memory *oZ80Memory;
