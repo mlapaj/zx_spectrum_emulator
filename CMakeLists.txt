@@ -35,10 +35,11 @@ configure_file (
   "${PROJECT_BINARY_DIR}/BuildDefs.h"
   )
 include_directories("${PROJECT_BINARY_DIR}"  ${QT_INCLUDES})
-add_subdirectory(VIDEO)
+add_subdirectory(video)
+add_subdirectory(console)
 add_subdirectory(Tests)
 add_executable(ZX_Spectrum_Emulator Main.cpp Z80CPU/Z80CPUModule.cpp Z80CPU/Z80OpcodesPrint.cpp Z80CPU/Z80Memory.cpp Z80CPU/Z80Opcodes.cpp Z80CPU/Z80OpcodesNormal.cpp Z80CPU/Z80OpcodesCB.cpp Z80CPU/Z80OpcodesED.cpp Z80CPU/Z80Registers.cpp)
-target_link_libraries (ZX_Spectrum_Emulator ${LOG4CXX_LIBRARIES} Qt5::Widgets GUI)
+target_link_libraries (ZX_Spectrum_Emulator ${LOG4CXX_LIBRARIES} Qt5::Widgets GUI console)
 configure_file(Log4cxxConfig.xml Log4cxxConfig.xml COPYONLY)
 configure_file(roms/48.rom roms/48.rom COPYONLY)
 
