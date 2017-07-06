@@ -357,10 +357,8 @@ TEST(Z80CPUModule_Block, ED_A1_CPI) {
     const UINT16 valueOfBCRegisterBefore = 0x01;
     const UINT16 valueOfHLRegisterBefore = 0x60;
 
-
     MockZ80Memory oMockZ80Memory;
 
-	UINT8 somePlaceInMemory = 0;
 
     EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber1));
     EXPECT_CALL(oMockZ80Memory, get8(1)).WillOnce(Return(opcodeNumber2));
@@ -375,6 +373,7 @@ TEST(Z80CPUModule_Block, ED_A1_CPI) {
 
     Z80Registers regToSet;
     regToSet.reset();
+	regToSet.A  = 9;
     regToSet.BC = valueOfBCRegisterBefore;
     regToSet.HL = valueOfHLRegisterBefore;
     oZ80CPU->setRegisters(regToSet);
@@ -385,13 +384,15 @@ TEST(Z80CPUModule_Block, ED_A1_CPI) {
 
     Z80Registers regCompare;
     regCompare.reset();
+	regCompare.A  = 9;
     regCompare.PC = valueOfPCRegisterAfter;
     regCompare.HL = 0x61;
     regCompare.BC = 0;
-    clear_flag_h(regCompare);
-    clear_flag_n(regCompare);
+    set_flag_s(regCompare);
+    clear_flag_z(regCompare);
+    set_flag_h(regCompare);
+    set_flag_n(regCompare);
     clear_flag_pv(regCompare);
-    EXPECT_EQ(somePlaceInMemory,10);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
