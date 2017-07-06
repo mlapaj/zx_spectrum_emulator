@@ -349,7 +349,7 @@ TEST(Z80CPUModule_Block, ED_B0_LDIR) {
 
 
 
-TEST(Z80CPUModule_Block, ED_A1_CPI) {
+TEST(Z80CPUModule_Block, ED_A1_CPI_NOT_EQUAL) {
     const UINT8 opcodeNumber1 = 0xED;
     const UINT8 opcodeNumber2 = 0xA1;
     const UINT16 valueOfPCRegisterAfter = 0x2;
@@ -393,6 +393,162 @@ TEST(Z80CPUModule_Block, ED_A1_CPI) {
     set_flag_h(regCompare);
     set_flag_n(regCompare);
     clear_flag_pv(regCompare);
+    checkRegisters(regOut,regCompare);
+
+    delete oZ80CPU;
+}
+
+
+
+TEST(Z80CPUModule_Block, ED_A1_CPI_NOT_EQUAL_BC_SET_TO_2) {
+    const UINT8 opcodeNumber1 = 0xED;
+    const UINT8 opcodeNumber2 = 0xA1;
+    const UINT16 valueOfPCRegisterAfter = 0x2;
+
+    const UINT16 valueOfBCRegisterBefore = 0x02;
+    const UINT16 valueOfHLRegisterBefore = 0x60;
+
+    MockZ80Memory oMockZ80Memory;
+
+
+    EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber1));
+    EXPECT_CALL(oMockZ80Memory, get8(1)).WillOnce(Return(opcodeNumber2));
+    EXPECT_CALL(oMockZ80Memory, get8(0x60)).WillOnce(Return(10));
+    Z80CPUModule<MockZ80Memory> *oZ80CPU;
+
+    oZ80CPU = new Z80CPUModule<MockZ80Memory>(&oMockZ80Memory);
+
+    Z80Registers regIn = oZ80CPU->getRegisters();
+    checkRegistersHaveDefaultValues(regIn);
+    regIn.dumpFull();
+
+    Z80Registers regToSet;
+    regToSet.reset();
+	regToSet.A  = 9;
+    regToSet.BC = valueOfBCRegisterBefore;
+    regToSet.HL = valueOfHLRegisterBefore;
+    oZ80CPU->setRegisters(regToSet);
+
+
+    oZ80CPU->executeStep();
+    Z80Registers regOut = oZ80CPU->getRegisters();
+
+    Z80Registers regCompare;
+    regCompare.reset();
+	regCompare.A  = 9;
+    regCompare.PC = valueOfPCRegisterAfter;
+    regCompare.HL = 0x61;
+    regCompare.BC = 1;
+    set_flag_s(regCompare);
+    clear_flag_z(regCompare);
+    set_flag_h(regCompare);
+    set_flag_n(regCompare);
+    set_flag_pv(regCompare);
+    checkRegisters(regOut,regCompare);
+
+    delete oZ80CPU;
+}
+
+
+
+
+
+TEST(Z80CPUModule_Block, ED_A1_CPI_EQUAL) {
+    const UINT8 opcodeNumber1 = 0xED;
+    const UINT8 opcodeNumber2 = 0xA1;
+    const UINT16 valueOfPCRegisterAfter = 0x2;
+
+    const UINT16 valueOfBCRegisterBefore = 0x01;
+    const UINT16 valueOfHLRegisterBefore = 0x60;
+
+    MockZ80Memory oMockZ80Memory;
+
+
+    EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber1));
+    EXPECT_CALL(oMockZ80Memory, get8(1)).WillOnce(Return(opcodeNumber2));
+    EXPECT_CALL(oMockZ80Memory, get8(0x60)).WillOnce(Return(9));
+    Z80CPUModule<MockZ80Memory> *oZ80CPU;
+
+    oZ80CPU = new Z80CPUModule<MockZ80Memory>(&oMockZ80Memory);
+
+    Z80Registers regIn = oZ80CPU->getRegisters();
+    checkRegistersHaveDefaultValues(regIn);
+    regIn.dumpFull();
+
+    Z80Registers regToSet;
+    regToSet.reset();
+	regToSet.A  = 9;
+    regToSet.BC = valueOfBCRegisterBefore;
+    regToSet.HL = valueOfHLRegisterBefore;
+    oZ80CPU->setRegisters(regToSet);
+
+
+    oZ80CPU->executeStep();
+    Z80Registers regOut = oZ80CPU->getRegisters();
+
+    Z80Registers regCompare;
+    regCompare.reset();
+	regCompare.A  = 9;
+    regCompare.PC = valueOfPCRegisterAfter;
+    regCompare.HL = 0x61;
+    regCompare.BC = 0;
+    clear_flag_s(regCompare);
+    set_flag_z(regCompare);
+    clear_flag_h(regCompare);
+    set_flag_n(regCompare);
+    clear_flag_pv(regCompare);
+    checkRegisters(regOut,regCompare);
+
+    delete oZ80CPU;
+}
+
+
+
+
+TEST(Z80CPUModule_Block, ED_A1_CPI_EQUAL_BC_SET_TO_2) {
+    const UINT8 opcodeNumber1 = 0xED;
+    const UINT8 opcodeNumber2 = 0xA1;
+    const UINT16 valueOfPCRegisterAfter = 0x2;
+
+    const UINT16 valueOfBCRegisterBefore = 0x02;
+    const UINT16 valueOfHLRegisterBefore = 0x60;
+
+    MockZ80Memory oMockZ80Memory;
+
+
+    EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber1));
+    EXPECT_CALL(oMockZ80Memory, get8(1)).WillOnce(Return(opcodeNumber2));
+    EXPECT_CALL(oMockZ80Memory, get8(0x60)).WillOnce(Return(9));
+    Z80CPUModule<MockZ80Memory> *oZ80CPU;
+
+    oZ80CPU = new Z80CPUModule<MockZ80Memory>(&oMockZ80Memory);
+
+    Z80Registers regIn = oZ80CPU->getRegisters();
+    checkRegistersHaveDefaultValues(regIn);
+    regIn.dumpFull();
+
+    Z80Registers regToSet;
+    regToSet.reset();
+	regToSet.A  = 9;
+    regToSet.BC = valueOfBCRegisterBefore;
+    regToSet.HL = valueOfHLRegisterBefore;
+    oZ80CPU->setRegisters(regToSet);
+
+
+    oZ80CPU->executeStep();
+    Z80Registers regOut = oZ80CPU->getRegisters();
+
+    Z80Registers regCompare;
+    regCompare.reset();
+	regCompare.A  = 9;
+    regCompare.PC = valueOfPCRegisterAfter;
+    regCompare.HL = 0x61;
+    regCompare.BC = 1;
+    clear_flag_s(regCompare);
+    set_flag_z(regCompare);
+    clear_flag_h(regCompare);
+    set_flag_n(regCompare);
+    set_flag_pv(regCompare);
     checkRegisters(regOut,regCompare);
 
     delete oZ80CPU;
