@@ -8,12 +8,12 @@
 #include "Z80CPUModule.hpp"
 #include "../Tests/Z80CPUModuleTest.hpp"
 
-
 template<typename tZ80Memory>
 Z80CPUModule<tZ80Memory>::Z80CPUModule(tZ80Memory *cZ80Memory):logger(Logger::getLogger("Z80Module")) {
 
     LOG4CXX_DEBUG(logger, "class created");
 	quit = false;
+	debugMode = false;
     oZ80Memory = cZ80Memory;
     oZ80Registers = new Z80Registers();
 
@@ -29,34 +29,6 @@ Z80CPUModule<tZ80Memory>::~Z80CPUModule() {
     LOG4CXX_DEBUG(logger, "destructor called");
     delete oZ80Opcodes;
     delete oZ80Registers;
-}
-template<typename tZ80Memory>
-void Z80CPUModule<tZ80Memory>::run() {
-    LOG4CXX_DEBUG(logger, "started main cpu thread");
-    long long i=0;
-	int debug = 0;
-    while (i<955350)
-    {
-		if (quit == true) { 
-			break;
-		}
-		if ((oZ80Registers->PC == 0x1219) //  && (oZ80Registers->HL == 0xFFFE)
-				){
-			LOG4CXX_DEBUG(logger,"RAM_FILL OK.");
-			oZ80Opcodes->debug = 1;
-			debug = 1;
-		}
-		if (oZ80Registers->PC >= 0x1260)
-		{
-			break;
-		}
-        oZ80Opcodes->executeOpcode();
-		if (debug){
-			oZ80Registers->dump();
-		}
-        i++;
-    }
-    LOG4CXX_DEBUG(logger, "end main cpu thread");
 }
 
 template<typename tZ80Memory>

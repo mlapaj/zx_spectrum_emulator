@@ -9,8 +9,11 @@
 
 class Z80CPUModuleThread : public QThread {
 public:
+	Z80CPUModuleThread();
     void run();
     Z80CPUModule<Z80Memory> *pZ80CPU;
+private:
+    LoggerPtr logger;
 };
 
 #endif

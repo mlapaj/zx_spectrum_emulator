@@ -41,6 +41,13 @@ void console::run() {
 			pMainWindow->close();
 			break;
 		}
+		else if ((command.compare("step") == 0) ||
+			(command.compare("s") == 0))
+		{ 
+			cout << "step instruction" << endl;
+			pZ80CPU->executeStep();
+			break;
+		}
 		else
 		{
 			cout << "unknown command " << command << "!" << endl;

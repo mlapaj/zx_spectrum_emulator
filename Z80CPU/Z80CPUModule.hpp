@@ -17,10 +17,10 @@ public:
     Z80CPUModule(tZ80Memory *cZ80Memory);      
     virtual ~Z80CPUModule();
     void executeStep();
-    void run();
     Z80Registers getRegisters();
     void setRegisters(Z80Registers toSet);
 	bool quit;
+	bool debugMode;
 private:
     LoggerPtr logger;
     tZ80Memory *oZ80Memory;
