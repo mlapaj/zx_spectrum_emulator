@@ -10,6 +10,10 @@ void Z80CPUModuleThread::run() {
 	while (true){
 		if (traceMode){
 			QThread::yieldCurrentThread();
+			if (pZ80CPU->quit == true) { 
+				break;
+			}
+			continue;
 		}
 		if (pZ80CPU->quit == true) { 
 			break;

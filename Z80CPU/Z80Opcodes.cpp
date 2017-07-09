@@ -25,14 +25,12 @@ Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
 
 template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode){
-    LOG4CXX_DEBUG(logger, "debug opcode");
 	return debugNormalOpcode(opcode);
 }
 
 template<typename tZ80Memory>
 inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 {
-//    LOG4CXX_DEBUG(logger, "get16bit pair " << p);
 	UINT16 *dst = 0;
 	switch (p)
 	{
@@ -338,7 +336,6 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		fdPrefixUsed = true;
 		ddPrefixUsed = false;
 		reg.PC+=1;
-		LOG4CXX_WARN(logger,"FD prefix");
 		parseNormalOpcode(mem.get8(reg.PC));
 
 	}
@@ -346,7 +343,6 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		fdPrefixUsed = false;
 		ddPrefixUsed = true;
 		reg.PC+=1;
-		LOG4CXX_WARN(logger,"DD prefix");
 		parseNormalOpcode(mem.get8(reg.PC));
 	}
 	else
@@ -847,7 +843,7 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
     q = y & 0b1;
     reg.PC+=1; // additional ED prefix
 
-	LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
+	//LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
 	switch (x)
 	{
 		case 1:

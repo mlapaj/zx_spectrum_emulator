@@ -111,7 +111,6 @@ public:
 		}
 		if (debug){
 			opInfo = debugNormalOpcode(opcode);
-			LOG4CXX_TRACE(logger, "DUPA3: ");
 			cout << "\n" + opInfo.mnemonic + "\n"; 
 		}
 // debugNormalOpcode should be executed before parseNormalOpcode - this will execute and might change some things in data/registers (especially PC register)

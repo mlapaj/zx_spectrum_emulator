@@ -110,7 +110,7 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 	int countm = 0;
 	switch (operType){
 		case LDDR:
-			LOG4CXX_DEBUG(logger,"lddr de" << reg.DE << "<=HL" << reg.HL << "\n");
+//			LOG4CXX_DEBUG(logger,"lddr de" << reg.DE << "<=HL" << reg.HL << "\n");
 			while (reg.BC != 0)
 			{
 				LD(*mem.getAddrPtr8(reg.DE),mem.get8(reg.HL));
@@ -123,7 +123,7 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 			}
 			break;
 		case LDIR:
-			LOG4CXX_DEBUG(logger,"lddr de" << reg.DE << "<=HL" << reg.HL << "\n");
+//			LOG4CXX_DEBUG(logger,"lddr de" << reg.DE << "<=HL" << reg.HL << "\n");
 			while (reg.BC != 0)
 			{
 				LD(*mem.getAddrPtr8(reg.DE),mem.get8(reg.HL));

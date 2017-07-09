@@ -53,6 +53,11 @@ void console::run() {
 			pZ80CPU->getOpcode();
 			pZ80CPU->executeStep();
 		}
+		else if ((command.compare("registers") == 0) ||
+			(command.compare("r") == 0))
+		{
+			pZ80CPU->getRegisters().dump();
+		}
 		else if ((command.compare("stop") == 0) ||
 				(command.compare("st") == 0))
 		{
