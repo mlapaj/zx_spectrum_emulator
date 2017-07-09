@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QThread>
 #include <QMainWindow>
 #include <QtGui>
 #include <QWidget>

@@ -7,13 +7,13 @@
 
 #include "Z80CPUModule.hpp"
 #include "../Tests/Z80CPUModuleTest.hpp"
+#include "../Z80CPU/Z80Opcodes.hpp"
 
 template<typename tZ80Memory>
 Z80CPUModule<tZ80Memory>::Z80CPUModule(tZ80Memory *cZ80Memory):logger(Logger::getLogger("Z80Module")) {
 
     LOG4CXX_DEBUG(logger, "class created");
 	quit = false;
-	debugMode = false;
     oZ80Memory = cZ80Memory;
     oZ80Registers = new Z80Registers();
 
@@ -36,6 +36,18 @@ void Z80CPUModule<tZ80Memory>::executeStep()
 {
     oZ80Opcodes->executeOpcode();
 }
+
+
+template<typename tZ80Memory>
+void Z80CPUModule<tZ80Memory>::getOpcode()
+{
+    UINT8 opcode = oZ80Memory->get8(oZ80Registers->PC);
+	opcodeInfo opInfo;
+	opInfo = oZ80Opcodes->debugOpcode(opcode);
+	LOG4CXX_TRACE(logger, "DUPA3: ");
+	cout << "\n" + opInfo.mnemonic + "\n"; 
+}
+
 
 template<typename tZ80Memory>
 Z80Registers Z80CPUModule<tZ80Memory>::getRegisters()

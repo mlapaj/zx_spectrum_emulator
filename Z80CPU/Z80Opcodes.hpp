@@ -117,6 +117,7 @@ public:
 // debugNormalOpcode should be executed before parseNormalOpcode - this will execute and might change some things in data/registers (especially PC register)
 		parseNormalOpcode(opcode);
     }
+    opcodeInfo debugOpcode(UINT8 opcode);
 private:
 	bool fdPrefixUsed;
 	bool ddPrefixUsed;

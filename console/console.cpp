@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 using namespace std;
 
@@ -29,12 +31,14 @@ void console::run() {
 	while (true){
 		vector<string> command_line;
 		string command;
-		string s;
-		cout << "zx#";
-		getline(cin,s);
-		command_line = split(s.c_str(),' ');
+		char *s;
+		s= readline("zx#");
+		add_history(s);
+		command_line = split(s,' ');
 		command = command_line.front();
-		if (command.compare("quit") == 0) { 
+		free(s);
+		if ((command.compare("quit") == 0) ||
+				(command.compare("q") == 0)) { 
 			cout << "Exit program" << endl;
 			pZ80CPU->quit = true;
 			pZ80CPUThread->wait();
@@ -43,10 +47,18 @@ void console::run() {
 		}
 		else if ((command.compare("step") == 0) ||
 			(command.compare("s") == 0))
-		{ 
+		{
+			pZ80CPUThread->traceMode = true;
 			cout << "step instruction" << endl;
+			pZ80CPU->getOpcode();
 			pZ80CPU->executeStep();
-			break;
+		}
+		else if ((command.compare("stop") == 0) ||
+				(command.compare("st") == 0))
+		{
+			cout << "Execution stopped" << endl;
+			pZ80CPUThread->traceMode = true;
+
 		}
 		else
 		{

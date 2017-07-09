@@ -22,6 +22,13 @@ Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
 }
 
 
+
+template<typename tZ80Memory>
+opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode){
+    LOG4CXX_DEBUG(logger, "debug opcode");
+	return debugNormalOpcode(opcode);
+}
+
 template<typename tZ80Memory>
 inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 {

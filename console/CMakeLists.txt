@@ -6,6 +6,8 @@ include_directories("${PROJECT_BINARY_DIR}")
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
+include_directories(/usr/include/readline)
+
 # Use the compile definitions defined in the Qt 5 Widgets module
 add_definitions(${Qt5Widgets_DEFINITIONS})
 
@@ -17,4 +19,4 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 add_library(console console.cpp)
-target_link_libraries (console Qt5::Widgets) 
+target_link_libraries (console Qt5::Widgets readline) 

@@ -12,6 +12,7 @@ public:
 	Z80CPUModuleThread();
     void run();
     Z80CPUModule<Z80Memory> *pZ80CPU;
+	bool traceMode;
 private:
     LoggerPtr logger;
 };

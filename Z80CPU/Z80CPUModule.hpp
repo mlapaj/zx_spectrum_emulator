@@ -16,11 +16,11 @@ class Z80CPUModule{
 public:
     Z80CPUModule(tZ80Memory *cZ80Memory);      
     virtual ~Z80CPUModule();
-    void executeStep();
+	void executeStep();
+    void getOpcode();
     Z80Registers getRegisters();
     void setRegisters(Z80Registers toSet);
 	bool quit;
-	bool debugMode;
 private:
     LoggerPtr logger;
     tZ80Memory *oZ80Memory;

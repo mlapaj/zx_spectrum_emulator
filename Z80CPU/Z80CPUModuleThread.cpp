@@ -2,13 +2,13 @@
 Z80CPUModuleThread::Z80CPUModuleThread(): QThread(),
 	logger(Logger::getLogger("Z80Module")) {
     LOG4CXX_DEBUG(logger, "class created");
+	traceMode = false;
 }
 
 void Z80CPUModuleThread::run() {
 	LOG4CXX_DEBUG(logger, "thread started");
 	while (true){
-		if (pZ80CPU->debugMode){
-			LOG4CXX_DEBUG(logger, "debug mode enabled");
+		if (traceMode){
 			QThread::yieldCurrentThread();
 		}
 		if (pZ80CPU->quit == true) { 

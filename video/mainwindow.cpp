@@ -21,6 +21,8 @@ MainWindow::MainWindow(Z80Memory *memory, QWidget *parent ) :
 
 }
 
+
+
 MainWindow::~MainWindow()
 {
 }
@@ -65,7 +67,6 @@ void MainWindow::drawFrame(){
 	 * same as SCR format. See details:
 	 * http://www.zx-modules.de/fileformats/scrformat.html
 	 * */
-
 	int offset = 0;
 	for (int third = 0; third < 3; third++)
 	{
