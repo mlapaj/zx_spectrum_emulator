@@ -18,6 +18,7 @@
 // QT
 
 #include <QApplication>
+#include <unistd.h>
 
 /*
  *
@@ -28,6 +29,30 @@ using namespace log4cxx::helpers;
 LoggerPtr loggerMyMain(Logger::getLogger( "main"));
 
 int main(int argc, char** argv) {
+	int startTraceMode = 0;
+	char *cvalue = NULL;
+	int index;
+	int c;
+
+	opterr = 0;
+
+	while ((c = getopt (argc, argv, "th?")) != -1){
+		printf("%c\n",c);
+		switch (c)
+		{
+			case 't':
+				startTraceMode = 1;
+				break;
+			case 'h':
+			case '?':
+				printf("program options:\n");
+				printf("-t - start with trace mode\n");
+				return 0;
+				break;
+		}
+	}
+
+
 
 	const char *ZXSpectrumEmulatorVersion = "0.01";
 	DOMConfigurator::configure("Log4cxxConfig.xml");
@@ -40,6 +65,9 @@ int main(int argc, char** argv) {
     oZ80Memory->LoadRom(ZXSpectrumRomName);
     Z80CPUModule<Z80Memory> oZ80CPU(oZ80Memory);
 	Z80CPUModuleThread oZ80CPUThread;
+	if (startTraceMode){
+		oZ80CPUThread.traceMode = true;
+	}
 	oZ80CPUThread.pZ80CPU = &oZ80CPU;
 
 
