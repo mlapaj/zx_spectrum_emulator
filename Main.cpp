@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 
 
 
-/*	oZ80Memory->load("test.scr",0x4000,0x1B00); */
+	/*oZ80Memory->load("test.scr",0x4000,0x1B00);*/
 	oZ80Memory->dump("dump.dat"); 
 	QApplication app(argc, argv);
 	MainWindow oMainWindow(oZ80Memory);

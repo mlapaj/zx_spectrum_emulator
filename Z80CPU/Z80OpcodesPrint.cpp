@@ -6,6 +6,9 @@
 #include <sstream>
 #include "Z80Opcodes.hpp"
 
+#define PADHEX(width, val) setfill('0') << setw(width) << std::hex << uppercase << (unsigned)val
+
+
 template<typename tZ80Memory>
 inline string Z80Opcodes<tZ80Memory>::debugCondition(int y) {
 	string cond;
@@ -333,7 +336,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 
 	fdPrefixUsed = false;
 	ddPrefixUsed = false;
-
+	ostringstream ss;
 	UINT8 z, y, x, p, q = 0;
 	z = opcode & 0b111;
 	y = (opcode >> 3) & 0b111;
@@ -370,8 +373,10 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 										case 5:
 										case 6:
 										case 7: {
+													INT8 dst = mem.get8(reg.PC+1);
 													string cond = debugCondition(y - 4);
-													retVal.mnemonic = "JR " + cond + " nn";
+													ss << "JR " << cond << " " <<(int) dst << " #"<< PADHEX(4,reg.PC+dst);
+													retVal.mnemonic = ss.str();
 													retVal.size = 2;
 													break;
 												}
@@ -384,7 +389,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 									dst = debugGet16BRegisterPair1(p);
 									switch (q) {
 										case 0: {
-													retVal.mnemonic = "LD " + dst + " nn";
+													UINT16 data = mem.get16(reg.PC+1);
+													ss << "LD " << dst << ",$" <<  std::hex << PADHEX(4,data);
+													retVal.mnemonic = ss.str();
 													retVal.size = 3;
 													break;
 												}
@@ -492,7 +499,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 						case 6: {
 									string dst;
 									dst = debugGet8BRegisterPair(y);
-									retVal.mnemonic = "LD " + dst + " n";
+									UINT8 data = mem.get16(reg.PC+1);
+									ss << "LD " << dst << ",$" << PADHEX(2,data);
+									retVal.mnemonic = ss.str();
 									retVal.size = 2;
 									break;
 								}
@@ -625,7 +634,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 						case 3: {
 									switch (y) {
 										case 0: {
-													retVal.mnemonic = "JP nn";
+													UINT16 data = mem.get16(reg.PC+1);
+													ss << "JP " << "$" << PADHEX(4,data);
+													retVal.mnemonic = ss.str();
 													retVal.size = 3;
 													break;
 												}
@@ -634,7 +645,10 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 													break;
 												}
 										case 2: {
-													retVal.mnemonic = "OUT (n),A";
+
+													UINT8 data = mem.get8(reg.PC+1);
+													ss << "OUT " << "($" << PADHEX(2,data) << ")" << ",A";
+													retVal.mnemonic = ss.str();
 													retVal.size = 2;
 													break;
 												}
