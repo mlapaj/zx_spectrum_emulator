@@ -10,6 +10,7 @@
 #include "Z80Memory.hpp"
 #include "Z80Registers.hpp"
 #include "Z80Opcodes.hpp"
+#include <list>
 
 template<typename tZ80Memory>
 class Z80CPUModule{
@@ -20,12 +21,22 @@ public:
     void getOpcode();
     Z80Registers getRegisters();
     void setRegisters(Z80Registers toSet);
+	bool checkPCBreakpoints();
+	void addPCBreakpoint(UINT16 val);
+	void delPCBreakpoint(UINT16 val);
+	std::list<UINT16> getPCBreakpoints(){
+		return PCBreakpoints;
+	}
+	void clearPCBreakpoints(){
+		PCBreakpoints.clear();
+	}
 	bool quit;
 private:
     LoggerPtr logger;
     tZ80Memory *oZ80Memory;
     Z80Registers *oZ80Registers;
     Z80Opcodes<tZ80Memory> *oZ80Opcodes;
+	std::list<UINT16> PCBreakpoints;
 
 };
 

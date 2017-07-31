@@ -49,6 +49,29 @@ void Z80CPUModule<tZ80Memory>::getOpcode()
 
 
 template<typename tZ80Memory>
+void Z80CPUModule<tZ80Memory>::addPCBreakpoint(UINT16 val){
+	PCBreakpoints.push_back(val);
+}
+
+
+template<typename tZ80Memory>
+void Z80CPUModule<tZ80Memory>::delPCBreakpoint(UINT16 val){
+	PCBreakpoints.remove(val);
+}
+
+
+template<typename tZ80Memory>
+bool Z80CPUModule<tZ80Memory>::checkPCBreakpoints(){
+	std::list<UINT16>::iterator it;
+	it = find(PCBreakpoints.begin(),PCBreakpoints.end(), oZ80Registers->PC);
+	if (it != PCBreakpoints.end()){
+		return true;
+	}
+	return false;
+}
+
+
+template<typename tZ80Memory>
 Z80Registers Z80CPUModule<tZ80Memory>::getRegisters()
 {
     return *oZ80Registers;

@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <fstream>
 
 #include <log4cxx/logger.h>
 #include <log4cxx/xml/domconfigurator.h>
@@ -33,20 +34,25 @@ int main(int argc, char** argv) {
 	char *cvalue = NULL;
 	int index;
 	int c;
+	ifstream scriptFile;
 
 	opterr = 0;
 
-	while ((c = getopt (argc, argv, "th?")) != -1){
-		printf("%c\n",c);
+	while ((c = getopt (argc, argv, "th?s:")) != -1){
 		switch (c)
 		{
 			case 't':
 				startTraceMode = 1;
 				break;
+			case 's':
+				printf("script mode %s\n",optarg);
+				scriptFile.open (optarg, std::ifstream::in);
+				break;
 			case 'h':
 			case '?':
 				printf("program options:\n");
 				printf("-t - start with trace mode\n");
+				printf("-s script.name - start script\n");
 				return 0;
 				break;
 		}
@@ -82,14 +88,12 @@ int main(int argc, char** argv) {
 	oConsole.pZ80CPU = &oZ80CPU;
 	oConsole.pZ80CPUThread = &oZ80CPUThread;
 	oConsole.pZ80Memory = oZ80Memory;
+	oConsole.scriptFile = &scriptFile;
 	oZ80CPUThread.start();
 	oConsole.start();
 	oMainWindow.show();
+	scriptFile.close();
 	return app.exec();
-
-
-
-    return (EXIT_SUCCESS);
 
 }
 

@@ -418,7 +418,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 																	break;
 																}
 														case 2: {
-																	retVal.mnemonic = "LD (nn), HL";
+																	UINT16 data = mem.get16(reg.PC+1);
+																	ss << "LD (" << "$" <<  std::hex << PADHEX(4,data) << "),HL";
+																	retVal.mnemonic = ss.str();
 																	retVal.size = 3;
 																	break;
 																}
@@ -443,7 +445,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 																	break;
 																}
 														case 2: {
-																	retVal.mnemonic = "LD (HL),nn";
+																	UINT16 data = mem.get16(reg.PC+1);
+																	ss << "LD HL,($" <<  std::hex << PADHEX(4,data) << ")";
+																	retVal.mnemonic = ss.str();
 																	retVal.size = 3;
 																	break;
 																}
@@ -809,6 +813,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugCBPrefixOpcode(UINT8 opcode)
 template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
 {
+    stringstream ss;
 	opcodeInfo retVal;
     UINT8 opcode =  mem.get8(reg.PC+1);
 	retVal.mnemonic = "";
@@ -886,7 +891,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugEDPrefixOpcode()
                     {
                         string dst;
                         dst = debugGet16BRegisterPair1(p);
-						retVal.mnemonic = "LD (nn)," + dst;
+						UINT16 data = mem.get16(reg.PC+2);
+						ss << "LD (" << "$" <<  std::hex << PADHEX(4,data) << ")," << dst;
+						retVal.mnemonic = ss.str();
 						retVal.size = 2;
                     }
                     if (1==q)

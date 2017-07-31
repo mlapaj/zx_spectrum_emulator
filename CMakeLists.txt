@@ -43,7 +43,7 @@ add_executable(ZX_Spectrum_Emulator Main.cpp)
 target_link_libraries (ZX_Spectrum_Emulator ${LOG4CXX_LIBRARIES} Qt5::Widgets GUI console z80cpu)
 configure_file(Log4cxxConfig.xml Log4cxxConfig.xml COPYONLY)
 configure_file(roms/48.rom roms/48.rom COPYONLY)
-
+file(COPY scripts DESTINATION .)
 
 
 

@@ -10,15 +10,23 @@ void Z80CPUModuleThread::run() {
 	while (true){
 		if (traceMode){
 			QThread::yieldCurrentThread();
-			if (pZ80CPU->quit == true) { 
+			if (pZ80CPU->quit == true) {
 				break;
 			}
 			continue;
 		}
-		if (pZ80CPU->quit == true) { 
+		if (pZ80CPU->quit == true) {
 			break;
 		}
+
 		pZ80CPU->executeStep();
+
+		if (pZ80CPU->checkPCBreakpoints() == true){
+			if (traceMode == false){
+				cout << "breakpoint reached";
+				traceMode = true;
+			}
+		}
 	}
 	LOG4CXX_DEBUG(logger, "thread end");
 }
