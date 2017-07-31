@@ -298,7 +298,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DJNZ()
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JR()
 {
 	INT8 dst = mem.get8(reg.PC+1);
-    reg.PC+= dst;
+    reg.PC+= dst + 2;
 }
 
 

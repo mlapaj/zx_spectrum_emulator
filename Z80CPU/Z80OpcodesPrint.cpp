@@ -375,7 +375,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugNormalOpcode(UINT8 opcode) {
 										case 7: {
 													INT8 dst = mem.get8(reg.PC+1);
 													string cond = debugCondition(y - 4);
-													ss << "JR " << cond << " " <<(int) dst << " #"<< PADHEX(4,reg.PC+dst);
+													ss << "JR " << cond << " " <<(int) dst << " #"<< PADHEX(4,reg.PC+dst+2);
 													retVal.mnemonic = ss.str();
 													retVal.size = 2;
 													break;

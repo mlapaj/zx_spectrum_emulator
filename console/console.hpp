@@ -14,6 +14,7 @@ public:
     void run();
 	MainWindow *pMainWindow;
     Z80CPUModule<Z80Memory> *pZ80CPU;
+	Z80Memory *pZ80Memory;
 	Z80CPUModuleThread *pZ80CPUThread;
 };
 

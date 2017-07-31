@@ -81,6 +81,7 @@ int main(int argc, char** argv) {
 	oConsole.pMainWindow = &oMainWindow;
 	oConsole.pZ80CPU = &oZ80CPU;
 	oConsole.pZ80CPUThread = &oZ80CPUThread;
+	oConsole.pZ80Memory = oZ80Memory;
 	oZ80CPUThread.start();
 	oConsole.start();
 	oMainWindow.show();
