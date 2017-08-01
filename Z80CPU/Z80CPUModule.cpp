@@ -43,7 +43,7 @@ void Z80CPUModule<tZ80Memory>::getOpcode()
 {
     UINT8 opcode = oZ80Memory->get8(oZ80Registers->PC);
 	opcodeInfo opInfo;
-	opInfo = oZ80Opcodes->debugOpcode(opcode);
+	opInfo = oZ80Opcodes->debugOpcode(opcode,oZ80Registers->PC);
 	cout << std::hex <<oZ80Registers->PC << ": " << opInfo.mnemonic + "\n"; 
 }
 

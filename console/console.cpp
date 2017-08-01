@@ -129,10 +129,10 @@ void console::handleMemory(vector<string> command_line){
 		}
 		if (start_addr+i > 65535) break;
 		cout << "0x" << PADHEX(2,pZ80Memory->get8(start_addr+i)) << " ";
-		if ((i+1) % 10 == 0){
+		if ((i+1) % 10 == 0){ // after 10 bytes
 			int j = 0;
-			for (j = 0; j < 10; j ++){
-				UINT8 chr = pZ80Memory->get8(start_addr+i+j);
+			for (j = 0; j < 10; j ++){ // process 10 bytes
+				UINT8 chr = pZ80Memory->get8(start_addr-10+i+j); // we need to print last ten processed bytes
 				if (isprint(chr)){
 					cout << chr;
 				}

@@ -23,10 +23,6 @@ Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
 
 
 
-template<typename tZ80Memory>
-opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode){
-	return debugNormalOpcode(opcode);
-}
 
 template<typename tZ80Memory>
 inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
@@ -121,7 +117,26 @@ inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
 					dst=&reg.L;break;
 					}
 				}
-		case 6: {dst=mem.getAddrPtr8(reg.HL);break;}
+		case 6: {
+					if (ddPrefixUsed){
+						// TODO: to check for LD IXH, (IX+d) does not exist
+						INT8 d = mem.get8(reg.PC+1);
+						cout << "our case:" << dec << reg.IX + d << endl;
+						dst=mem.getAddrPtr8(reg.IX + d);
+						reg.PC+=1;
+					}
+					else if (fdPrefixUsed)
+					{
+						INT8 d = mem.get8(reg.PC+1);
+						cout << "our case:" << dec << reg.IY + d << endl;
+						dst=mem.getAddrPtr8(reg.IY + d);
+						reg.PC+=1;
+					}
+					else {
+						dst=mem.getAddrPtr8(reg.HL);
+					}
+					break;
+				}
 		case 7: {dst=&reg.A;break;}
 
 	}
@@ -334,16 +349,18 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 	if (opcode == 0xFD)
 	{
 		fdPrefixUsed = true;
-		ddPrefixUsed = false;
 		reg.PC+=1;
 		parseNormalOpcode(mem.get8(reg.PC));
+		fdPrefixUsed = false;
+		ddPrefixUsed = false;
 
 	}
 	else if (opcode == 0xDD){
-		fdPrefixUsed = false;
 		ddPrefixUsed = true;
 		reg.PC+=1;
 		parseNormalOpcode(mem.get8(reg.PC));
+		fdPrefixUsed = false;
+		ddPrefixUsed = false;
 	}
 	else
 	{
@@ -390,7 +407,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 								switch (q)
 								{
 									case 0: { LD_r16_nn(dst); break;}
-									case 1: { 
+									case 1: {
 												if (ddPrefixUsed){
 													ADD_IX_r16(dst);
 												} else if (fdPrefixUsed)
@@ -662,8 +679,15 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 										}
 									case 1:
 										{
-											LOG4CXX_DEBUG(logger,"CB prefix");
-											parseCBPrefixOpcode();
+											if ((ddPrefixUsed) || (fdPrefixUsed)){
+											    LOG4CXX_DEBUG(logger,"DDCB/FDCB prefix");
+												parseFDCBorDDCBPrefixOpcode();
+											}
+											else
+											{
+											    LOG4CXX_DEBUG(logger,"CB prefix");
+												parseCBPrefixOpcode();
+											}
 											break;
 										}
 									case 2:
@@ -784,18 +808,92 @@ end:
 
 
 template<typename tZ80Memory>
-void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
-{
+void Z80Opcodes<tZ80Memory>::parseFDCBorDDCBPrefixOpcode(){
+	UINT8 opcode = 0;
+	opcode = mem.get8(reg.PC+2);
+	INT8 d = 0;
+	d = (INT8) mem.get8(reg.PC+1);
 
-    UINT8 opcode =  mem.get8(reg.PC+1);
-    std::cout << debugCBPrefixOpcode(opcode).mnemonic;
-    UINT8 z,y,x,p,q = 0;
+	UINT8 z,y,x,p,q = 0;
     z = opcode & 0b111;
     y = (opcode >> 3) & 0b111;
     x = (opcode >> 6) & 0b11;
     p = y >> 1 & 0b11;
     q = y & 0b1;
-    reg.PC+=1;
+	reg.PC+=2;
+	UINT8 *dst = 0;
+	switch (x){
+		case 0:
+			if (z!=6){
+				cout << "LD #,rot #" << endl;
+			}
+			else
+			{
+				dst = 0;
+                rotOperation oper = parseROTOperation(y);
+				if (ddPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IX + d);
+				} else if (fdPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IY + d);
+				}
+				ROT_r8(oper,dst);
+			}
+			break;
+		case 1:
+				dst = 0;
+				if (ddPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IX + d);
+				} else if (fdPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IY + d);
+				}
+				BIT(y,dst);
+			break;
+		case 2:
+			if (z!=6){
+				cout << "LD #,res #" << endl;
+			}
+			else
+			{
+				dst = 0;
+				if (ddPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IX + d);
+				} else if (fdPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IY + d);
+				}
+				RES(y,dst);
+			}
+			break;
+		case 3:
+			if (z!=6){
+				cout << "LD #,set #" << endl;
+			}
+			else
+			{
+				dst = 0;
+				if (ddPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IX + d);
+				} else if (fdPrefixUsed){
+					dst=mem.getAddrPtr8(reg.IY + d);
+				}
+				SET(y,dst);
+			}
+			break;
+	}
+}
+
+template<typename tZ80Memory>
+void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
+{
+	UINT8 opcode = 0;
+	opcode = mem.get8(reg.PC+1);
+
+	UINT8 z,y,x,p,q = 0;
+    z = opcode & 0b111;
+    y = (opcode >> 3) & 0b111;
+    x = (opcode >> 6) & 0b11;
+    p = y >> 1 & 0b11;
+    q = y & 0b1;
+	reg.PC+=1;
     switch (x)
     {
         case 0:

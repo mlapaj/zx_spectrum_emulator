@@ -110,26 +110,28 @@ public:
 			LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
 		}
 		if (debug){
-			opInfo = debugNormalOpcode(opcode);
+			opInfo = debugOpcode(opcode,reg.PC);
 			cout << "\n" + opInfo.mnemonic + "\n"; 
 		}
 // debugNormalOpcode should be executed before parseNormalOpcode - this will execute and might change some things in data/registers (especially PC register)
 		parseNormalOpcode(opcode);
     }
-    opcodeInfo debugOpcode(UINT8 opcode);
+    opcodeInfo debugOpcode(UINT8 opcode,UINT16 pc);
 private:
 	bool fdPrefixUsed;
 	bool ddPrefixUsed;
     Z80Registers &reg;
     tZ80Memory &mem;
     LoggerPtr logger;
-    opcodeInfo debugNormalOpcode(UINT8 opcode);
     void parseNormalOpcode(UINT8 opcode);
-    opcodeInfo debugCBPrefixOpcode(UINT8 opcode);
-    opcodeInfo debugEDPrefixOpcode();
 
-    void parseCBPrefixOpcode();
+    opcodeInfo debugCBPrefixOpcode(UINT8 opcode,UINT16 pc);
+	opcodeInfo debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT16 pc);
+    opcodeInfo debugEDPrefixOpcode(UINT16 pc);
+
+	void parseCBPrefixOpcode();
     void parseEDPrefixOpcode();
+    void parseFDCBorDDCBPrefixOpcode();
 
     inline string debugGet16BRegisterPair1(int p);
     inline UINT16 *parseGet16BRegisterPair1(int p);
