@@ -469,16 +469,15 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 										case 1: {
 
 													if (ddPrefixUsed){
-													retVal.mnemonic = "ADD IX," + dst;
+														retVal.mnemonic = "ADD IX," + dst;
 													}
 													else if (fdPrefixUsed){
-													retVal.mnemonic = "ADD IY," + dst;
+														retVal.mnemonic = "ADD IY," + dst;
 													}
 													else
 													{
-														dst = "HL";
+														retVal.mnemonic = "ADD HL," + dst;
 													}
-													retVal.mnemonic = "ADD HL," + dst;
 													retVal.size = 3;
 													break;
 												}
@@ -656,15 +655,30 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 					break;
 				}
 		case 1: {
-					if (6 == y) {
+					int dUsed = 0;
+					if ((z == 6) &&(6 == y)) {
 						retVal.mnemonic = "HALT";
 						retVal.size = 1;
 					} else {
 						string src, dst;
+						UINT16 d = 0;
+						if ((ddPrefixUsed) || (fdPrefixUsed)){
+							dUsed = 1;
+							d = mem.get8(pc+1);
+						}
 						src = debugGet8BRegisterPair(y);
+						ddPrefixUsed = false;
+						fdPrefixUsed = false;
 						dst = debugGet8BRegisterPair(z);
-						retVal.mnemonic = "LD " + src + "," + dst;
-						retVal.size = 1;
+						if (dUsed){
+							ss << "LD " << src << "," << dst << " d is:" << d;
+						}
+						else
+						{
+							ss << "LD " << src << "," << dst;
+						}
+						retVal.mnemonic = ss.str();
+						retVal.size = 3;
 					}
 					break;
 				}
@@ -839,7 +853,10 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 										case 1: {
 													switch (p) {
 														case 0: {
-																	retVal.mnemonic = "CALL nn";
+
+																	UINT16 data = mem.get16(pc+1);
+																	ss << "call " << "$" <<  std::hex << PADHEX(4,data);
+																	retVal.mnemonic = ss.str();
 																	retVal.size = 3;
 																	break;
 																}
@@ -866,7 +883,9 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 								}
 						case 6: {
 									string oper = debugALUOperation(y);
-									retVal.mnemonic = oper;
+									UINT16 data = mem.get8(pc+1);
+									ss << oper << " $" <<  std::hex << PADHEX(2,data);
+									retVal.mnemonic = ss.str();
 									retVal.size = 2;
 									break;
 								}
@@ -891,6 +910,8 @@ template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT16 pc)
 {
 	opcodeInfo retVal;
+	// overwrite for now
+	opcode = mem.get8(pc+3);
     UINT8 z,y,x,p,q = 0;
     z = opcode & 0b111;
     y = (opcode >> 3) & 0b111;
@@ -900,8 +921,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
     stringstream ss;
 
 
-	INT8 d = mem.get8(pc+1);
-	opcode = mem.get8(pc+2);
+	INT8 d = mem.get8(pc+2);
 	cout << "!debugFDCBorDDCBPrefixOpcode! d:" << (int) d << endl;
 	cout << "!debugFDCBorDDCBPrefixOpcode! opcode:" << (int) opcode << endl;
 
@@ -913,7 +933,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 		dst= ss1.str();;
 	} else if (fdPrefixUsed){
 		stringstream ss1;
-		ss1 << "(IX"<< showpos << (int) d << noshowpos << ")";
+		ss1 << "(IY"<< showpos << (int) d << noshowpos << ")";
 		dst= ss1.str();;
 	}
 
@@ -922,7 +942,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 			if (z!=6){
 				string oper = debugROTOperation(y);
                 string dst2 = debugGet8BRegisterPair(z);
-				ss << "LD " << dst2 << ", " << oper << y << "," << dst;
+				ss << "LD " << dst2 << ", " << oper << +y << "," << dst;
 				retVal.mnemonic =  ss.str();
 			}
 			else
@@ -933,7 +953,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 			}
 			break;
 		case 1:
-				ss << "bit " << y << ",dst";
+				ss << "bit " << +y << "," << dst;
 				retVal.mnemonic =  ss.str();
 				retVal.size = 3;
 			break;
@@ -946,7 +966,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 			}
 			else
 			{
-				ss << "res " << y << ",dst";
+				ss << "res " << +y << "," << dst;
 				retVal.mnemonic =  ss.str();
 			}
 			break;
@@ -959,7 +979,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 			}
 			else
 			{
-				ss << "set " << y << ",dst";
+				ss << "set " << +y << "," << dst;
 				retVal.mnemonic =  ss.str();
 			}
 			break;

@@ -282,10 +282,12 @@ void Z80Opcodes<tZ80Memory>::ADD_IY_r16(UINT16 *dst){
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DJNZ()
 {
+	cout << "!!!!!!!!!!!!DJNZ before"<< +reg.B << endl;
     reg.B-=1;
+	cout << "!!!!!!!!!!!!DJNZ after"<< +reg.B << endl;
     if (reg.B != 0)
     {
-        reg.PC+= (INT8) mem.get8(reg.PC+1);
+        reg.PC+= (INT8) mem.get8(reg.PC+1) + 2;
     }
     else
     {
@@ -409,7 +411,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
 
     if (action)
     {
-        reg.PC= mem.get16(reg.SP);
+        reg.PC= mem.get16(reg.SP+2)+3;
         reg.SP+=2;
     }
     else
@@ -420,7 +422,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET()
 {
-    reg.PC= mem.get16(reg.SP);
+    reg.PC= mem.get16(reg.SP+2)+3;
     reg.SP+=2;
 }
 
@@ -527,12 +529,13 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::ALU_n(aluOperation ope
 	UINT8 dst;
     dst = mem.get8(reg.PC+1);
     ALU(operType,&dst);
+	reg.PC+=1;
 }
 
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::POP16(UINT16 *dst)
 {
-    *dst =  mem.get16(reg.SP);
+    *dst =  mem.get16(reg.SP+2);
     reg.SP+=2;
     reg.PC+=1;
 }

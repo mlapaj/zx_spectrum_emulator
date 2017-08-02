@@ -575,7 +575,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 				}
 			case 1:
 				{
-					if (6==y)
+					if ((6 == z) && (6==y))
 					{
 						HALT();
 					}
@@ -583,6 +583,9 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 					{
 						UINT8 *src,*dst = 0;
 						src = parseGet8BRegisterPair(y);
+						// second register must be H or L
+						ddPrefixUsed = false;
+						fdPrefixUsed = false;
 						dst = parseGet8BRegisterPair(z);
 						LD_r8_r8(src,dst);
 					}
