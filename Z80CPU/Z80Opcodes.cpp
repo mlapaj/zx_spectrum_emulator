@@ -14,6 +14,8 @@ Z80Opcodes<tZ80Memory>::Z80Opcodes(tZ80Memory &cZ80Memory,Z80Registers &cZ80Regi
 reg(cZ80Registers),mem(cZ80Memory),logger(Logger::getLogger("Z80Opcodes")){
     LOG4CXX_DEBUG(logger, "class created");
 	debug = 0;
+	fdPrefixUsed = false;
+	ddPrefixUsed = false;
 }
 template<typename tZ80Memory>
 Z80Opcodes<tZ80Memory>::~Z80Opcodes(){
@@ -34,15 +36,16 @@ inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair1(int p)
 		case 1: {dst=&reg.DE; break;}
 		case 2: {
 					if (ddPrefixUsed){
-						dst=&reg.IX; break;
+						dst=&reg.IX;
 					}
 					else if (fdPrefixUsed){
-						dst=&reg.IY; break;
+						dst=&reg.IY;
 					}
 					else
 					{
-						dst=&reg.HL; break;
+						dst=&reg.HL;
 					}
+					break;
 				}
 		case 3: {dst=&reg.SP; break;}
 		defaut:
@@ -63,14 +66,15 @@ inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair2(int p)
 		case 1: {dst=&reg.DE; break;}
 		case 2: {
 					if (ddPrefixUsed){
-						dst=&reg.IX; break;
+						dst=&reg.IX;
 					}
 					else if (fdPrefixUsed){
-						dst=&reg.IY; break;
+						dst=&reg.IY;
 					}
 					else{
-						dst=&reg.HL; break;
+						dst=&reg.HL;
 					}
+					break;
 				}
 		case 3: {dst=&reg.AF; break;}
 		defaut:
@@ -80,8 +84,8 @@ inline UINT16 *Z80Opcodes<tZ80Memory>::parseGet16BRegisterPair2(int p)
 	}
 	return dst;
 }
-
-
+int reg_hl_replaced = 0;
+int reg_replaced_prefix = 0;
 
 template<typename tZ80Memory>
 inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
@@ -95,40 +99,51 @@ inline UINT8 *Z80Opcodes<tZ80Memory>::parseGet8BRegisterPair(int y)
 		case 3: {dst=&reg.E;break;}
 		case 4: {
 					if (ddPrefixUsed){
+						reg_replaced_prefix = 1;
 						dst=&reg.IXH;
 					} else if (fdPrefixUsed)
 					{
 						dst=&reg.IYH;
+						reg_replaced_prefix = 1;
 					}
 					else
 					{
-					dst=&reg.H;break;
+					dst=&reg.H;
 					}
+					break;
 				}
 		case 5: {
 					if (ddPrefixUsed){
 						dst=&reg.IXL;
+						reg_replaced_prefix = 1;
 					}
 					else if (fdPrefixUsed)
 					{
 						dst=&reg.IYL;
+						reg_replaced_prefix = 1;
 					}
 					else {
-					dst=&reg.L;break;
+					dst=&reg.L;
 					}
+					break;
 				}
 		case 6: {
+					/*cout << "LAPAJ2 dd " << (int) ddPrefixUsed << " df" << (int) fdPrefixUsed << "y: " << (int)y << endl;*/
 					if (ddPrefixUsed){
+						reg_hl_replaced = 1;
+						reg_replaced_prefix = 1;
 						// TODO: to check for LD IXH, (IX+d) does not exist
 						INT8 d = mem.get8(reg.PC+1);
-						cout << "our case:" << dec << reg.IX + d << endl;
+					/*	cout << "our case IX:" << dec << reg.IX + d << endl; */
 						dst=mem.getAddrPtr8(reg.IX + d);
 						reg.PC+=1;
 					}
 					else if (fdPrefixUsed)
 					{
+						reg_hl_replaced = 1;
+						reg_replaced_prefix = 1;
 						INT8 d = mem.get8(reg.PC+1);
-						cout << "our case:" << dec << reg.IY + d << endl;
+					/*	cout << "our case IY:" << dec << reg.IY + d << endl; */
 						dst=mem.getAddrPtr8(reg.IY + d);
 						reg.PC+=1;
 					}
@@ -348,14 +363,21 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 {
 	if (opcode == 0xFD)
 	{
+		/*
+		cout << "fd prefix" << endl;
+		*/
+		LOG4CXX_WARN(logger,"FD PREFIX: " << int(opcode));
 		fdPrefixUsed = true;
 		reg.PC+=1;
 		parseNormalOpcode(mem.get8(reg.PC));
 		fdPrefixUsed = false;
 		ddPrefixUsed = false;
-
 	}
 	else if (opcode == 0xDD){
+		/*
+		cout << "dd prefix" << endl;
+		*/
+		/*LOG4CXX_WARN(logger,"DD PREFIX: " << int(opcode));*/
 		ddPrefixUsed = true;
 		reg.PC+=1;
 		parseNormalOpcode(mem.get8(reg.PC));
@@ -364,14 +386,17 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 	}
 	else
 	{
+/*		LOG4CXX_WARN(logger,"NORMAL (or FD/DD prefix) opcode: " << int(opcode)); */
 		UINT8 z,y,x,p,q = 0;
 		z = opcode & 0b111;
 		y = (opcode >> 3) & 0b111;
 		x = (opcode >> 6) & 0b11;
 		p = y >> 1 & 0b11;
 		q = y & 0b1;
-//		LOG4CXX_WARN(logger,"opcode val: " << int(opcode));
-//		LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z) << "q: " << int(q) << "y: " << int(y) << "p: " << int(p));
+		/*
+		LOG4CXX_WARN(logger,"opcode val: " << int(opcode));
+		LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z) << "q: " << int(q) << "y: " << int(y) << "p: " << int(p));
+		*/
 		switch (x)
 		{
 			case 0:
@@ -581,13 +606,29 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 					}
 					else
 					{
-						UINT8 *src,*dst = 0;
-						src = parseGet8BRegisterPair(y);
+						UINT8 *dst,*src = 0;
+						reg_hl_replaced = 0;
+						reg_replaced_prefix = 0;
+						cout << "LAPAJ " << (int) fdPrefixUsed;
+						cout << "check dst y" << (int) y << endl;
+						dst = parseGet8BRegisterPair(y);
 						// second register must be H or L
-						ddPrefixUsed = false;
-						fdPrefixUsed = false;
-						dst = parseGet8BRegisterPair(z);
-						LD_r8_r8(src,dst);
+						if (reg_hl_replaced == 1){
+							ddPrefixUsed = false;
+							fdPrefixUsed = false;
+						    cout << "replaced, check src" << endl;
+							src = parseGet8BRegisterPair(z);
+						} else {
+						    cout << "not replaced, check src" << endl;
+							reg_hl_replaced = 0;
+							src = parseGet8BRegisterPair(z);
+							if (reg_hl_replaced == 1){
+								ddPrefixUsed = false;
+								fdPrefixUsed = false;
+								dst = parseGet8BRegisterPair(y);
+							}
+						}
+						LD_r8_r8(dst,src);
 					}
 					break;
 				}
