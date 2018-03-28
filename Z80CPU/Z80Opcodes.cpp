@@ -609,17 +609,17 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 						UINT8 *dst,*src = 0;
 						reg_hl_replaced = 0;
 						reg_replaced_prefix = 0;
-						cout << "LAPAJ " << (int) fdPrefixUsed;
-						cout << "check dst y" << (int) y << endl;
+						//cout << "LAPAJ " << (int) fdPrefixUsed;
+						//cout << "check dst y" << (int) y << endl;
 						dst = parseGet8BRegisterPair(y);
 						// second register must be H or L
 						if (reg_hl_replaced == 1){
 							ddPrefixUsed = false;
 							fdPrefixUsed = false;
-						    cout << "replaced, check src" << endl;
+						//    cout << "replaced, check src" << endl;
 							src = parseGet8BRegisterPair(z);
 						} else {
-						    cout << "not replaced, check src" << endl;
+						// "not replaced, check src" << endl;
 							reg_hl_replaced = 0;
 							src = parseGet8BRegisterPair(z);
 							if (reg_hl_replaced == 1){
@@ -659,7 +659,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 									case 0:
 										{
 											UINT16 *dst = 0;
-											dst = parseGet16BRegisterPair1(p);
+											dst = parseGet16BRegisterPair2(p);
 											POP16(dst);
 											break;
 										}

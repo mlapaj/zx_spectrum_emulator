@@ -704,7 +704,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 									switch (q) {
 										case 0: {
 													string dst;
-													dst = debugGet16BRegisterPair1(p);
+													dst = debugGet16BRegisterPair2(p);
 													retVal.mnemonic = "POP " + dst;
 													retVal.size = 1;
 													break;

@@ -106,7 +106,7 @@ void Z80Opcodes<tZ80Memory>::RLD()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 {
-    LOG4CXX_DEBUG(logger,"bli");
+    LOG4CXX_DEBUG(logger,"bli" << (int) reg.PC);
 	int countm = 0;
 	switch (operType){
 		case LDDR:

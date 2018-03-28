@@ -184,6 +184,7 @@ void console::run() {
 			cout << "step, s - step istruction" << endl;
 			cout << "registers, r - dump registers state" << endl;
 			cout << "stop - stop CPU execution" << endl;
+			cout << "dump - dump memory to file" << endl;
 			cout << "reset - resets CPU" << endl;
 			continue;
 		}
@@ -202,6 +203,11 @@ void console::run() {
 			cout << "step instruction" << endl;
 			pZ80CPU->executeStep();
 			pZ80CPU->getOpcode();
+			continue;
+		}
+		else if ((command.compare("dump") == 0))
+		{
+			pZ80Memory->dump("dump.dat");
 			continue;
 		}
 		else if ((command.compare("registers") == 0) ||

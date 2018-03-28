@@ -51,9 +51,8 @@
     else { CLR_FLAG_PV();}\
     HALF_CARRY8((X),1) ? SET_FLAG_H() : CLR_FLAG_H();\
     (X)+=1;\
-    if (CHECK_NEGATIVE8((X))) { SET_FLAG_S(); }\
-    else\
-    if ((X) == 0){ SET_FLAG_Z();}\
+    if (CHECK_NEGATIVE8((X))) { SET_FLAG_S(); }  else { CLR_FLAG_S(); } \
+    if ((X) == 0){ SET_FLAG_Z();} else {CLR_FLAG_Z();} \
     CLR_FLAG_N();\
     reg.PC+=1
 
@@ -62,10 +61,9 @@
     else {CLR_FLAG_PV();}\
     HALF_BORROW8((X),1) ? SET_FLAG_H() : CLR_FLAG_H();\
     (X)-=1;\
-    if (CHECK_NEGATIVE8((X))) { SET_FLAG_S(); }\
-    else\
-    if ((X) == 0){ SET_FLAG_Z();}\
-    CLR_FLAG_N();\
+    if (CHECK_NEGATIVE8((X))) { SET_FLAG_S(); } else { CLR_FLAG_S(); }\
+    if ((X) == 0){ SET_FLAG_Z();} else { CLR_FLAG_Z(); }\
+    SET_FLAG_N();\
     reg.PC+=1
 
 
