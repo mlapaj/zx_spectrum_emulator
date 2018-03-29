@@ -786,6 +786,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 													}
 													else
 													{
+														opcode=  mem.get8(pc+1);
 														retVal = debugCBPrefixOpcode(opcode,reg.PC);
 													}
 													break;
@@ -992,6 +993,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 template<typename tZ80Memory>
 opcodeInfo Z80Opcodes<tZ80Memory>::debugCBPrefixOpcode(UINT8 opcode,UINT16 pc)
 {
+	cout << "CB prefix!!!" << endl;
 	opcodeInfo retVal;
     UINT8 z,y,x,p,q = 0;
     z = opcode & 0b111;

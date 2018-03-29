@@ -224,6 +224,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::HALT()
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RST(UINT16 val)
 {
+	cout << "RST!!!!!!!!!!!!!!!!!!!!!!!";
     PUSH16(&reg.PC);
     reg.PC = val;
     reg.isHalt=true;
@@ -383,7 +384,8 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CALL_cond_nn(condition
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CALL_nn()
 {
-	PUSH16(&reg.PC);
+	UINT16 val  = (reg.PC+2);
+	PUSH16(&val);
 	// we do not need to increase PC in next line because push function does this.
     reg.PC = mem.get16(reg.PC);
 }
@@ -411,7 +413,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
 
     if (action)
     {
-        reg.PC= mem.get16(reg.SP+2)+3;
+        reg.PC= mem.get16(reg.SP+2)+1;
         reg.SP+=2;
     }
     else
@@ -422,7 +424,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET()
 {
-    reg.PC= mem.get16(reg.SP+2)+3;
+    reg.PC= mem.get16(reg.SP+2)+1;
     reg.SP+=2;
 }
 

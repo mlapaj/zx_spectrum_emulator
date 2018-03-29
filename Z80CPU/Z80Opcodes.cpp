@@ -890,6 +890,7 @@ void Z80Opcodes<tZ80Memory>::parseFDCBorDDCBPrefixOpcode(){
 				} else if (fdPrefixUsed){
 					dst=mem.getAddrPtr8(reg.IY + d);
 				}
+				cout << "!BIT!!!!!" << endl;
 				BIT(y,dst);
 			break;
 		case 2:
@@ -952,7 +953,8 @@ void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
         {
             UINT8 *dst = 0;
             dst = parseGet8BRegisterPair(z);
-            BIT(y,dst);
+            cout << "BIT OPERATION z" << (int) z <<" dst " << (int) *dst << endl;
+			BIT(y,dst);
             break;
         }
         case 2:

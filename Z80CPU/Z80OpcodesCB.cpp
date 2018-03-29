@@ -107,7 +107,7 @@ void Z80Opcodes<tZ80Memory>::ROT_r8(rotOperation rot,UINT8 *dst)
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::BIT(UINT8 y,UINT8 *dst)
 {
-    CHECK_BIT(*dst,y) ? SET_FLAG_Z():CLR_FLAG_Z();
+    CHECK_BIT(*dst,y) ? CLR_FLAG_Z():SET_FLAG_Z();
     SET_FLAG_H();
     CLR_FLAG_N();
     reg.PC+=1;
