@@ -553,11 +553,13 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::PUSH16(UINT16 *dst)
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::OUT_addr_n_A()
 {
     // !!!!!!!!!!! TODO !!!!!!!
+	cout << "OUT " << endl;
     reg.PC+=2;
 }
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::IN_A_addr_n()
 {
+	cout << "IN " << endl;
     // !!!!!!!!!!! TODO !!!!!!!
     reg.PC+=2;
 }

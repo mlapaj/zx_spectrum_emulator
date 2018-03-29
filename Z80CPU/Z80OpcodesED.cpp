@@ -7,6 +7,7 @@
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IN_r8_addr_C(UINT8 *dst)
 {
+	cout << "IN8" << endl;
     LOG4CXX_WARN(logger, "in stub");
 }
 
@@ -14,6 +15,7 @@ void Z80Opcodes<tZ80Memory>::IN_r8_addr_C(UINT8 *dst)
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IN_addr_C()
 {
+	cout << "IN8" << endl;
     LOG4CXX_WARN(logger, "in c stub");
 }
 
@@ -22,6 +24,7 @@ void Z80Opcodes<tZ80Memory>::IN_addr_C()
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::OUT_addr_C_r8(UINT8 *dst)
 {
+	cout << "OUT8" << endl;
     LOG4CXX_WARN(logger, "out c stub");
 }
 
@@ -29,6 +32,7 @@ void Z80Opcodes<tZ80Memory>::OUT_addr_C_r8(UINT8 *dst)
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::OUT_addr_C()
 {
+	cout << "OUT8" << endl;
     LOG4CXX_WARN(logger, "out addr c stub");
 }
 
