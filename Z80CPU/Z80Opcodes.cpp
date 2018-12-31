@@ -8,12 +8,34 @@
 #include "Z80Opcodes.hpp"
 #include "Z80CPUModule.hpp"
 #include "Z80Memory.hpp"
+#include "Z80Timing.hpp"
+
+template<typename tZ80Memory>
+inline void Z80Opcodes<tZ80Memory>::executeOpcode()
+    {
+		opcodeInfo opInfo;
+        UINT8 opcode = mem.get8(reg.PC);
+		if (debug){
+			LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
+		}
+		if (debug){
+			opInfo = debugOpcode(opcode,reg.PC);
+			cout << "\n" + opInfo.mnemonic + "\n"; 
+		}
+		cout << "T " << Z80CyclesForMainInstructions[opcode];
+// debugNormalOpcode should be executed before parseNormalOpcode - this will execute and might change some things in data/registers (especially PC register)
+		parseNormalOpcode(opcode);
+    }
+
+
 
 template<typename tZ80Memory>
 Z80Opcodes<tZ80Memory>::Z80Opcodes(tZ80Memory &cZ80Memory,Z80Registers &cZ80Registers):
 reg(cZ80Registers),mem(cZ80Memory),logger(Logger::getLogger("Z80Opcodes")){
     LOG4CXX_DEBUG(logger, "class created");
 	debug = 0;
+	additionalTCycles = 0;
+	currentInstructionCycles = 0;
 	fdPrefixUsed = false;
 	ddPrefixUsed = false;
 }
@@ -342,11 +364,13 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
                 }
                 case 2:
                 {
+					/* TODO */
                     out = INDR;
                     break;
                 }
                 case 3:
                 {
+					/* TODO */
                     out = OUTDR;
                     break;
                 }
@@ -361,6 +385,7 @@ inline blockOperationType Z80Opcodes<tZ80Memory>::parseBlockOperation(int y,int 
 	template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 {
+	additionalTCycles = 0;
 	if (opcode == 0xFD)
 	{
 		/*
@@ -370,6 +395,7 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		fdPrefixUsed = true;
 		reg.PC+=1;
 		parseNormalOpcode(mem.get8(reg.PC));
+		currentInstructionCycles = Z80CyclesForIXIYInstructions[mem.get8(reg.PC)];
 		fdPrefixUsed = false;
 		ddPrefixUsed = false;
 	}
@@ -381,11 +407,15 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		ddPrefixUsed = true;
 		reg.PC+=1;
 		parseNormalOpcode(mem.get8(reg.PC));
+		currentInstructionCycles = Z80CyclesForIXIYInstructions[mem.get8(reg.PC)];
 		fdPrefixUsed = false;
 		ddPrefixUsed = false;
 	}
 	else
 	{
+		if (ddPrefixUsed == false && fdPrefixUsed == false){
+			currentInstructionCycles = Z80CyclesForMainInstructions[opcode];
+		}
 /*		LOG4CXX_WARN(logger,"NORMAL (or FD/DD prefix) opcode: " << int(opcode)); */
 		UINT8 z,y,x,p,q = 0;
 		z = opcode & 0b111;
@@ -866,6 +896,8 @@ void Z80Opcodes<tZ80Memory>::parseFDCBorDDCBPrefixOpcode(){
     q = y & 0b1;
 	reg.PC+=2;
 	UINT8 *dst = 0;
+
+	currentInstructionCycles = Z80CyclesForIXIYBitInstructions[opcode];
 	switch (x){
 		case 0:
 			if (z!=6){
@@ -939,6 +971,9 @@ void Z80Opcodes<tZ80Memory>::parseCBPrefixOpcode()
     p = y >> 1 & 0b11;
     q = y & 0b1;
 	reg.PC+=1;
+
+	currentInstructionCycles = Z80CyclesForExtendedInstructions[opcode % 16];
+
     switch (x)
     {
         case 0:
@@ -986,6 +1021,9 @@ void Z80Opcodes<tZ80Memory>::parseEDPrefixOpcode()
     p = y >> 1 & 0b11;
     q = y & 0b1;
     reg.PC+=1; // additional ED prefix
+
+
+    currentInstructionCycles = Z80CyclesForExtendedInstructions[opcode];
 
 	//LOG4CXX_WARN(logger,"ED PARSE opcode: " << int(opcode) << " x: " << int(x) << "z: " << int(z) << "q: " << int(q));
 	switch (x)

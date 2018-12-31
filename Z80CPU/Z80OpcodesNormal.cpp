@@ -289,6 +289,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DJNZ()
     if (reg.B != 0)
     {
         reg.PC+= (INT8) mem.get8(reg.PC+1) + 2;
+		additionalTCycles+=5;
     }
     else
     {
@@ -320,14 +321,14 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::JR_cond_nn(condition c
 	bool hasBeenJump = false;
 	switch (cond)
     {
-        case NZ:{if (TEST_FLAG_Z() == false){JR();hasBeenJump=true;} break;}
-        case Z:{if (TEST_FLAG_Z() == true){JR();hasBeenJump=true;} break;}
-        case NC:{if (TEST_FLAG_C()== false){JR();hasBeenJump=true;} break;}
-        case C:{if (TEST_FLAG_C() == true){JR();hasBeenJump=true;} break;}
-        case PO:{if (TEST_FLAG_PV() == false){JR();hasBeenJump=true;}break;}
-        case PE:{if (TEST_FLAG_PV() == true){JR();hasBeenJump=true;}break;}
-        case P:{if (TEST_FLAG_S() == false){JR();hasBeenJump=true;}break;}
-        case M:{if (TEST_FLAG_S() == true){JR();hasBeenJump=true;}break;}
+        case NZ:{if (TEST_FLAG_Z() == false){JR();hasBeenJump=true;additionalTCycles+=5;} break;}
+        case Z:{if (TEST_FLAG_Z() == true){JR();hasBeenJump=true;additionalTCycles+=5;} break;}
+        case NC:{if (TEST_FLAG_C()== false){JR();hasBeenJump=true;additionalTCycles+=5;} break;}
+        case C:{if (TEST_FLAG_C() == true){JR();hasBeenJump=true;additionalTCycles+=5;} break;}
+        case PO:{if (TEST_FLAG_PV() == false){JR();hasBeenJump=true;additionalTCycles+=5;}break;}
+        case PE:{if (TEST_FLAG_PV() == true){JR();hasBeenJump=true;additionalTCycles+=5;}break;}
+        case P:{if (TEST_FLAG_S() == false){JR();hasBeenJump=true;additionalTCycles+=5;}break;}
+        case M:{if (TEST_FLAG_S() == true){JR();hasBeenJump=true;additionalTCycles+=5;}break;}
     }
 	if (false == hasBeenJump)
 	{
@@ -365,14 +366,14 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CALL_cond_nn(condition
 	bool hasBeenJump = false;
     switch (cond)
     {
-        case NZ:{if (TEST_FLAG_Z() == false){CALL_nn();hasBeenJump=true;} break;}
-        case Z:{if (TEST_FLAG_Z() == true){CALL_nn();hasBeenJump=true;} break;}
-        case NC:{if (TEST_FLAG_C() == false){CALL_nn();hasBeenJump=true;} break;}
-        case C:{if (TEST_FLAG_C() == true){CALL_nn();hasBeenJump=true;} break;}
-        case PO:{if (TEST_FLAG_PV() == false){CALL_nn();hasBeenJump=true;}break;}
-        case PE:{if (TEST_FLAG_PV() == true){CALL_nn();hasBeenJump=true;}break;}
-        case P:{if (TEST_FLAG_S() == false){CALL_nn();hasBeenJump=true;}break;}
-        case M:{if (TEST_FLAG_S() == true){CALL_nn();hasBeenJump=true;}break;}
+        case NZ:{if (TEST_FLAG_Z() == false){CALL_nn();hasBeenJump=true;additionalTCycles+=7;} break;}
+        case Z:{if (TEST_FLAG_Z() == true){CALL_nn();hasBeenJump=true;additionalTCycles+=7;} break;}
+        case NC:{if (TEST_FLAG_C() == false){CALL_nn();hasBeenJump=true;additionalTCycles+=7;} break;}
+        case C:{if (TEST_FLAG_C() == true){CALL_nn();hasBeenJump=true;additionalTCycles+=7;} break;}
+        case PO:{if (TEST_FLAG_PV() == false){CALL_nn();hasBeenJump=true;additionalTCycles+=7;}break;}
+        case PE:{if (TEST_FLAG_PV() == true){CALL_nn();hasBeenJump=true;additionalTCycles+=7;}break;}
+        case P:{if (TEST_FLAG_S() == false){CALL_nn();hasBeenJump=true;additionalTCycles+=7;}break;}
+        case M:{if (TEST_FLAG_S() == true){CALL_nn();hasBeenJump=true;additionalTCycles+=7;}break;}
     }
     if (false == hasBeenJump)
     {
@@ -401,14 +402,14 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
     bool action = false;
     switch (cond)
     {
-        case NZ:{if (TEST_FLAG_Z() == false){action=true;} break;}
-        case Z:{if (TEST_FLAG_Z() == true){action=true;} break;}
-        case NC:{if (TEST_FLAG_C() == false){action=true;} break;}
-        case C:{if (TEST_FLAG_C() == true){action=true;} break;}
-        case PO:{if (TEST_FLAG_PV() == false){action=true;}break;}
-        case PE:{if (TEST_FLAG_PV() == true){action=true;}break;}
-        case P:{if (TEST_FLAG_S() == false){action=true;}break;}
-        case M:{if (TEST_FLAG_S() == true){action=true;}break;}
+        case NZ:{if (TEST_FLAG_Z() == false){action=true;additionalTCycles+=6;} break;}
+        case Z:{if (TEST_FLAG_Z() == true){action=true;additionalTCycles+=6;} break;}
+        case NC:{if (TEST_FLAG_C() == false){action=true;additionalTCycles+=6;} break;}
+        case C:{if (TEST_FLAG_C() == true){action=true;additionalTCycles+=6;} break;}
+        case PO:{if (TEST_FLAG_PV() == false){action=true;additionalTCycles+=6;}break;}
+        case PE:{if (TEST_FLAG_PV() == true){action=true;additionalTCycles+=6;}break;}
+        case P:{if (TEST_FLAG_S() == false){action=true;additionalTCycles+=6;}break;}
+        case M:{if (TEST_FLAG_S() == true){action=true;additionalTCycles+=6;}break;}
     }
 
     if (action)

@@ -124,7 +124,9 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				CLR_FLAG_H();
 				CLR_FLAG_PV();
 				CLR_FLAG_N();
+				additionalTCycles+=21;
 			}
+			additionalTCycles+=16;
 			break;
 		case LDIR:
 //			LOG4CXX_DEBUG(logger,"lddr de" << reg.DE << "<=HL" << reg.HL << "\n");
@@ -137,7 +139,9 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				CLR_FLAG_H();
 				CLR_FLAG_PV();
 				CLR_FLAG_N();
+				additionalTCycles+=21;
 			}
+			additionalTCycles+=16;
 			break;
 		case LDI:
 				LOG4CXX_DEBUG(logger,"ldi de" << reg.DE << "<=HL" << reg.HL << "\n");
@@ -188,7 +192,9 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 					reg.BC = reg.BC - 1;
 					wynik = reg.A - data;
 					if (wynik == 0) break;
+					additionalTCycles+=21;
 				}
+				additionalTCycles+=16;
 				CLR_FLAG_H();
 				(wynik < 0) ? SET_FLAG_S() : CLR_FLAG_S();
 				(wynik == 0) ? SET_FLAG_Z() : CLR_FLAG_Z();
@@ -226,7 +232,9 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 					reg.BC = reg.BC - 1;
 					wynik = reg.A - data;
 					if (wynik == 0) break;
+					additionalTCycles+=21;
 				}
+				additionalTCycles+=16;
 				CLR_FLAG_H();
 				(wynik < 0) ? SET_FLAG_S() : CLR_FLAG_S();
 				(wynik == 0) ? SET_FLAG_Z() : CLR_FLAG_Z();

@@ -99,25 +99,14 @@ public:
 	int debug;
     // typedef void (Z80Opcodes::*Z80Instruction)();
     Z80Opcodes(tZ80Memory &cZ80Memory,Z80Registers &cZ80Registers);
+	void executeOpcode();
     virtual ~Z80Opcodes();
+	int getCpuCurrentInstructionCycles(){ return currentInstructionCycles;}
 
-
-    inline void executeOpcode()
-    {
-		opcodeInfo opInfo;
-        UINT8 opcode = mem.get8(reg.PC);
-		if (debug){
-			LOG4CXX_TRACE(logger, "executing opcode: " << static_cast<int>(opcode));
-		}
-		if (debug){
-			opInfo = debugOpcode(opcode,reg.PC);
-			cout << "\n" + opInfo.mnemonic + "\n"; 
-		}
-// debugNormalOpcode should be executed before parseNormalOpcode - this will execute and might change some things in data/registers (especially PC register)
-		parseNormalOpcode(opcode);
-    }
     opcodeInfo debugOpcode(UINT8 opcode,UINT16 pc);
 private:
+	int currentInstructionCycles;
+	int additionalTCycles;
 	bool fdPrefixUsed;
 	bool ddPrefixUsed;
     Z80Registers &reg;
