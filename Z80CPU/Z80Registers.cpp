@@ -33,6 +33,7 @@ void Z80Registers::reset() {
 	 IM=0; /* interrupt mode */
      R=0;
      isHalt=false;
+	 interruptsEnabled=false;
 }
 
 void Z80Registers::zero() {

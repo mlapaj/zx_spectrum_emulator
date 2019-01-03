@@ -132,7 +132,7 @@ void console::handleMemory(vector<string> command_line){
 		if ((i+1) % 10 == 0){ // after 10 bytes
 			int j = 0;
 			for (j = 0; j < 10; j ++){ // process 10 bytes
-				UINT8 chr = pZ80Memory->get8(start_addr-10+i+j); // we need to print last ten processed bytes
+				UINT8 chr = pZ80Memory->get8(start_addr-10+i+1+j); // we need to print last ten processed bytes
 				if (isprint(chr)){
 					cout << chr;
 				}

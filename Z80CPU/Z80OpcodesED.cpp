@@ -7,8 +7,15 @@
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::IN_r8_addr_C(UINT8 *dst)
 {
-	cout << "IN8" << endl;
+	static int c=0;
+	cout << "IN8: " << std::hex  << (int) reg.BC << endl;
     LOG4CXX_WARN(logger, "in stub");
+	*dst = 0xFF;
+	if ((reg.BC == 0xFDFE) && (c<100)){
+		*dst =  0xFF;
+		//c++;
+	}
+    reg.PC+=1;
 }
 
 
@@ -17,6 +24,7 @@ void Z80Opcodes<tZ80Memory>::IN_addr_C()
 {
 	cout << "IN8" << endl;
     LOG4CXX_WARN(logger, "in c stub");
+    reg.PC+=1;
 }
 
 
@@ -26,6 +34,7 @@ void Z80Opcodes<tZ80Memory>::OUT_addr_C_r8(UINT8 *dst)
 {
 	cout << "OUT8" << endl;
     LOG4CXX_WARN(logger, "out c stub");
+    reg.PC+=1;
 }
 
 
@@ -34,6 +43,7 @@ void Z80Opcodes<tZ80Memory>::OUT_addr_C()
 {
 	cout << "OUT8" << endl;
     LOG4CXX_WARN(logger, "out addr c stub");
+    reg.PC+=1;
 }
 
 template<typename tZ80Memory>
@@ -126,7 +136,6 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				CLR_FLAG_N();
 				additionalTCycles+=21;
 			}
-			additionalTCycles+=16;
 			break;
 		case LDIR:
 //			LOG4CXX_DEBUG(logger,"lddr de" << reg.DE << "<=HL" << reg.HL << "\n");
@@ -141,7 +150,6 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 				CLR_FLAG_N();
 				additionalTCycles+=21;
 			}
-			additionalTCycles+=16;
 			break;
 		case LDI:
 				LOG4CXX_DEBUG(logger,"ldi de" << reg.DE << "<=HL" << reg.HL << "\n");
@@ -194,7 +202,6 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 					if (wynik == 0) break;
 					additionalTCycles+=21;
 				}
-				additionalTCycles+=16;
 				CLR_FLAG_H();
 				(wynik < 0) ? SET_FLAG_S() : CLR_FLAG_S();
 				(wynik == 0) ? SET_FLAG_Z() : CLR_FLAG_Z();
@@ -234,7 +241,6 @@ void Z80Opcodes<tZ80Memory>::BLI(blockOperationType operType)
 					if (wynik == 0) break;
 					additionalTCycles+=21;
 				}
-				additionalTCycles+=16;
 				CLR_FLAG_H();
 				(wynik < 0) ? SET_FLAG_S() : CLR_FLAG_S();
 				(wynik == 0) ? SET_FLAG_Z() : CLR_FLAG_Z();

@@ -105,6 +105,8 @@ public:
 
     opcodeInfo debugOpcode(UINT8 opcode,UINT16 pc);
 private:
+	int counterInterrupt;
+	int counterInstructionCycles;
 	int currentInstructionCycles;
 	int additionalTCycles;
 	bool fdPrefixUsed;

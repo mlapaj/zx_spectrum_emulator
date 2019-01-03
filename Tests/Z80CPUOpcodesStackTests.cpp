@@ -24,7 +24,7 @@ TEST(Z80CPUModule_Stack, C5_PUSH_BC) {
     MockZ80Memory oMockZ80Memory;
 
     EXPECT_CALL(oMockZ80Memory, get8(0)).WillOnce(Return(opcodeNumber));
-    EXPECT_CALL(oMockZ80Memory, getAddrPtr16(stackAddr)).WillOnce(Return(&someVal));
+    EXPECT_CALL(oMockZ80Memory, getAddrPtr16(stackAddr-2)).WillOnce(Return(&someVal));
 
     Z80CPUModule<MockZ80Memory> *oZ80CPU;
 

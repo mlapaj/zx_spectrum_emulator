@@ -224,7 +224,7 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::HALT()
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RST(UINT16 val)
 {
-	cout << "RST!!!!!!!!!!!!!!!!!!!!!!!";
+	cout << "RST!!!!!!!!!!!!!!!!!!!!!!!" << (int) val;
     PUSH16(&reg.PC);
     reg.PC = val;
     reg.isHalt=true;
@@ -232,12 +232,14 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RST(UINT16 val)
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DI()
 {
+	reg.interruptsEnabled = false;
     /// todo !!!!!!!!!!!!
 	reg.PC+= 1;
 }
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::EI()
 {
+	reg.interruptsEnabled = true;
     /// todo !!!!!!!!!!!!
 	reg.PC += 1;
 }
@@ -283,9 +285,9 @@ void Z80Opcodes<tZ80Memory>::ADD_IY_r16(UINT16 *dst){
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::DJNZ()
 {
-	cout << "!!!!!!!!!!!!DJNZ before"<< +reg.B << endl;
+//	cout << "!!!!!!!!!!!!DJNZ before"<< +reg.B << endl;
     reg.B-=1;
-	cout << "!!!!!!!!!!!!DJNZ after"<< +reg.B << endl;
+//	cout << "!!!!!!!!!!!!DJNZ after"<< +reg.B << endl;
     if (reg.B != 0)
     {
         reg.PC+= (INT8) mem.get8(reg.PC+1) + 2;
@@ -386,7 +388,8 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CALL_cond_nn(condition
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::CALL_nn()
 {
 	UINT16 val  = (reg.PC+2);
-	PUSH16(&val);
+    PUSH16(&val);
+
 	// we do not need to increase PC in next line because push function does this.
     reg.PC = mem.get16(reg.PC);
 }
@@ -413,10 +416,10 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
     }
 
     if (action)
-    {
-        reg.PC= mem.get16(reg.SP+2)+1;
-        reg.SP+=2;
-    }
+	{
+		reg.PC= mem.get16(reg.SP+2)+1;
+		reg.SP+=2;
+	}
     else
     {
         reg.PC+=1;
@@ -425,8 +428,9 @@ template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET(condition cond)
 
 template<typename tZ80Memory>void Z80Opcodes<tZ80Memory>::RET()
 {
-    reg.PC= mem.get16(reg.SP+2)+1;
-    reg.SP+=2;
+	reg.PC= mem.get16(reg.SP+2)+1;
+	reg.SP+=2;
+
 }
 
 

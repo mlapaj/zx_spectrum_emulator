@@ -220,6 +220,7 @@ public:
 
 //    struct sZ80Flags flags;
     bool isHalt;
+	bool interruptsEnabled;
 
     Z80Registers();
     void reset();
