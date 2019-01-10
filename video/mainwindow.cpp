@@ -18,6 +18,7 @@ MainWindow::MainWindow(Z80Memory *memory, QWidget *parent ) :
 
 	connect( &timer, SIGNAL( timeout() ), SLOT( drawFrame() ) );
 	timer.start( 30 );
+	this->setFixedSize(zx_width*2,zx_height*2);
 
 }
 

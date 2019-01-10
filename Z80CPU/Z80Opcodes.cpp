@@ -4,11 +4,14 @@
  *
  * Created on 18 marzec 2014, 16:45
  */
-
+#include "Z80Types.hpp"
 #include "Z80Opcodes.hpp"
 #include "Z80CPUModule.hpp"
 #include "Z80Memory.hpp"
 #include "Z80Timing.hpp"
+#include <iostream>
+
+using namespace std;
 
 template<typename tZ80Memory>
 inline void Z80Opcodes<tZ80Memory>::executeOpcode()
