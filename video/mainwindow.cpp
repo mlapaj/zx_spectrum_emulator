@@ -98,3 +98,21 @@ void MainWindow::drawFrame(){
 	}
 	update();
 }
+
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        cout << "esc pressed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+    }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+		cout << "esc released!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+    }
+}
+

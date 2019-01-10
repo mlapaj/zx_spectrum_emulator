@@ -48,6 +48,8 @@ protected:
 	QImage *image;
 	void paintEvent(QPaintEvent *event);
 	void resizeEvent(QResizeEvent *event);
+    void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
 
 private:
 public slots:
