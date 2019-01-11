@@ -32,6 +32,7 @@ TEST(Z80CPUModule_FDPrefix, FD_6E_LD_L_IY_plus_d) {
 
     Z80Registers regToSet;
     regToSet.reset();
+	regToSet.PC = 0;
     regToSet.HL = valueOfHLRegisterBefore;
     regToSet.IY = valueOfIYRegisterBefore;
     oZ80CPU->setRegisters(regToSet);
@@ -48,6 +49,7 @@ TEST(Z80CPUModule_FDPrefix, FD_6E_LD_L_IY_plus_d) {
     regCompare.IY = valueOfIYRegisterBefore;
     EXPECT_EQ(somePlaceInMemory,20);
     checkRegisters(regOut,regCompare);
+    oZ80CPU->getRegisters().dump();
 
     delete oZ80CPU;
 }

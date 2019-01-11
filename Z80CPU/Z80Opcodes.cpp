@@ -25,6 +25,7 @@ inline void Z80Opcodes<tZ80Memory>::executeOpcode()
 			opInfo = debugOpcode(opcode,reg.PC);
 			cout << "\n" + opInfo.mnemonic + "\n";
 		}
+		LOG4CXX_DEBUG(logger,std::hex << "exec opcode");
 		// debugNormalOpcode should be executed before parseNormalOpcode - this
 		// will execute and might change some things in data/registers (especially PC register)
 		parseNormalOpcode(opcode);
@@ -419,11 +420,12 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		/*
 		cout << "fd prefix" << endl;
 		*/
-		//LOG4CXX_WARN(logger,"FD PREFIX: " << int(opcode));
+		LOG4CXX_WARN(logger,"FD PREFIX: " << int(opcode));
 		fdPrefixUsed = true;
 		reg.PC+=1;
-		currentInstructionCycles = Z80CyclesForIXIYInstructions[mem.get8(reg.PC)];
-		parseNormalOpcode(mem.get8(reg.PC));
+		int newOpcode = mem.get8(reg.PC);
+		currentInstructionCycles = Z80CyclesForIXIYInstructions[newOpcode];
+		parseNormalOpcode(newOpcode);
 		fdPrefixUsed = false;
 		ddPrefixUsed = false;
 	}
@@ -431,11 +433,12 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		/*
 		cout << "dd prefix" << endl;
 		*/
-		/*LOG4CXX_WARN(logger,"DD PREFIX: " << int(opcode));*/
+		LOG4CXX_WARN(logger,"DD PREFIX: " << int(opcode));
 		ddPrefixUsed = true;
 		reg.PC+=1;
-		currentInstructionCycles = Z80CyclesForIXIYInstructions[mem.get8(reg.PC)];
-		parseNormalOpcode(mem.get8(reg.PC));
+		int newOpcode = mem.get8(reg.PC);
+		currentInstructionCycles = Z80CyclesForIXIYInstructions[newOpcode];
+		parseNormalOpcode(newOpcode);
 		fdPrefixUsed = false;
 		ddPrefixUsed = false;
 	}
@@ -451,10 +454,10 @@ void Z80Opcodes<tZ80Memory>::parseNormalOpcode(UINT8 opcode)
 		x = (opcode >> 6) & 0b11;
 		p = y >> 1 & 0b11;
 		q = y & 0b1;
-		/*
+		
 		LOG4CXX_WARN(logger,"opcode val: " << int(opcode));
 		LOG4CXX_WARN(logger,"x: " << int(x) << "z: " << int(z) << "q: " << int(q) << "y: " << int(y) << "p: " << int(p));
-		*/
+		
 		switch (x)
 		{
 			case 0:
@@ -927,6 +930,7 @@ void Z80Opcodes<tZ80Memory>::parseFDCBorDDCBPrefixOpcode(){
     q = y & 0b1;
 	reg.PC+=2;
 	UINT8 *dst = 0;
+
 
 	currentInstructionCycles = Z80CyclesForIXIYBitInstructions[opcode];
 	if (currentInstructionCycles == 0){

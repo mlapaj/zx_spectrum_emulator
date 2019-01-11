@@ -15,7 +15,7 @@
 template<typename tZ80Memory>
 class Z80CPUModule{
 public:
-    Z80CPUModule(tZ80Memory *cZ80Memory);      
+    Z80CPUModule(tZ80Memory *cZ80Memory);
     virtual ~Z80CPUModule();
 	void executeStep();
     void getOpcode();
