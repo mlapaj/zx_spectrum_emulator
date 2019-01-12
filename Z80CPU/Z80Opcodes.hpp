@@ -111,6 +111,8 @@ private:
 	int additionalTCycles;
 	bool fdPrefixUsed;
 	bool ddPrefixUsed;
+	bool debugHLReplaced;
+	bool debugRegReplaced;
     Z80Registers &reg;
     tZ80Memory &mem;
     LoggerPtr logger;
@@ -130,7 +132,7 @@ private:
     inline string debugGet16BRegisterPair2(int p);
     inline UINT16 *parseGet16BRegisterPair2(int p);
 
-    inline string debugGet8BRegisterPair(int p);
+    inline string debugGet8BRegisterPair(int p, UINT16 pc);
     inline UINT8 *parseGet8BRegisterPair(int p);
 
     inline string debugCondition(int y);

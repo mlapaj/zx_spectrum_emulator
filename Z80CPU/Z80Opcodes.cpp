@@ -64,6 +64,8 @@ reg(cZ80Registers),mem(cZ80Memory),logger(Logger::getLogger("Z80Opcodes")){
 	currentInstructionCycles = 0;
 	fdPrefixUsed = false;
 	ddPrefixUsed = false;
+	debugHLReplaced = false;
+	debugRegReplaced = false;
 }
 template<typename tZ80Memory>
 Z80Opcodes<tZ80Memory>::~Z80Opcodes(){

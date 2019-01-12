@@ -89,8 +89,9 @@ inline string Z80Opcodes<tZ80Memory>::debugGet16BRegisterPair1(int p) {
 }
 
 template<typename tZ80Memory>
-inline string Z80Opcodes<tZ80Memory>::debugGet8BRegisterPair(int y) {
+inline string Z80Opcodes<tZ80Memory>::debugGet8BRegisterPair(int y,UINT16 pc) {
 	string dst;
+	stringstream ss;
 	switch (y) {
 	case 0: {
 		dst = "B";
@@ -111,9 +112,11 @@ inline string Z80Opcodes<tZ80Memory>::debugGet8BRegisterPair(int y) {
 	case 4: {
 				if (ddPrefixUsed){
 					dst = "IXH";
+					debugRegReplaced = true;
 				} else if (fdPrefixUsed)
 				{
 					dst = "IYH";
+					debugRegReplaced = true;
 				}
 				else
 				{
@@ -124,10 +127,12 @@ inline string Z80Opcodes<tZ80Memory>::debugGet8BRegisterPair(int y) {
 	case 5: {
 				if (ddPrefixUsed){
 					dst = "IXL";
+					debugRegReplaced = true;
 				}
 				else if (fdPrefixUsed)
 				{
 					dst = "IYL";
+					debugRegReplaced = true;
 				}
 				else {
 					dst = "L";
@@ -136,11 +141,18 @@ inline string Z80Opcodes<tZ80Memory>::debugGet8BRegisterPair(int y) {
 	}
 	case 6: {
 				if (ddPrefixUsed){
-					dst = "(IX+d)";
+					ss << "(IX+d) d is: ";
+					ss << (int) mem.get8(pc+1);
+					dst = ss.str();
+					debugRegReplaced = true;
+					debugHLReplaced = true;
+
 				}
 				else if (fdPrefixUsed)
 				{
-					dst = "(IY+d)";
+					debugRegReplaced = true;
+					debugHLReplaced = true;
+					dst = "(IY+d) d is: "+ (int) mem.get8(pc+2);
 				}
 				else {
 					dst = "(HL)";
@@ -579,7 +591,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 								// completed
 						case 4: {
 									string dst;
-									dst = debugGet8BRegisterPair(y);
+									dst = debugGet8BRegisterPair(y,pc);
 									retVal.mnemonic = "INC " + dst;
 									retVal.size = 1;
 									break;
@@ -587,7 +599,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 								// completed
 						case 5: {
 									string dst;
-									dst = debugGet8BRegisterPair(y);
+									dst = debugGet8BRegisterPair(y,pc);
 									retVal.mnemonic = "DEC " + dst;
 									retVal.size = 1;
 									break;
@@ -595,7 +607,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 								// completed
 						case 6: {
 									string dst;
-									dst = debugGet8BRegisterPair(y);
+									dst = debugGet8BRegisterPair(y,pc);
 									UINT8 data = mem.get16(pc+1);
 									ss << "LD " << dst << ",$" << PADHEX(2,data);
 									retVal.mnemonic = ss.str();
@@ -662,14 +674,22 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 					} else {
 						string src, dst;
 						UINT16 d = 0;
-						if ((ddPrefixUsed) || (fdPrefixUsed)){
-							dUsed = 1;
-							d = mem.get8(pc+1);
+						debugRegReplaced = false;
+						debugHLReplaced = false;
+						dst = debugGet8BRegisterPair(z,pc);
+						if (debugHLReplaced == true){
+							ddPrefixUsed = false;
+							fdPrefixUsed = false;
+							src = debugGet8BRegisterPair(y,pc);
+						} else {
+							debugHLReplaced = false;
+							src = debugGet8BRegisterPair(y,pc);
+							if (debugHLReplaced == true){
+								ddPrefixUsed = false;
+								fdPrefixUsed = false;
+								dst = debugGet8BRegisterPair(z,pc);
+							}
 						}
-						src = debugGet8BRegisterPair(y);
-						ddPrefixUsed = false;
-						fdPrefixUsed = false;
-						dst = debugGet8BRegisterPair(z);
 						if (dUsed){
 							ss << "LD " << src << "," << dst << " d is:" << d;
 						}
@@ -684,7 +704,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugOpcode(UINT8 opcode,UINT16 pc) {
 				}
 		case 2: {
 					// complete
-					string dst = debugGet8BRegisterPair(z);
+					string dst = debugGet8BRegisterPair(z,pc);
 					string operation = debugALUOperation(y);
 					retVal.mnemonic = operation + " " + dst;
 					retVal.size = 1;
@@ -942,7 +962,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 		case 0:
 			if (z!=6){
 				string oper = debugROTOperation(y);
-                string dst2 = debugGet8BRegisterPair(z);
+                string dst2 = debugGet8BRegisterPair(z,pc);
 				ss << "LD " << dst2 << ", " << oper << +y << "," << dst;
 				retVal.mnemonic =  ss.str();
 			}
@@ -961,7 +981,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 
 		case 2:
 			if (z!=6){
-                string dst2 = debugGet8BRegisterPair(z);
+                string dst2 = debugGet8BRegisterPair(z,pc);
 				ss << "LD " << dst2 << ",res " << +y << ","<< dst;
 				retVal.mnemonic =  ss.str();
 			}
@@ -974,7 +994,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugFDCBorDDCBPrefixOpcode(UINT8 opcode,UINT
 
 		case 3:
 			if (z!=6){
-                string dst2 = debugGet8BRegisterPair(z);
+                string dst2 = debugGet8BRegisterPair(z,pc);
 				ss << "LD " << dst2 << ",set " << +y << "," << dst;
 				retVal.mnemonic =  ss.str();
 			}
@@ -1007,7 +1027,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugCBPrefixOpcode(UINT8 opcode,UINT16 pc)
         case 0:
         {
             string oper = debugROTOperation(y);
-            string dst = debugGet8BRegisterPair(z);
+            string dst = debugGet8BRegisterPair(z,pc);
             retVal.mnemonic =  oper + " " + dst;
             retVal.size = 2;
             break;
@@ -1015,7 +1035,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugCBPrefixOpcode(UINT8 opcode,UINT16 pc)
         case 1:
         {
             string dst;
-            dst = debugGet8BRegisterPair(z);
+            dst = debugGet8BRegisterPair(z,pc);
             ss << "BIT " << (int)y << "," << dst;
             retVal.mnemonic = ss.str();
             retVal.size = 2;
@@ -1024,7 +1044,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugCBPrefixOpcode(UINT8 opcode,UINT16 pc)
         case 2:
         {
             string dst;
-            dst = debugGet8BRegisterPair(z);
+            dst = debugGet8BRegisterPair(z,pc);
             ss << "RES " << (int) y << "," << dst;
             retVal.mnemonic = ss.str();
             retVal.size = 2;
@@ -1033,7 +1053,7 @@ opcodeInfo Z80Opcodes<tZ80Memory>::debugCBPrefixOpcode(UINT8 opcode,UINT16 pc)
         case 3:
         {
             string dst;
-            dst = debugGet8BRegisterPair(z);
+            dst = debugGet8BRegisterPair(z,pc);
             ss << "set " << (int) y << "," << dst;
             retVal.mnemonic = ss.str();
             retVal.size = 2;
