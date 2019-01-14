@@ -52,7 +52,7 @@ void Z80Opcodes<tZ80Memory>::SBC_HL_r16(UINT16 *dst)
     UINT16 c = 0;
 	c = reg.HL - *dst - (TEST_FLAG_C() ? 1 : 0);
 	(c>reg.HL) ? SET_FLAG_C() : CLR_FLAG_C();
-	OVERFLOW16(reg.HL,dst) ? SET_FLAG_PV() : CLR_FLAG_PV();
+	OVERFLOW16(reg.HL,dst) ? SET_FLAG_PV() : CLR_FLAG_PV(); // TODO: is it correct ?
 	HALF_BORROW16(reg.HL,*dst) ? SET_FLAG_H() : CLR_FLAG_H();
 	SET_FLAG_N();
 	reg.A = c;
@@ -67,6 +67,18 @@ void Z80Opcodes<tZ80Memory>::SBC_HL_r16(UINT16 *dst)
 template<typename tZ80Memory>
 void Z80Opcodes<tZ80Memory>::ADC_HL_r16(UINT16 *dst)
 {
+	long val = reg.BC + *dst + (TEST_FLAG_C() ? 1 : 0);
+
+	((INT16)reg.HL<0)  ? SET_FLAG_S() : CLR_FLAG_S();
+	(reg.HL==0) ? SET_FLAG_Z() : CLR_FLAG_Z();
+	HALF_CARRY16(reg.HL,*dst) ? SET_FLAG_H() : CLR_FLAG_H();
+	OVERFLOW16(reg.HL,dst) ? SET_FLAG_PV() : CLR_FLAG_PV();
+	CLR_FLAG_N();
+    (val<reg.HL) ? SET_FLAG_C() : CLR_FLAG_C();
+
+	reg.HL = val;
+
+	reg.PC+=1;
     LOG4CXX_WARN(logger, "adc hl r16 stub");
 }
 
